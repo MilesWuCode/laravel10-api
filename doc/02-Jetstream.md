@@ -1,7 +1,7 @@
 # 02-Jetstream
 
 -   用戶介面
--   https://jetstream.laravel.com/
+-   https://jetstream.laravel.com
 
 ```sh
 # 安裝laravel-jetstream
