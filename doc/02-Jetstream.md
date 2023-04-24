@@ -1,5 +1,8 @@
 # 02-Jetstream
 
+-   用戶介面
+-   https://jetstream.laravel.com/
+
 ```sh
 # 安裝laravel-jetstream
 # 僅限新應用
@@ -13,6 +16,6 @@ php artisan jetstream:install livewire
 # 用於團隊,不使用
 php artisan jetstream:install livewire --teams
 
-#
+# Migrate資料庫
 php artisan migrate
 ```
