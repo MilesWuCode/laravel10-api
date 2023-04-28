@@ -13,9 +13,15 @@ php artisan make:request PostStoreRequest
 
 # 查詢以下說明
 # 1.直接建立資料
+- router -> controller -> model
 # 2.使用contract,service建立資料
+- router -> controller -> service bind contract -> model
 # 3.使用facade建立資料
+- router -> request -> controller -> service bind facade -> model
 # 4.使用DTO建立資料
-
-
+- router -> request -> controller
+- request -> dto -> service bind facade -> model
+# 5.使用repository建立資料
+- router -> request -> controller
+- request -> dto -> service bind facade -> repository -> model
 ```

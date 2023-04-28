@@ -44,6 +44,8 @@ class PostController extends Controller
 
     /**
      * 4.使用DTO建立資料
+     *
+     * 5.使用repository建立資料
      */
     public function store(PostStoreRequest $request)
     {

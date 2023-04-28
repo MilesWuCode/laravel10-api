@@ -21,7 +21,10 @@ class AppServiceProvider extends ServiceProvider
 
         /**
          * 3.使用facade建立資料
-         * PostFacade,PostService
+         * 4.使用DTO建立資料
+         * 5.使用repository建立資料
+         *
+         * PostFacade bind PostService
          */
         $this->app->bind('PostService', function () {
             return new PostService();
