@@ -2,7 +2,7 @@
 
 namespace App\Contracts;
 
-use App\DTO\PostDTO;
+use App\DataTransferObjects\PostDto;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -20,5 +20,5 @@ interface PostContract
      *
      * 5.使用repository建立資料
      */
-    public function create(PostDTO $postDTO): Post;
+    public function create(PostDto $PostDto): Post;
 }

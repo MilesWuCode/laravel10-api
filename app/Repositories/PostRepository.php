@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\DTO\PostDTO;
+use App\DataTransferObjects\PostDto;
 use App\Models\Post;
 
 /**
@@ -18,11 +18,11 @@ class PostRepository
         $this->post = new Post();
     }
 
-    public function create(PostDTO $postDTO): Post
+    public function create(PostDto $PostDto): Post
     {
         return Post::create([
-            'title' => $postDTO->title,
-            'content' => $postDTO->content,
+            'title' => $PostDto->title,
+            'content' => $PostDto->content,
         ]);
     }
 }

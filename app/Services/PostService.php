@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\PostContract;
-use App\DTO\PostDTO;
+use App\DataTransferObjects\PostDto;
 use App\Models\Post;
 use App\Repositories\PostRepository;
 use Illuminate\Http\Request;
@@ -30,11 +30,11 @@ class PostService implements PostContract
      * PostContract限制名字為create
      * 在Post::create()之前可以寫商業邏輯
      */
-    // public function create(PostDTO $postDTO): Post
+    // public function create(PostDto $PostDto): Post
     // {
     //     return Post::create([
-    //         'title' => $postDTO->title,
-    //         'content' => $postDTO->content,
+    //         'title' => $PostDto->title,
+    //         'content' => $PostDto->content,
     //     ]);
     // }
 
@@ -52,8 +52,8 @@ class PostService implements PostContract
         $this->postRepository = new PostRepository();
     }
 
-    public function create(PostDTO $postDTO): Post
+    public function create(PostDto $PostDto): Post
     {
-        return $this->postRepository->create($postDTO);
+        return $this->postRepository->create($PostDto);
     }
 }

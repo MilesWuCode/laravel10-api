@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contracts\PostContract;
-use App\DTO\PostDTO;
+use App\DataTransferObjects\PostDto;
 use App\Facades\PostFacade;
 use App\Http\Requests\PostStoreRequest;
 use App\Models\Post;
@@ -49,6 +49,6 @@ class PostController extends Controller
      */
     public function store(PostStoreRequest $request)
     {
-        return response()->json(PostFacade::create(PostDTO::create($request)));
+        return response()->json(PostFacade::create(PostDto::create($request)));
     }
 }

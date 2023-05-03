@@ -1,12 +1,12 @@
 <?php
 
-namespace App\DTO;
+namespace App\DataTransferObjects;
 
 use App\Http\Requests\PostStoreRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
-class PostDTO
+class PostDto
 {
     public function __construct(
         public readonly string $title,
@@ -14,7 +14,7 @@ class PostDTO
     ) {
     }
 
-    public static function create(PostStoreRequest $request): PostDTO
+    public static function create(PostStoreRequest $request): PostDto
     {
         /**
          * 4.使用DTO建立資料
