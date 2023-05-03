@@ -31,4 +31,10 @@ class PostResource extends JsonResource
             // ),
         ];
     }
+
+    /**
+     * collection keys will be preserved
+     * Post::all()->keyBy->id,true:保留key
+     */
+    // public $preserveKeys = true;
 }

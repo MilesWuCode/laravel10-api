@@ -10,13 +10,14 @@ use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): PostCollection
+    public function index(): JsonResource
     {
         // 直接輸出
         // return PostResource::collection(Post::all());

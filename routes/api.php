@@ -19,6 +19,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('api')->get('/post', [PostController::class, 'index'])->name('post.index');
-Route::middleware('api')->post('/post', [PostController::class, 'store'])->name('post.store');
-Route::middleware('api')->get('/post/{post}', [PostController::class, 'show'])->name('post.show');
+// Route::middleware('api')->get('/post', [PostController::class, 'index'])->name('post.index');
+// Route::middleware('api')->post('/post', [PostController::class, 'store'])->name('post.store');
+// Route::middleware('api')->get('/post/{post}', [PostController::class, 'show'])->name('post.show');
+
+// controller,group
+Route::middleware('api')->controller(PostController::class)->group(function () {
+    Route::get('/post', 'index')->name('post.index');
+    Route::post('/post', 'store')->name('post.store');
+    Route::get('/post/{post}', 'show')->name('post.show');
+});
