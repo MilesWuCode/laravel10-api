@@ -17,7 +17,7 @@ class PostResource extends JsonResource
         // 預設
         // return parent::toArray($request);
 
-        // 自行填加
+        // 自行填加欄位
         return [
             'id' => $this->id,
             'title' => $this->title,

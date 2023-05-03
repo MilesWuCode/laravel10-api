@@ -6,12 +6,27 @@ use App\Contracts\PostContract;
 use App\DataTransferObjects\PostDto;
 use App\Facades\PostFacade;
 use App\Http\Requests\PostStoreRequest;
+use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(): PostCollection
+    {
+        // 直接輸出
+        // return PostResource::collection(Post::all());
+        // paginate功能,/post?page=2
+        // return PostResource::collection(Post::paginate());
+
+        // 會自動參照PostResource的欄位,all(),paginate()
+        return new PostCollection(Post::paginate(5));
+    }
+
     /**
      * 1.直接建立資料
      */
@@ -58,5 +73,13 @@ class PostController extends Controller
 
         // 使用new PostResource()回傳單筆
         return new PostResource(PostFacade::create(PostDto::create($request)));
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Post $post): PostResource
+    {
+        return new PostResource($post);
     }
 }
