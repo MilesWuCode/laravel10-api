@@ -8,8 +8,13 @@ php artisan make:model Post --controller --migration
 # Migrate資料庫
 php artisan migrate
 
+# 輸入檢查
 # FormRequest的authorize,rules
 php artisan make:request PostStoreRequest
+
+# 輸出格式
+# Resource
+php artisan make:resource PostResource
 
 # 查詢以下說明
 # 1.直接建立資料
