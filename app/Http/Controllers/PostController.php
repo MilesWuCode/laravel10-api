@@ -6,6 +6,7 @@ use App\Contracts\PostContract;
 use App\DataTransferObjects\PostDto;
 use App\Facades\PostFacade;
 use App\Http\Requests\PostStoreRequest;
+use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -47,8 +48,15 @@ class PostController extends Controller
      *
      * 5.使用repository建立資料
      */
-    public function store(PostStoreRequest $request)
+    public function store(PostStoreRequest $request): PostResource
     {
-        return response()->json(PostFacade::create(PostDto::create($request)));
+        // 一般response json回傳
+        // return response()->json(PostFacade::create(PostDto::create($request)));
+
+        // 使用PostResource::make()回傳單筆
+        // return PostResource::make(PostFacade::create(PostDto::create($request)));
+
+        // 使用new PostResource()回傳單筆
+        return new PostResource(PostFacade::create(PostDto::create($request)));
     }
 }

@@ -8,7 +8,6 @@ use App\Models\Post;
 /**
  * 5.使用repository建立資料
  */
-
 class PostRepository
 {
     protected Post $post;

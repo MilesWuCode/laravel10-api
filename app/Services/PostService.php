@@ -38,13 +38,11 @@ class PostService implements PostContract
     //     ]);
     // }
 
-
     /**
      * 5.使用repository建立資料
      * PostContract限制名字為create
      * 在$this->postRepository->create()之前可以寫商業邏輯
      */
-
     protected PostRepository $postRepository;
 
     public function __construct()
