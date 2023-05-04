@@ -50,6 +50,11 @@ class PostService implements PostContract
         $this->postRepository = new PostRepository();
     }
 
+    public function list()
+    {
+        return $this->postRepository->list();
+    }
+
     public function create(PostDto $PostDto): Post
     {
         return $this->postRepository->create($PostDto);

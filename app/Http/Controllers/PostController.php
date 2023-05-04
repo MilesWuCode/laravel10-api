@@ -17,7 +17,7 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResource
+    public function index(Request $request): JsonResource
     {
         // 直接輸出
         // return PostResource::collection(Post::all());
@@ -25,7 +25,10 @@ class PostController extends Controller
         // return PostResource::collection(Post::paginate());
 
         // 會自動參照PostResource的欄位,all(),paginate()
-        return new PostCollection(Post::paginate(5));
+        // return new PostCollection(Post::paginate(5));
+
+        // PostRepository加Cache
+        return new PostCollection(PostFacade::list());
     }
 
     /**

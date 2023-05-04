@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 interface PostContract
 {
+    public function list();
+
     /**
      * 2.使用contract,service建立資料
      *
