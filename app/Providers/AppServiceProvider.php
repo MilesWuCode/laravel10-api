@@ -29,6 +29,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('PostService', function () {
             return new PostService();
         });
+
+        // telescope
+        if ($this->app->environment('local')) {
+            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+            $this->app->register(TelescopeServiceProvider::class);
+        }
     }
 
     /**
