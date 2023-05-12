@@ -46,7 +46,6 @@ docker run -d \
 -p 19001:9001 \
 -e MINIO_ROOT_USER=admin \
 -e MINIO_ROOT_PASSWORD=password \
--e MINIO_BROWSER_REDIRECT_URL="https://minio-console.miles-home.cc" \
 -e MINIO_SERVER_URL="https://minio.miles-home.cc" \
 --restart unless-stopped \
 minio/minio:latest server /data \
