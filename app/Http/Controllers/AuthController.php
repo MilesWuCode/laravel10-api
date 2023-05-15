@@ -15,9 +15,6 @@ class AuthController extends Controller
 {
     /**
      * User register.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function register(Request $request): JsonResponse
     {
@@ -34,7 +31,7 @@ class AuthController extends Controller
 
         $user = User::create($input);
 
-        if (!$user->hasVerifiedEmail()) {
+        if (! $user->hasVerifiedEmail()) {
             event(new Registered($user));
         }
 
@@ -43,9 +40,6 @@ class AuthController extends Controller
 
     /**
      * send verify email.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function sendVerifyEmail(Request $request): JsonResponse
     {
@@ -68,9 +62,6 @@ class AuthController extends Controller
 
     /**
      * verify email.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function verifyEmail(Request $request): JsonResponse
     {
@@ -105,9 +96,6 @@ class AuthController extends Controller
 
     /**
      * Login.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request): JsonResponse
     {
@@ -131,9 +119,6 @@ class AuthController extends Controller
 
     /**
      * Logout.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function logout(Request $request): JsonResponse
     {
