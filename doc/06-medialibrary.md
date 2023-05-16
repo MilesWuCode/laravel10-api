@@ -57,7 +57,7 @@ docker run -d \
 -p 19001:9001 \
 -e MINIO_ROOT_USER=admin \
 -e MINIO_ROOT_PASSWORD=password \
--e MINIO_SERVER_URL="https://minio.miles-home.cc" \
+-e MINIO_SERVER_URL="http://127.0.0.1:9000" \
 --restart unless-stopped \
 minio/minio:latest server /data \
 --address ":9000" \
@@ -68,14 +68,14 @@ minio/minio:latest server /data \
 # tinker測試
 Storage::disk('minio')->put('hello.json', '{"hello": "world"}');
 Storage::disk('minio')->get('hello.json');
-file_get_contents('https://minio.miles-home.cc/test/hello.json');
+file_get_contents('http://127.0.0.1:9000/test/hello.json');
 ```
 
 .env
 
 ```ini
 ; env參數
-AWS_ENDPOINT=https://minio.miles-home.cc
+AWS_ENDPOINT=http://127.0.0.1:9000
 AWS_USE_PATH_STYLE_ENDPOINT=true
 MEDIA_DISK=minio
 ```
