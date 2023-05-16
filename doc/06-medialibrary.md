@@ -1,12 +1,16 @@
 # 06-medialibrary
 
 ```sh
+# 安裝
 composer require spatie/laravel-medialibrary
 
+# 資料表腳本
 php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations"
 
+# 設定檔
 php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="config"
 
+# 建立資料表
 php artisan migrate
 ```
 
@@ -27,15 +31,13 @@ config/filesystems.php
 MEDIA_DISK=local
 ```
 
-ubuntu
+擴充套件
 
 ```sh
+# ubuntu
 sudo apt install jpegoptim optipng pngquant gifsicle
-```
 
-macos
-
-```sh
+# macos
 brew install jpegoptim
 brew install optipng
 brew install pngquant
@@ -43,7 +45,7 @@ brew install svgo
 brew install gifsicle
 ```
 
-## minio
+## minio 伺服器
 
 ```sh
 # 專案安裝driver
@@ -71,7 +73,7 @@ Storage::disk('minio')->get('hello.json');
 file_get_contents('http://127.0.0.1:9000/test/hello.json');
 ```
 
-.env
+.env 修改
 
 ```ini
 ; env參數
