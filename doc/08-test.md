@@ -15,10 +15,14 @@ composer require pestphp/pest-plugin-laravel --dev
 ./vendor/bin/pest --init
 
 # 測試用env
+# DB_CONNECTION=sqlite
 cp .env .env.testing
 
 # 實體檔案位置,建立sqlite資料庫檔案
 touch database/database.sqlite
+
+# migrate
+php artisan migrate --env=testing
 
 # Feature
 php artisan make:test UserTest
@@ -47,18 +51,17 @@ php artisan test --parallel --recreate-databases
 .env.testing
 
 ```php
-// 只保留DB_CONNECTION,DB_DATABASE
-
-// 使用sqlite
+// 使用sqlite,預設在database/database.sqlite
 DB_CONNECTION=sqlite
 
-// 使用記憶體或實體檔案位置
+// 使用記憶體,用之前要先migrate
+// 所以要修改tests/TestCase.php
 DB_DATABASE=:memory:
 ```
 
 tests/TestCase.php
 
-> 測試前 migrate
+> 如果想要在測試前 migrate
 >
 > 可以用 RefreshDatabase 或 DatabaseMigrations
 >
