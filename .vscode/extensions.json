@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "ahmadalli.vscode-nginx-conf",
+        "devsense.phptools-vscode",
+        "georgykurian.laravel-ide-helper",
+        "open-southeners.laravel-pint",
+        "rexshi.phpdoc-comment-vscode-plugin",
+        "shufo.vscode-blade-formatter"
+    ]
+}
