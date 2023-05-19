@@ -49,25 +49,33 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         'email_verified_at' => 'datetime',
     ];
 
-    // 驗證碼
+    /**
+     * 驗證碼
+     */
     public function verifies(): HasMany
     {
         return $this->hasMany(Verify::class);
     }
 
-    // 寄驗證信
-    public function sendEmailVerificationNotification()
+    /**
+     * 寄驗證信
+     */
+    public function sendEmailVerificationNotification(): void
     {
         $this->notify(new CustomVerifyEmail);
     }
 
-    // 已驗證
+    /**
+     * 已驗證
+     */
     public function scopeVerified(Builder $query): Builder
     {
         return $query->whereNotNull('email_verified_at');
     }
 
-    // media
+    /**
+     * 檔案
+     */
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('avatar')

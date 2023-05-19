@@ -18,6 +18,7 @@
         "spatie/laravel-medialibrary": "^10.9"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.13",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
@@ -59,7 +60,8 @@
     "extra": {
         "laravel": {
             "dont-discover": [
-                "laravel/telescope"
+                "laravel/telescope",
+                "barryvdh/laravel-ide-helper"
             ]
         }
     },
