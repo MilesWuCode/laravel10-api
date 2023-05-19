@@ -21,6 +21,6 @@ Route::get('/liveware', function () {
     return view('liveware');
 });
 
-Route::domain(config('frontend.domain'))
-    ->get(config('frontend.verify_email_path'))
-    ->name('verification.verify');
+// Route::domain(config('frontend.url'))
+//     ->get(config('frontend.verify_email_path'))
+//     ->name('verification.verify');
