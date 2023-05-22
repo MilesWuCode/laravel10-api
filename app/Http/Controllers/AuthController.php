@@ -14,14 +14,14 @@ use Illuminate\Validation\ValidationException;
 class AuthController extends Controller
 {
     /**
-     * User register.
+     * 註冊
      */
     public function register(Request $request): JsonResponse
     {
         Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => 'required|max:20',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8',
+            'password' => 'required|min:8|max:32',
             'comfirm_password' => 'required|same:password',
         ])->validate();
 
@@ -39,7 +39,7 @@ class AuthController extends Controller
     }
 
     /**
-     * send verify email.
+     * 寄驗證信
      */
     public function sendVerifyEmail(Request $request): JsonResponse
     {
@@ -61,7 +61,7 @@ class AuthController extends Controller
     }
 
     /**
-     * verify email.
+     * 驗證碼
      */
     public function verifyEmail(Request $request): JsonResponse
     {
@@ -95,13 +95,13 @@ class AuthController extends Controller
     }
 
     /**
-     * Login.
+     * 登入
      */
     public function login(Request $request): JsonResponse
     {
         Validator::make($request->all(), [
             'email' => 'required|email',
-            'password' => 'required|min:8',
+            'password' => 'required|min:8|max:32',
         ])->validate();
 
         $user = User::where('email', $request->email)->first();
@@ -118,7 +118,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Logout.
+     * 登出
      */
     public function logout(Request $request): JsonResponse
     {
