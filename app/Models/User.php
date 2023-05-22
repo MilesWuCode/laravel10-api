@@ -76,11 +76,27 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     /**
      * 檔案
      */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('avatar')
+            // 沒有圖片回傳預設圖片網址
+            ->useFallbackUrl(config('frontend.url').'/images/fallback.jpg')
+            // 沒有圖片回傳預設圖片路徑
+            ->useFallbackPath('/images/fallback.jpg')
+            // 類型
+            ->acceptsMimeTypes(['image/jpeg'])
+            // 單一檔案
+            ->singleFile();
+    }
+
+    /**
+     * 圖片轉換,縮圖
+     */
     public function registerMediaConversions(Media $media = null): void
     {
-        $this->addMediaConversion('avatar')
-            ->singleFile()
-            ->useFallbackUrl('/images/anonymous-user.jpg')
-            ->useFallbackPath(public_path('/images/anonymous-user.jpg'));
+        $this->addMediaConversion('thumb')
+            ->width(40)
+            ->height(40)
+            ->performOnCollections('avatar');
     }
 }
