@@ -13,7 +13,7 @@ class MeUpdateRequest extends FormRequest
     {
         // user -> can (update, model)
         // 用戶能不能update這個物件
-        return ! $this->user()->can('update', $this->user());
+        return $this->user()->can('update', $this->user());
     }
 
     /**
