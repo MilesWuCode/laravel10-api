@@ -50,7 +50,7 @@ Route::controller(AuthController::class)
  * 個人資料
  */
 Route::controller(MeController::class)
-    ->middleware(['auth:sanctum', 'throttle:6,1'])
+    ->middleware(['auth:sanctum'])
     ->group(function () {
         Route::get('/me', 'show')->name('me.show');
         Route::put('/me', 'update')->name('me.update');
