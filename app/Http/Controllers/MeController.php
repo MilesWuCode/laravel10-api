@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 // use App\Http\Requests\MeFileAddRequest;
-// use App\Http\Requests\UpdateMeRequest;
+use App\Http\Requests\MeUpdateRequest;
 // use App\Transformers\UserTransformer;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\JsonResponse;
@@ -21,21 +21,27 @@ class MeController extends Controller
         return new UserResource($request->user());
     }
 
-    // public function update(UpdateMeRequest $request): JsonResponse
-    // {
-    //     $this->authorize('update', $request->user());
+    /**
+     * 更新
+     */
+    public function update(MeUpdateRequest $request): UserResource
+    {
+        // 檢查policy,也可以在MeUpdateRequest裡檢查
+        $this->authorize('update', $request->user());
 
-    //     // * example
-    //     // dump($request->validated());
-    //     // dump($request->safe()->only(['name']));
-    //     // dump($request->safe()->except(['other']));
-    //     // dump($request->safe()->all());
+        // * example
+        // dump($request->validated());
+        // dump($request->safe()->only(['name']));
+        // dump($request->safe()->except(['other']));
+        // dump($request->safe()->all());
 
-    //     $request->user()->update($request->validated());
+        $request->user()->update($request->validated());
 
-    //     return Fractal::create($request->user(), new UserTransformer())
-    //         ->respond();
-    // }
+        // return Fractal::create($request->user(), new UserTransformer())
+        //     ->respond();
+
+        return new UserResource($request->user());
+    }
 
     /**
      * 變更密碼
@@ -67,6 +73,9 @@ class MeController extends Controller
         return response()->json(['message' => 'success'], 200);
     }
 
+    /**
+     * Avatar
+     */
     // public function fileAdd(MeFileAddRequest $request): JsonResponse
     // {
     //     $this->authorize('update', $request->user());

@@ -53,7 +53,7 @@ Route::controller(MeController::class)
     ->middleware(['auth:sanctum', 'throttle:6,1'])
     ->group(function () {
         Route::get('/me', 'show')->name('me.show');
-        // Route::put('/me', 'update')->name('me.update');
+        Route::put('/me', 'update')->name('me.update');
         Route::put('/me/change-password', 'changePassword')->name('me.change-password');
         // Route::post('/me/file', 'fileAdd')->name('me.file.add');
     });
