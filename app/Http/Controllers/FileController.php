@@ -24,7 +24,7 @@ class FileController extends Controller
 
         $isSuccess = Storage::disk('minio')->put('temporary/'.$fileName, $file);
 
-        if (! $isSuccess) {
+        if ($isSuccess) {
             return response()->json(['file' => $fileName], 200);
         } else {
             return response()->json([
