@@ -2,22 +2,18 @@
 
 namespace App\Http\Controllers;
 
-// use App\Http\Requests\MeFileAddRequest;
+use App\Http\Requests\MeFileRequest;
 use App\Http\Requests\MeUpdateRequest;
-// use App\Transformers\UserTransformer;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-// use Spatie\Fractal\Facades\Fractal;
-
 class MeController extends Controller
 {
     public function show(Request $request): UserResource
     {
-        // return new UserResource(PostFacade::create(PostDto::create($request)));
         return new UserResource($request->user());
     }
 
@@ -36,9 +32,6 @@ class MeController extends Controller
         // dump($request->safe()->all());
 
         $request->user()->update($request->validated());
-
-        // return Fractal::create($request->user(), new UserTransformer())
-        //     ->respond();
 
         return new UserResource($request->user());
     }
@@ -76,13 +69,12 @@ class MeController extends Controller
     /**
      * Avatar
      */
-    // public function fileAdd(MeFileAddRequest $request): JsonResponse
-    // {
-    //     $this->authorize('update', $request->user());
+    public function avatarUpload(MeFileRequest $request): UserResource
+    {
+        $this->authorize('update', $request->user());
 
-    //     $request->user()->setFile($request->input('collection'), [$request->input('file')]);
+        $request->user()->setFile('avatar', $request->input('file'));
 
-    //     return Fractal::create($request->user(), new UserTransformer())
-    //         ->respond();
-    // }
+        return new UserResource($request->user());
+    }
 }

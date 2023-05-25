@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\MeController;
 use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
@@ -55,5 +56,13 @@ Route::controller(MeController::class)
         Route::get('/me', 'show')->name('me.show');
         Route::put('/me', 'update')->name('me.update');
         Route::put('/me/change-password', 'changePassword')->name('me.change-password');
-        // Route::post('/me/file', 'fileAdd')->name('me.file.add');
+        Route::post('/me/avatar', 'avatar')->name('me.avatar');
     });
+
+/**
+ * 檔案上傳到暫存區
+ * 並回傳暫時網址
+ */
+Route::middleware('auth:sanctum')
+    ->post('/file/temporary', [FileController::class, 'temporary'])
+    ->name('file.temporary');
