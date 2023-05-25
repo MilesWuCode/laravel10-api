@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -13,8 +14,14 @@ class FileController extends Controller
      */
     public function temporary(Request $request)
     {
-        // 清除過期暫存,可以設定排程來做
-        $this->removeExpiredFiles();
+        try {
+            // 清除過期暫存,可以設定排程來做
+            $this->removeExpiredFiles();
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
+        }
 
         $file = $request->file('file');
 
@@ -29,7 +36,6 @@ class FileController extends Controller
         } else {
             return response()->json([
                 'message' => 'file upload failed',
-                'errors' => 'file upload failed',
             ], 400);
         }
     }
@@ -39,25 +45,21 @@ class FileController extends Controller
      */
     private function removeExpiredFiles()
     {
-        // $path = config('filesystems.disks.temporary.root');
+        try {
+            $storageDisk = Storage::disk('minio');
 
-        // if (is_dir($path)) {
-        //     $dh = opendir($path);
+            $files = $storageDisk->files('temporary');
 
-        //     if ($dh) {
-        //         while (false !== ($file = readdir($dh))) {
-        //             if (is_file($path.'/'.$file)) {
-        //                 $time = filemtime($path.'/'.$file);
+            foreach ($files as $file) {
+                $lastModified = Carbon::createFromTimestamp($storageDisk->lastModified($file));
+                $timeDifference = Carbon::now()->diffInHours($lastModified);
 
-        //                 if ((time() - $time) > 24 * 3600) {
-        //                     // unlink($path.'/'.$file);
-        //                     Storage::disk('temporary')->delete($file);
-        //                 }
-        //             }
-        //         }
-
-        //         closedir($dh);
-        //     }
-        // }
+                if ($timeDifference > 24) {
+                    $storageDisk->delete($file);
+                }
+            }
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 }
