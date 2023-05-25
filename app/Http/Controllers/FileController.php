@@ -52,6 +52,7 @@ class FileController extends Controller
 
             foreach ($files as $file) {
                 $lastModified = Carbon::createFromTimestamp($storageDisk->lastModified($file));
+
                 $timeDifference = Carbon::now()->diffInHours($lastModified);
 
                 if ($timeDifference > 24) {
