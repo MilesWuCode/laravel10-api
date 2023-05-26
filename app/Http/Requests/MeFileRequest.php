@@ -26,8 +26,8 @@ class MeFileRequest extends FormRequest
     {
         return [
             // s3,minio可能無法檢查檔案是否存在
-            // 'file' => ['required', new FileExist],
-            'file' => ['required'],
+            // Unable to check existence
+            'file' => ['required', new FileExist],
         ];
     }
 }

@@ -81,15 +81,15 @@ class MeController extends Controller
 
         // s3,minio可能無法檢查檔案是否存在
         // 取得檔案位置使用medialibrary設定到model
-        // $request->user()->addMediaFromDisk('temporary/'.$fileName, 'minio')
-        //     ->toMediaCollection('avatar');
+        $request->user()->addMediaFromDisk('temporary/'.$fileName, 'minio')
+            ->toMediaCollection('avatar');
 
         // 只能使用url加入
-        $fileUrl = Storage::disk('minio')->url('temporary/'.$fileName);
+        // $fileUrl = Storage::disk('minio')->url('temporary/'.$fileName);
 
         // 取得檔案位置使用medialibrary設定到model
-        $request->user()->addMediaFromUrl($fileUrl)
-            ->toMediaCollection('avatar');
+        // $request->user()->addMediaFromUrl($fileUrl)
+        //     ->toMediaCollection('avatar');
 
         return new UserResource($request->user());
     }

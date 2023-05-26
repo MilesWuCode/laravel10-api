@@ -13,14 +13,8 @@ class FileController extends Controller
      */
     public function temporary(FileRequest $request)
     {
-        // try {
-        //     // 清除過期暫存,可以設定排程來做
-        //     $this->removeExpiredFiles();
-        // } catch (\Exception $e) {
-        //     return response()->json([
-        //         'message' => $e->getMessage(),
-        //     ], 500);
-        // }
+        // 清除過期暫存,可以設定排程來做
+        $this->removeExpiredFiles();
 
         $fileName = basename($request->file('file')->store('temporary', 'minio'));
 
@@ -46,8 +40,10 @@ class FileController extends Controller
                     $storageDisk->delete($file);
                 }
             }
+
+            return true;
         } catch (\Exception $e) {
-            throw $e;
+            return false;
         }
     }
 }
