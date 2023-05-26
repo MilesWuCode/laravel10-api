@@ -56,7 +56,7 @@ Route::controller(MeController::class)
         Route::get('/me', 'show')->name('me.show');
         Route::put('/me', 'update')->name('me.update');
         Route::put('/me/change-password', 'changePassword')->name('me.change-password');
-        Route::post('/me/avatar', 'avatar')->name('me.avatar');
+        Route::put('/me/avatar', 'avatar')->name('me.avatar');
     });
 
 /**

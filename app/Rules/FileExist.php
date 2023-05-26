@@ -15,7 +15,8 @@ class FileExist implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (Storage::disk('temporary')->exists($value)) {
+        // 檢查檔案是否存在
+        if (! Storage::disk('minio')->exists('temporary/'.$value)) {
             // 錯誤訊息
             $fail('File does not exist.');
         }

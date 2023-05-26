@@ -2,19 +2,16 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\FileExist;
 use Illuminate\Foundation\Http\FormRequest;
 
-class MeFileRequest extends FormRequest
+class FileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        // user -> can (update, model)
-        // 用戶能不能update這個物件
-        return $this->user()->can('update', $this->user());
+        return true;
     }
 
     /**
@@ -25,9 +22,7 @@ class MeFileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // s3,minio可能無法檢查檔案是否存在
-            // 'file' => ['required', new FileExist],
-            'file' => ['required'],
+            'file' => 'required|file',
         ];
     }
 }
