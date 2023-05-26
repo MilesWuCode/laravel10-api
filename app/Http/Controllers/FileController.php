@@ -14,11 +14,15 @@ class FileController extends Controller
     public function temporary(FileRequest $request)
     {
         // 清除過期暫存,可以設定排程來做
-        $this->removeExpiredFiles();
+        // $this->removeExpiredFiles();
 
-        $fileName = basename($request->file('file')->store('', 'minio-temporary'));
+        $storeFile = $request->file('file')->store('', 'minio-temporary');
 
-        return response()->json(['file' => $fileName], 200);
+        if ($storeFile) {
+            return response()->json(['file' => basename($storeFile)], 200);
+        } else {
+            return response()->json(['message' => 'upload file failed'], 400);
+        }
     }
 
     /**
