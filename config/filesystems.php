@@ -75,6 +75,20 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+
+        // 前綴
+        'minio-temporary' => [
+            'driver' => 'scoped',
+            'disk' => 'minio',
+            'prefix' => 'temporary',
+        ],
+
+        // 前綴
+        'minio-medialibrary' => [
+            'driver' => 'scoped',
+            'disk' => 'minio',
+            'prefix' => 'medialibrary',
+        ],
     ],
 
     /*

@@ -16,7 +16,7 @@ class FileController extends Controller
         // 清除過期暫存,可以設定排程來做
         $this->removeExpiredFiles();
 
-        $fileName = basename($request->file('file')->store('temporary', 'minio'));
+        $fileName = basename($request->file('file')->store('', 'minio-temporary'));
 
         return response()->json(['file' => $fileName], 200);
     }
@@ -27,9 +27,9 @@ class FileController extends Controller
     private function removeExpiredFiles()
     {
         try {
-            $storageDisk = Storage::disk('minio');
+            $storageDisk = Storage::disk('minio-temporary');
 
-            $files = $storageDisk->files('temporary');
+            $files = $storageDisk->files();
 
             foreach ($files as $file) {
                 $lastModified = Carbon::createFromTimestamp($storageDisk->lastModified($file));
