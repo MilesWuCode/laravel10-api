@@ -33,7 +33,7 @@ it('登入', function () {
     $response->assertStatus(200);
 });
 
-it('寄驗證信/驗證代碼', function () {
+it('寄Email驗證信/驗證Email代碼', function () {
     // Prepare
     $user = User::factory()->create();
 
