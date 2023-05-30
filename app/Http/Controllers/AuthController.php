@@ -70,25 +70,28 @@ class AuthController extends Controller
             'code' => 'required',
         ])->validate();
 
-        $email = $request->email;
+        $user = User::where('email', $request->email)->first();
 
-        $user = User::where('email', $email)->firstOrFail();
+        is_null($user) && abort(400);
 
         if ($user->hasVerifiedEmail()) {
             abort(403, 'Your email address is verified.');
         }
 
-        $count = $user->verifies()
+        $verify = $user->verifies()
             ->where('code', $request->code)
             ->where('expires', '>=', now())
-            ->count();
+            ->first();
 
-        if ($count !== 1) {
-            abort(401, 'Unauthorized');
-        }
+        is_null($verify) && abort(400);
 
+        // 標記驗證
         $user->markEmailAsVerified();
 
+        // 刪除用過的驗證碼
+        $verify->delete();
+
+        // 呼叫事件
         event(new Verified($user));
 
         return response()->json(['message' => 'success'], 200);
