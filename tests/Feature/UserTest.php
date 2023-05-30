@@ -3,7 +3,7 @@
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
 
-it('user資料', function () {
+it('User CRUD', function () {
     // Prepare
     $user = User::factory()->create();
 
@@ -11,6 +11,11 @@ it('user資料', function () {
 
     // Act
     $response = $this->get('/api/me');
+
+    // Assert
+    $response->assertStatus(200);
+
+    $response = $this->put('/api/me', ['name' => 'New Name']);
 
     // Assert
     $response->assertStatus(200);
