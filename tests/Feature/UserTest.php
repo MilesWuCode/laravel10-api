@@ -1,20 +1,16 @@
 <?php
 
 use App\Models\User;
+use Laravel\Sanctum\Sanctum;
 
-it('註冊', function () {
+it('user資料', function () {
     // Prepare
-    $user = User::factory()->make();
+    $user = User::factory()->create();
 
-    $form = [
-        'name' => $user->name,
-        'email' => $user->email,
-        'password' => 'password',
-        'comfirm_password' => 'password',
-    ];
+    Sanctum::actingAs($user);
 
     // Act
-    $response = $this->post('/api/auth/register', $form);
+    $response = $this->get('/api/me');
 
     // Assert
     $response->assertStatus(200);
