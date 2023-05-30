@@ -126,4 +126,55 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'success'], 200);
     }
+
+    /**
+     * 忘記密碼
+     */
+    public function forgotPassword(Request $request): JsonResponse
+    {
+        Validator::make($request->all(), [
+            'email' => 'required|email',
+        ])->validate();
+
+        $user = User::where('email', $request->email)->first();
+
+        is_null($user) && abort(400);
+
+        $user->sendPasswordResetNotify();
+
+        return response()->json(['message' => 'success'], 200);
+
+    }
+
+    /**
+     * 變更密碼
+     */
+    public function resetPassword(Request $request): JsonResponse
+    {
+        Validator::make($request->all(), [
+            'code' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|max:32',
+            'comfirm_password' => 'required|same:password',
+        ])->validate();
+
+        $user = User::where('email', $request->email)->first();
+
+        is_null($user) && abort(400);
+
+        $verify = $user->verifies()
+            ->where('code', $request->code)
+            ->where('expires', '>=', now())
+            ->first();
+
+        is_null($verify) && abort(400);
+
+        $user->password = Hash::make($request->password);
+
+        $user->save();
+
+        $verify->delete();
+
+        return response()->json(['message' => 'success'], 200);
+    }
 }

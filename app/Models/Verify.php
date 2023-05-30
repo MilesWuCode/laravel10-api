@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Config;
 
 class Verify extends Model
 {
@@ -26,7 +25,7 @@ class Verify extends Model
 
         static::creating(function ($verify) {
             $verify->code = rand(111111, 999999);
-            $verify->expires = Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60));
+            $verify->expires = Carbon::now()->addMinutes(60);
         });
     }
 

@@ -4,7 +4,7 @@ namespace App\Notifications;
 
 use Illuminate\Auth\Notifications\VerifyEmail;
 
-class CustomVerifyEmail extends VerifyEmail
+class CustomVerifyEmailNotification extends VerifyEmail
 {
     protected function verificationUrl($notifiable)
     {
