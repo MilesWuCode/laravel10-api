@@ -3,7 +3,6 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MeController;
-use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,20 +17,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-/**
- * group範例
- */
-Route::middleware('api')
-    ->controller(PostController::class)
-    ->group(function () {
-        Route::get('/post', 'index')->name('post.index');
-        Route::post('/post', 'store')->name('post.store');
-        Route::get('/post/{post}', 'show')->name('post.show');
-    });
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 /**
  * 身份驗證
