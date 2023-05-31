@@ -16,19 +16,19 @@ class ThrottleEmailMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // 利用email來當唯一值
         $email = $request->email;
 
-        $key = 'email_throttle_'.$email;
+        // 鍵值
+        $key = 'throttle_email_'.$email;
 
-        $maxRequests = 1; // 每個 IP 位址每 5 分鐘允許的最大請求數量
-
-        $decayMinutes = 5; // 時間間隔（分鐘）
-
-        if (Cache::has($key) && Cache::get($key) >= $maxRequests) {
-            abort(429, 'Too Many Requests');
+        // 快取數量超過1就錯誤
+        if (Cache::has($key) && Cache::get($key) >= 1) {
+            abort(429, '5分鐘後才能再次寄送信件');
         }
 
-        Cache::add($key, 1, now()->addMinutes($decayMinutes));
+        // 建立快取存活時間5分鐘
+        Cache::add($key, 1, now()->addMinutes(5));
 
         return $next($request);
     }
