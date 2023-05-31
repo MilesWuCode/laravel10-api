@@ -30,10 +30,12 @@ Route::controller(AuthController::class)
     ->group(function () {
         Route::post('register', 'register')->name('auth.register');
         Route::post('login', 'login')->name('auth.login');
-        Route::post('send-verify-email', 'sendVerifyEmail')->name('auth.send-verify-email');
+        // 寄信5分鐘1次
+        Route::middleware('throttle.email')->post('send-verify-email', 'sendVerifyEmail')->name('auth.send-verify-email');
         Route::post('verify-email', 'verifyEmail')->name('auth.verify-email');
         Route::middleware('auth:sanctum')->post('/logout', 'logout')->name('auth.logout');
-        Route::post('forgot-password', 'forgotPassword')->name('auth.forgot-password');
+        // 寄信5分鐘1次
+        Route::middleware('throttle.email')->post('forgot-password', 'forgotPassword')->name('auth.forgot-password');
         Route::post('reset-password', 'resetPassword')->name('auth.reset-password');
     });
 
