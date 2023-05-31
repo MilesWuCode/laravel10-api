@@ -11,6 +11,7 @@ class CustomVerifyEmailNotification extends VerifyEmail
         $verify = $notifiable->verifies()->create();
 
         $query = http_build_query([
+            'email' => $notifiable->email,
             'code' => $verify->code,
         ]);
 
