@@ -11,13 +11,16 @@ class CustomResetPasswordNotification extends Notification
 {
     use Queueable;
 
+    public string $email;
+
     public string $code;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(string $code)
+    public function __construct(string $email, string $code)
     {
+        $this->email = $email;
         $this->code = $code;
     }
 
@@ -37,6 +40,7 @@ class CustomResetPasswordNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $query = http_build_query([
+            'email' => $this->email,
             'code' => $this->code,
         ]);
 

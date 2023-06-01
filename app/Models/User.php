@@ -73,7 +73,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     {
         $verify = $this->verifies()->create();
 
-        $this->notify(new CustomResetPasswordNotification($verify->code));
+        $this->notify(new CustomResetPasswordNotification($this->email, $verify->code));
     }
 
     /**

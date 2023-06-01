@@ -30,7 +30,7 @@ Route::controller(AuthController::class)
         Route::post('register', 'register')->name('auth.register');
         Route::post('login', 'login')->name('auth.login');
         // 寄信5分鐘1次,throttle:次數,分鐘,prefix
-        Route::middleware('throttle:1,5')->post('send-verify-email', 'sendVerifyEmail')->name('auth.send-verify-email');
+        Route::middleware(['auth:sanctum', 'throttle:1,5'])->post('send-verify-email', 'sendVerifyEmail')->name('auth.send-verify-email');
         Route::post('verify-email', 'verifyEmail')->name('auth.verify-email');
         Route::middleware('auth:sanctum')->post('/logout', 'logout')->name('auth.logout');
         // 寄信5分鐘1次,可以客制化錯誤訊息
