@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MeController;
+use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -57,3 +58,9 @@ Route::controller(MeController::class)
 Route::middleware('auth:sanctum')
     ->post('/file/temporary', [FileController::class, 'temporary'])
     ->name('file.temporary');
+
+/**
+ * Post apiResource方法
+ */
+Route::apiResource('post', PostController::class)
+    ->middleware(['auth:sanctum']);
