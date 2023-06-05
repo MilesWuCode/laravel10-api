@@ -35,11 +35,9 @@ it('登入', function () {
 
 it('寄Email驗證信/驗證Email代碼', function () {
     // Prepare
-    $user = User::factory()->create();
-
-    $user->email_verified_at = null;
-
-    $user->save();
+    $user = User::factory()
+        ->unverified()
+        ->create();
 
     $form = ['email' => $user->email];
 
