@@ -32,7 +32,7 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show(Post $post): PostResource
     {
         return new PostResource($post->load('user'));
     }
@@ -40,9 +40,11 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePostRequest $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post): PostResource
     {
-        //
+        PostFacade::update($request, $post);
+
+        return new PostResource($post->load('user'));
     }
 
     /**

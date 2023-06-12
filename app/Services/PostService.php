@@ -37,4 +37,12 @@ class PostService implements PostContract
     {
         return $this->postRepository->create($request);
     }
+
+    /**
+     * 更新
+     */
+    public function update(Request $request, Post $post): Post
+    {
+        return $this->postRepository->update($request, $post);
+    }
 }

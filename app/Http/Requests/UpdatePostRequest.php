@@ -36,7 +36,7 @@ class UpdatePostRequest extends FormRequest
         // public function authorize(Gate $gate) {}
         // return $gate->authorize('update', $this->route('post.update'));
 
-        return $this->user()?->can('update', $this->route('post.update')) ?? false;
+        return $this->user()?->can('update', $this->post) ?? false;
     }
 
     /**

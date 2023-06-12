@@ -46,4 +46,11 @@ class PostRepository
     {
         return $request->user()->posts()->create($request->validated());
     }
+
+    public function update(Request $request, Post $post): Post
+    {
+        $post->update($request->validated());
+
+        return $post;
+    }
 }
