@@ -84,6 +84,11 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         return $query->whereNotNull('email_verified_at');
     }
 
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+
     /**
      * 檔案
      */

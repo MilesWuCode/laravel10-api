@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\PostService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,6 +12,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        /**
+         * 與PostFacade的getFacadeAccessor相同名稱
+         * 使用回傳的Service物件
+         */
+        $this->app->bind('PostService', function () {
+            return new PostService();
+        });
+
         // telescope
         if ($this->app->environment('local')) {
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);

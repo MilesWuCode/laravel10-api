@@ -30,7 +30,7 @@ class Post extends Model implements HasMedia
      */
     public function User(): BelongsTo
     {
-        return $this->belongsTo('user');
+        return $this->belongsTo(User::class);
     }
 
     /**
