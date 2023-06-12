@@ -3,9 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Post;
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -14,29 +12,35 @@ use Illuminate\Support\Facades\Cache;
  */
 class PostRepository
 {
-    // public function list()
-    // {
-    //     // Collection
-    //     // return Post::all();
+    public function list()
+    {
+        // Collection
+        // return Post::all();
 
-    //     // Paginator
-    //     // return Post::paginate(5);
+        // Paginator
+        // return Post::paginate(5);
 
-    //     // QueryString當做key
-    //     // $queryString = request()->getQueryString();
+        // QueryString當做key
+        // $queryString = request()->getQueryString();
 
-    //     // $cache = Cache::remember('posts.list.'.$queryString, 60, function () {
-    //     //     return Post::paginate(5);
-    //     // });
+        // $cache = Cache::remember('post.list.'.$queryString, 60, function () {
+        //     return Post::paginate(5);
+        // });
 
-    //     $page = request()->get('page', '1');
+        /**
+         * 頁碼
+         */
+        $page = request()->get('page', '1');
 
-    //     $cache = Cache::remember('posts.list.page_'.$page, 60, function () {
-    //         return Post::paginate(5);
-    //     });
+        /**
+         * key|60秒
+         */
+        $cache = Cache::remember('post.list.page_'.$page, 60, function () {
+            return Post::with('user')->paginate(5);
+        });
 
-    //     return $cache;
-    // }
+        return $cache;
+    }
 
     public function create(Request $request): Post
     {

@@ -22,11 +22,17 @@ class PostService implements PostContract
         $this->postRepository = new PostRepository();
     }
 
-    // public function list()
-    // {
-    //     return $this->postRepository->list();
-    // }
+    /**
+     * 列表
+     */
+    public function list()
+    {
+        return $this->postRepository->list();
+    }
 
+    /**
+     * 新增
+     */
     public function create(Request $request): Post
     {
         return $this->postRepository->create($request);

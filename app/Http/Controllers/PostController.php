@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Facades\PostFacade;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 
@@ -13,9 +14,9 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): PostCollection
     {
-        //
+        return new PostCollection(PostFacade::list());
     }
 
     /**
@@ -33,7 +34,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return new PostResource($post->load('user'));
     }
 
     /**
