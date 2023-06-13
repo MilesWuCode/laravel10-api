@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
+use Illuminate\Http\JsonResponse;
 
 class PostController extends Controller
 {
@@ -50,8 +51,14 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy(Post $post): JsonResponse
     {
-        //
+        $this->authorize('delete', $post);
+
+        if (! PostFacade::delete($post)) {
+            return response()->json(['message' => 'error'], 400);
+        }
+
+        return response()->json(['message' => 'done'], 200);
     }
 }

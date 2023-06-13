@@ -14,31 +14,26 @@ class PostRepository
 {
     public function list()
     {
-        // Collection
-        // return Post::all();
-
-        // Paginator
-        // return Post::paginate(5);
-
-        // QueryString當做key
-        // $queryString = request()->getQueryString();
-
-        // $cache = Cache::remember('post.list.'.$queryString, 60, function () {
-        //     return Post::paginate(5);
-        // });
-
         /**
          * 頁碼
          */
-        $page = request()->get('page', '1');
+        $page = request()->get('page');
+        $queryString = request()->getQueryString();
 
         /**
-         * key|60秒
+         * 做暫存
+         * key:$page或$queryString|600秒
          */
-        $cache = Cache::remember('post.list.page_'.$page, 60, function () {
-            return Post::with('user')->paginate(5);
+        $cache = Cache::remember('post.list.'.$queryString, 600, function () {
+            // 取資料
+            return Post::with('user')
+                ->paginate(5) // 每頁幾筆資料
+                // ->simplePaginate(5) // 不提供頁數號碼只提供上一頁跟下一頁
+                // ->cursorPaginate(5, ['*'], 'page') // 座標
+                ->appends(request()->query()); // 生成的links帶queryString
         });
 
+        // 返回值
         return $cache;
     }
 
@@ -52,5 +47,10 @@ class PostRepository
         $post->update($request->validated());
 
         return $post;
+    }
+
+    public function delete(Post $post): bool
+    {
+        return (bool) $post->deleteOrFail();
     }
 }

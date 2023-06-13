@@ -45,4 +45,12 @@ class PostService implements PostContract
     {
         return $this->postRepository->update($request, $post);
     }
+
+    /**
+     * 更新
+     */
+    public function delete(Post $post): bool
+    {
+        return $this->postRepository->delete($post);
+    }
 }

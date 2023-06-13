@@ -12,4 +12,6 @@ interface PostContract
     public function create(Request $request): Post;
 
     public function update(Request $request, Post $post): Post;
+
+    public function delete(Post $post): bool;
 }
