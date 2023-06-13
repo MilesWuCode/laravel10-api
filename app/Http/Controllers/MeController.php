@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MeFileRequest;
-use App\Http\Requests\MeUpdateRequest;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -21,9 +20,9 @@ class MeController extends Controller
     /**
      * 更新
      */
-    public function update(MeUpdateRequest $request): UserResource
+    public function update(UpdateMeRequest $request): UserResource
     {
-        // 檢查policy,也可以在MeUpdateRequest裡檢查
+        // 檢查policy,也可以在UpdateMeRequest裡檢查
         // $this->authorize('update', $request->user());
 
         // * example
