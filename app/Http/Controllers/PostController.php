@@ -92,6 +92,6 @@ class PostController extends Controller
          * 背景同步:QUEUE_CONNECTION=redis
          * 最佳作法由前端的websocket接收通知
          */
-        return new PostResource($post->refresh());
+        return new PostResource($post);
     }
 }
