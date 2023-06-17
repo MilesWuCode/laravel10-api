@@ -86,6 +86,12 @@ class PostController extends Controller
             $reacterFacade->unreactTo($post, $type);
         }
 
-        return new PostResource($post);
+        /**
+         * 數字不同步
+         * 即時同步:QUEUE_CONNECTION=sync
+         * 背景同步:QUEUE_CONNECTION=redis
+         * 最佳作法由前端的websocket接收通知
+         */
+        return new PostResource($post->refresh());
     }
 }
