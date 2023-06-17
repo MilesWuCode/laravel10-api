@@ -14,3 +14,7 @@
 php artisan serve
 php artisan queue:work
 ```
+
+## Monitor
+
+-   http://localhost:8000/telescope
