@@ -69,13 +69,18 @@ class PostController extends Controller
         // wip
 
         $user = Auth::user();
-        $type = $request->type;
+
+        $type = strtolower($request->type);
 
         $reacterFacade = $user->viaLoveReacter();
 
-        $isNotReacted = $reacterFacade->hasNotReactedTo($post, $type);
+        foreach (['like', 'dislike'] as $item) {
+            if ($item !== $type && $reacterFacade->hasReactedTo($post, $item)) {
+                $reacterFacade->unreactTo($post, $item);
+            }
+        }
 
-        if ($isNotReacted) {
+        if ($reacterFacade->hasNotReactedTo($post, $type)) {
             $reacterFacade->reactTo($post, $type);
         } else {
             $reacterFacade->unreactTo($post, $type);
