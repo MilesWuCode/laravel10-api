@@ -64,3 +64,10 @@ Route::middleware('auth:sanctum')
  */
 Route::apiResource('post', PostController::class)
     ->middleware(['auth:sanctum']);
+
+Route::controller(PostController::class)
+    ->middleware(['auth:sanctum'])
+    ->prefix('post')
+    ->group(function () {
+        Route::post('/{post}/reactTo', 'reactTo')->name('post.reactTo');
+    });

@@ -24,6 +24,12 @@ class PostResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
 
+            'reactions' => [
+                'like_count' => $this->like_count,
+                'dislike_count' => $this->dislike_count,
+                'like' => $this->like,
+            ],
+
             /**
              * 關聯顯示
              */

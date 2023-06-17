@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Notifications\CustomResetPasswordNotification;
 use App\Notifications\CustomVerifyEmailNotification;
+use Cog\Contracts\Love\Reacterable\Models\Reacterable as ReacterableInterface;
+use Cog\Laravel\Love\Reacterable\Models\Traits\Reacterable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,11 +18,12 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class User extends Authenticatable implements MustVerifyEmail, HasMedia
+class User extends Authenticatable implements MustVerifyEmail, HasMedia, ReacterableInterface
 {
     use HasApiTokens, HasFactory, Notifiable;
     use InteractsWithMedia;
     use BroadcastsEvents;
+    use Reacterable;
 
     /**
      * The attributes that are mass assignable.

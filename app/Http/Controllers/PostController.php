@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Facades\PostFacade;
+use App\Http\Requests\PostReactRequest;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -60,5 +62,25 @@ class PostController extends Controller
         }
 
         return response()->json(['message' => 'done'], 200);
+    }
+
+    public function reactTo(PostReactRequest $request, Post $post): PostResource
+    {
+        // wip
+
+        $user = Auth::user();
+        $type = $request->type;
+
+        $reacterFacade = $user->viaLoveReacter();
+
+        $isNotReacted = $reacterFacade->hasNotReactedTo($post, $type);
+
+        if ($isNotReacted) {
+            $reacterFacade->reactTo($post, $type);
+        } else {
+            $reacterFacade->unreactTo($post, $type);
+        }
+
+        return new PostResource($post);
     }
 }
