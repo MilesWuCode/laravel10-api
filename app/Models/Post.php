@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +14,7 @@ class Post extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
+    use BroadcastsEvents;
 
     /**
      * fillable
@@ -58,5 +60,10 @@ class Post extends Model implements HasMedia
             ->width(200)
             ->height(400)
             ->performOnCollections('cover');
+    }
+
+    public function broadcastOn(string $event): array
+    {
+        return [$this, $this->user];
     }
 }

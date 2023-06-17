@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Notifications\CustomResetPasswordNotification;
 use App\Notifications\CustomVerifyEmailNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\BroadcastsEvents;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -19,6 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
     use HasApiTokens, HasFactory, Notifiable;
     use InteractsWithMedia;
+    use BroadcastsEvents;
 
     /**
      * The attributes that are mass assignable.
@@ -114,5 +116,10 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
             ->width(120)
             ->height(120)
             ->performOnCollections('avatar');
+    }
+
+    public function broadcastOn(string $event): array
+    {
+        return [$this];
     }
 }
