@@ -4,13 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PostReactRequest extends FormRequest
+class FavoriteReactRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
+        // 應該要判別是否登入
         return true;
     }
 
@@ -23,7 +24,6 @@ class PostReactRequest extends FormRequest
     {
         return [
             'action' => 'required|in:add,del',
-            'type' => 'required|in:like,dislike',
         ];
     }
 }

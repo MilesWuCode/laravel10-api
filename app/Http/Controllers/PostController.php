@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\FavoriteReactionEnum;
+use App\Enums\LikeReactionEnum;
 use App\Facades\PostFacade;
-use App\Http\Requests\PostReactRequest;
+use App\Http\Requests\FavoriteReactRequest;
+use App\Http\Requests\LikeReactRequest;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostCollection;
@@ -72,7 +75,10 @@ class PostController extends Controller
         return response()->json(['message' => 'done'], 200);
     }
 
-    public function reactTo(PostReactRequest $request, Post $post): JsonResponse
+    /**
+     * like/dislike
+     */
+    public function reactToLike(LikeReactRequest $request, Post $post): JsonResponse
     {
         /**
          * 目標:同時只有一個或沒有
@@ -90,8 +96,11 @@ class PostController extends Controller
             'loveReactant.reactions',
         ]);
 
+        // ['like', 'dislike']
+        $types = array_column(LikeReactionEnum::cases(), 'value');
+
         // 先移除其他的
-        foreach (['like', 'dislike'] as $item) {
+        foreach ($types as $item) {
             if ($item !== $type && $reacterFacade->hasReactedTo($post, $item)) {
                 $reacterFacade->unreactTo($post, $item);
             }
@@ -109,6 +118,50 @@ class PostController extends Controller
 
         // 返回
         return response()->json(['action' => $action, 'type' => $type], 200);
+
+        /**
+         * 數字不同步
+         * 即時同步:QUEUE_CONNECTION=sync
+         * 背景同步:QUEUE_CONNECTION=redis
+         * 最佳作法由前端的websocket接收通知
+         * 故不執行return new PostResource($post);
+         */
+    }
+
+    /**
+     * add favorite or del favorite
+     */
+    public function reactToFavorite(FavoriteReactRequest $request, Post $post): JsonResponse
+    {
+        /**
+         * 目標:同時只有一個或沒有
+         * 可以做成Repository模式
+         */
+        $user = Auth::user();
+
+        $action = $request->action;
+
+        $reacterFacade = $user->viaLoveReacter();
+
+        // n+1
+        $post->load([
+            'loveReactant.reactions',
+        ]);
+
+        $favorite = FavoriteReactionEnum::Favorite->value;
+
+        // 沒有加入就加入
+        if ($action === 'add' && $reacterFacade->hasNotReactedTo($post, $favorite)) {
+            $reacterFacade->reactTo($post, $favorite);
+        }
+
+        // 有加入就移除
+        if ($action === 'del' && $reacterFacade->hasReactedTo($post, $favorite)) {
+            $reacterFacade->unreactTo($post, $favorite);
+        }
+
+        // 返回
+        return response()->json(['action' => $action], 200);
 
         /**
          * 數字不同步

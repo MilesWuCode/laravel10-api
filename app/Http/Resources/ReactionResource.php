@@ -22,6 +22,7 @@ class ReactionResource extends JsonResource
             'like_count' => $reactantFacade->getReactionCounterOfType('like')->getCount(),
             'dislike_count' => $reactantFacade->getReactionCounterOfType('dislike')->getCount(),
             'like_state' => $this->like_state,
+            'favorite_state' => $this->favorite_state,
         ];
     }
 }

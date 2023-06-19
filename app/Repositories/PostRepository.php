@@ -24,10 +24,17 @@ class PostRepository
         $queryString = request()->getQueryString();
 
         /**
-         * 做暫存
-         * key:$page或$queryString|600秒
+         * 依案子需求
+         * 因為有loveReactant
+         * 所以每個用戶做快取
          */
-        $cache = Cache::remember('post.list.'.$queryString, 600, fn () =>
+        $userId = auth()->user() ? auth()->user()->id : 0;
+
+        /**
+         * 做暫存
+         * key:$page或$queryString|60秒
+         */
+        $cache = Cache::remember(`post_list_{$userId}_{$queryString}`, 60, fn () =>
             // 取資料
             Post::with([
                 'user',

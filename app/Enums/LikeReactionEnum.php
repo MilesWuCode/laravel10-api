@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum PostReactionEnum: string
+enum LikeReactionEnum: string
 {
     case LIKE = 'like';
     case DISLIKE = 'dislike';

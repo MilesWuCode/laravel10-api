@@ -69,5 +69,6 @@ Route::controller(PostController::class)
     ->middleware(['auth:sanctum'])
     ->prefix('post')
     ->group(function () {
-        Route::post('/{post}/reactTo', 'reactTo')->name('post.reactTo');
+        Route::post('/{post}/reactToLike', 'reactToLike')->name('post.reactToLike');
+        Route::post('/{post}/reactToFavorite', 'reactToFavorite')->name('post.reactToFavorite');
     });
