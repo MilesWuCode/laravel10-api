@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PostReactionEnum;
 use Cog\Contracts\Love\Reactable\Models\Reactable as ReactableInterface;
 use Cog\Laravel\Love\Reactable\Models\Traits\Reactable;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
@@ -70,52 +71,21 @@ class Post extends Model implements HasMedia, ReactableInterface
         return [$this, $this->user];
     }
 
-    // public function reactTo($user, $type)
-    // {
-    //     $reacterFacade = $user->viaLoveReacter();
-
-    //     $reacterFacade->reactTo($this, $type);
-    // }
-
-    // public function unreactTo($user, $type)
-    // {
-    //     $reacterFacade = $user->viaLoveReacter();
-
-    //     $reacterFacade->unreactTo($this, $type);
-    // }
-
-    /**
-     * Attribute: like_count: number
-     */
-    public function getLikeCountAttribute(): int
-    {
-        // list n+1: ->with(['tags', 'loveReactant.reactionCounters', 'loveReactant.reactionTotal'])
-        return $this->viaLoveReactant()
-            ->getReactionCounterOfType('Like')
-            ->getCount();
-    }
-
-    /**
-     * Attribute: dislike_count: number
-     */
-    public function getDislikeCountAttribute(): int
-    {
-        // list n+1: ->with(['tags', 'loveReactant.reactionCounters', 'loveReactant.reactionTotal'])
-        return $this->viaLoveReactant()
-            ->getReactionCounterOfType('Dislike')
-            ->getCount();
-    }
-
     /**
      * Attribute: like: 'Like' or 'Dislike'
      */
-    public function getLikeAttribute(): string
+    public function getLikeStateAttribute(): string
     {
         // list n+1: ->with(['loveReactant.reactions'])
-        if (auth()->check() && $this->viaLoveReactant()->isReactedBy(auth()->user(), 'Like')) {
-            return 'Like';
-        } elseif (auth()->check() && $this->viaLoveReactant()->isReactedBy(auth()->user(), 'Dislike')) {
-            return 'Dislike';
+
+        $like = PostReactionEnum::LIKE->value;
+
+        $dislike = PostReactionEnum::DISLIKE->value;
+
+        if (auth()->check() && $this->viaLoveReactant()->isReactedBy(auth()->user(), $like)) {
+            return $like;
+        } elseif (auth()->check() && $this->viaLoveReactant()->isReactedBy(auth()->user(), $dislike)) {
+            return $dislike;
         }
 
         return '';

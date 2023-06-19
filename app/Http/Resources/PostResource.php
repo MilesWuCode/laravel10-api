@@ -23,16 +23,7 @@ class PostResource extends JsonResource
             'cover' => $this->getFirstMediaUrl('cover'),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-
-            'reactions' => [
-                'like_count' => $this->like_count,
-                'dislike_count' => $this->dislike_count,
-                'like' => $this->like,
-            ],
-
-            /**
-             * 關聯顯示
-             */
+            'reaction' => new ReactionResource($this->whenLoaded('loveReactant', $this)),
             'user' => new UserResource($this->whenLoaded('user')),
         ];
     }

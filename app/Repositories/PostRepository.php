@@ -29,13 +29,13 @@ class PostRepository
          */
         $cache = Cache::remember('post.list.'.$queryString, 600, fn () =>
             // 取資料
-            Post::with('user')
-                ->with([
-                    'loveReactant.reactions.reacter.reacterable',
-                    'loveReactant.reactions.type',
-                    'loveReactant.reactionCounters',
-                    'loveReactant.reactionTotal',
-                ])
+            Post::with([
+                'user',
+                'loveReactant.reactions.reacter.reacterable',
+                'loveReactant.reactions.type',
+                'loveReactant.reactionCounters',
+                'loveReactant.reactionTotal',
+            ])
                 ->paginate($limit) // 每頁幾筆資料
                 // ->simplePaginate(5) // 不提供頁數號碼只提供上一頁跟下一頁
                 // ->cursorPaginate(5, ['*'], 'page') // 座標

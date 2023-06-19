@@ -22,6 +22,7 @@ class PostReactRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'action' => 'required|in:add,del',
             'type' => 'required|in:like,dislike',
         ];
     }
