@@ -31,7 +31,8 @@ class PostRepository
             // 取資料
             Post::with([
                 'user',
-                'loveReactant.reactions.reacter.reacterable',
+                // 取資料時會動用的關係再填入
+                // 'loveReactant.reactions.reacter.reacterable',
                 'loveReactant.reactions.type',
                 'loveReactant.reactionCounters',
                 'loveReactant.reactionTotal',
