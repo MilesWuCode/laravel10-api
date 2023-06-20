@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 /**
  * 資料邏輯層
@@ -14,44 +13,19 @@ class PostRepository
 {
     public function list()
     {
-        // 頁碼
-        $page = request()->get('page');
-
-        // 數量
-        $limit = request()->get('limit', 15);
-
-        // 所有的query
-        $queryString = request()->getQueryString();
-
-        /**
-         * 依案子需求
-         * 因為有loveReactant
-         * 所以每個用戶做快取
-         */
-        $userId = auth()->user() ? auth()->user()->id : 0;
-
-        /**
-         * 做暫存
-         * key:$page或$queryString|60秒
-         */
-        $cache = Cache::remember(`post_list_{$userId}_{$queryString}`, 60, fn () =>
-            // 取資料
-            Post::with([
-                'user',
-                // 取資料時會動用的關係再填入
-                // 'loveReactant.reactions.reacter.reacterable',
-                'loveReactant.reactions.type',
-                'loveReactant.reactionCounters',
-                'loveReactant.reactionTotal',
-            ])
-                ->paginate($limit) // 每頁幾筆資料
-                // ->simplePaginate(5) // 不提供頁數號碼只提供上一頁跟下一頁
-                // ->cursorPaginate(5, ['*'], 'page') // 座標
-                ->appends(request()->query()) // 生成的links帶queryString
-        );
-
-        // 返回值
-        return $cache;
+        // 取資料
+        return Post::with([
+            'user',
+            // 取資料時會動用的關係再填入
+            // 'loveReactant.reactions.reacter.reacterable',
+            'loveReactant.reactions.type',
+            'loveReactant.reactionCounters',
+            'loveReactant.reactionTotal',
+        ])
+            ->paginate(request()->get('limit', 15)) // 每頁幾筆資料
+          // ->simplePaginate(5) // 不提供頁數號碼只提供上一頁跟下一頁
+          // ->cursorPaginate(5, ['*'], 'page') // 座標
+            ->appends(request()->query()); // 生成的links帶queryString
     }
 
     public function create(Request $request): Post

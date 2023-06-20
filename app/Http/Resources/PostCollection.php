@@ -20,6 +20,7 @@ class PostCollection extends ResourceCollection
          * PostResource的格式相同
          */
         return [
+            'cached_at' => now(),
             'data' => $this->collection,
         ];
     }

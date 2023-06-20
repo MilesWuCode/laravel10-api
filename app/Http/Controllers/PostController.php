@@ -14,15 +14,34 @@ use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): PostCollection
+    public function index()
     {
-        return new PostCollection(PostFacade::list());
+        // 所有的query
+        $queryString = request()->getQueryString();
+
+        /**
+         * 依案子需求
+         * 因為有loveReactant
+         * 所以每個用戶做快取
+         */
+        $userId = auth()->user() ? auth()->user()->id : 0;
+
+        return Cache::remember('post.index.'.$userId.'.'.$queryString, 300, function () {
+            // 快取物件，使用快取時會被再執行一次裡面的函式
+            // return new PostCollection(PostFacade::list());
+
+            // 需要先轉成response再做快取
+            $collection = new PostCollection(PostFacade::list());
+
+            return $collection->response();
+        });
     }
 
     /**
