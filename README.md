@@ -7,10 +7,12 @@
 -   minio
 -   mailpit
 -   soketi
+-   swoole
 
 ## 執行
 
 ```sh
+php artisan octane:start
 php artisan serve
 php artisan queue:work
 ```
