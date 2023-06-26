@@ -26,6 +26,13 @@ php artisan queue:work
 
 ```sh
 sail php artisan migrate
+
 sail php artisan love:reaction-type-add --default
+
 sail php artisan love:reaction-type-add --name favorite --mass 1
+
+sail php artisan o:c
+
+# telescope在sail時會抓不到mysql,需要執行這句
+sail php artisan package:discover --ansi
 ```
