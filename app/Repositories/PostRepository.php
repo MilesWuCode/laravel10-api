@@ -13,10 +13,9 @@ class PostRepository
 {
     public function list()
     {
-        // 取資料
+        // Eager Loading取資料時會動用的關係再填入
         return Post::with([
             'user',
-            // 取資料時會動用的關係再填入
             // 'loveReactant.reactions.reacter.reacterable',
             'loveReactant.reactions.type',
             'loveReactant.reactionCounters',

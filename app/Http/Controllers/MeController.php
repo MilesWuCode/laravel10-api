@@ -15,7 +15,7 @@ class MeController extends Controller
 {
     public function show(Request $request): UserResource
     {
-        return new UserResource($request->user());
+        return new UserResource($request->user()->load('media'));
     }
 
     /**
@@ -34,7 +34,7 @@ class MeController extends Controller
 
         $request->user()->update($request->validated());
 
-        return new UserResource($request->user());
+        return new UserResource($request->user()->load('media'));
     }
 
     /**
@@ -91,6 +91,6 @@ class MeController extends Controller
         // $request->user()->addMediaFromUrl($fileUrl)
         //     ->toMediaCollection('avatar');
 
-        return new UserResource($request->user());
+        return new UserResource($request->user()->load('media'));
     }
 }
