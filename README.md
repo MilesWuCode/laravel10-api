@@ -27,8 +27,10 @@ php artisan queue:work
 ```sh
 sail php artisan migrate
 
+# 填加like,dislike
 sail php artisan love:reaction-type-add --default
 
+# 填加favorite
 sail php artisan love:reaction-type-add --name favorite --mass 1
 
 sail php artisan o:c
