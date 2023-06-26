@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\FavoriteReactionEnum;
-use App\Enums\LikeReactionEnum;
 use Cog\Contracts\Love\Reactable\Models\Reactable as ReactableInterface;
 use Cog\Laravel\Love\Reactable\Models\Traits\Reactable;
 use Illuminate\Database\Eloquent\BroadcastsEvents;
@@ -70,38 +68,5 @@ class Post extends Model implements HasMedia, ReactableInterface
     public function broadcastOn(string $event): array
     {
         return [$this, $this->user];
-    }
-
-    /**
-     * Attribute: like: 'Like' or 'Dislike'
-     */
-    public function getLikeStateAttribute(): string
-    {
-        // list n+1: ->with(['loveReactant.reactions'])
-
-        $like = LikeReactionEnum::LIKE->value;
-
-        $dislike = LikeReactionEnum::DISLIKE->value;
-
-        if (auth()->check() && $this->viaLoveReactant()->isReactedBy(auth()->user(), $like)) {
-            return $like;
-        } elseif (auth()->check() && $this->viaLoveReactant()->isReactedBy(auth()->user(), $dislike)) {
-            return $dislike;
-        }
-
-        return '';
-    }
-
-    public function getFavoriteStateAttribute(): bool
-    {
-        // list n+1: ->with(['loveReactant.reactions'])
-
-        $favorite = FavoriteReactionEnum::Favorite->value;
-
-        if (auth()->check() && $this->viaLoveReactant()->isReactedBy(auth()->user(), $favorite)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

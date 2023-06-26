@@ -62,11 +62,10 @@ class PostController extends Controller
         // Eager Loading取資料時會動用的關係再填入
         $post->load([
             'user',
-            'loveReactant.reactions.reacter',
-            // 'loveReactant.reactions.reacter.reacterable',
-            // 'loveReactant.reactions.type',
+            'loveReactant.reactions.reacter.reacterable',
+            'loveReactant.reactions.type',
             'loveReactant.reactionCounters',
-            // 'loveReactant.reactionTotal',
+            'loveReactant.reactionTotal',
         ]);
 
         return new PostResource($post);

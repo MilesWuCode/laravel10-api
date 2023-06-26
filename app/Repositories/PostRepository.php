@@ -16,7 +16,7 @@ class PostRepository
         // Eager Loading取資料時會動用的關係再填入
         return Post::with([
             'user',
-            // 'loveReactant.reactions.reacter.reacterable',
+            'loveReactant.reactions.reacter.reacterable',
             'loveReactant.reactions.type',
             'loveReactant.reactionCounters',
             'loveReactant.reactionTotal',
