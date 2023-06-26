@@ -15,6 +15,10 @@
 php artisan octane:start
 php artisan serve
 php artisan queue:work
+
+sail build --no-cache
+sail up -d
+sail down
 ```
 
 ## 工具
