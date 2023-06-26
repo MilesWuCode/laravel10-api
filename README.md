@@ -23,6 +23,7 @@ sail down
 
 ## 工具
 
+-   http://localhost
 -   http://localhost:8025
 -   http://localhost/telescope
 
