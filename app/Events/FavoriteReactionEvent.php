@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Events;
+
+use App\Models\User;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Queue\SerializesModels;
+
+class FavoriteReactionEvent implements ShouldBroadcast
+{
+    use SerializesModels;
+
+    /**
+     * Create a new event instance.
+     */
+    public function __construct(public User $user, public int $id, public bool $action)
+    {
+
+    }
+
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return array<int, \Illuminate\Broadcasting\Channel>
+     */
+    public function broadcastOn(): array
+    {
+        return [
+            new PrivateChannel('App.Models.User.'.$this->user->id),
+        ];
+    }
+
+    public function broadcastWith(): array
+    {
+        return [
+            'id' => $this->id,
+            'action' => $this->action,
+        ];
+    }
+
+    /**
+     * 自訂listen名
+     */
+    // public function broadcastAs(): string
+    // {
+    //     return 'server.created';
+    // }
+}

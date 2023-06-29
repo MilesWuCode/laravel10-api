@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Enums\FavoriteReactionEnum;
 use App\Enums\LikeReactionEnum;
+use App\Events\FavoriteReactionEvent;
+use App\Events\LikeReactionEvent;
 use App\Facades\PostFacade;
 use App\Http\Requests\FavoriteReactRequest;
 use App\Http\Requests\LikeReactRequest;
@@ -129,11 +131,15 @@ class PostController extends Controller
         // 沒有加入就加入
         if ($action === 'add' && $reacterFacade->hasNotReactedTo($post, $type)) {
             $reacterFacade->reactTo($post, $type);
+
+            event(new LikeReactionEvent($user));
         }
 
         // 有加入就移除
         if ($action === 'del' && $reacterFacade->hasReactedTo($post, $type)) {
             $reacterFacade->unreactTo($post, $type);
+
+            event(new LikeReactionEvent($user));
         }
 
         // 返回
@@ -173,11 +179,15 @@ class PostController extends Controller
         // 沒有加入就加入
         if ($action === 'add' && $reacterFacade->hasNotReactedTo($post, $favorite)) {
             $reacterFacade->reactTo($post, $favorite);
+
+            event(new FavoriteReactionEvent($user, $post->id, true));
         }
 
         // 有加入就移除
         if ($action === 'del' && $reacterFacade->hasReactedTo($post, $favorite)) {
             $reacterFacade->unreactTo($post, $favorite);
+
+            event(new FavoriteReactionEvent($user, $post->id, false));
         }
 
         // 返回
