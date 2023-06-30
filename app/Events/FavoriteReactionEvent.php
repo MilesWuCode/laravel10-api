@@ -14,7 +14,7 @@ class FavoriteReactionEvent implements ShouldBroadcast
     /**
      * Create a new event instance.
      */
-    public function __construct(public User $user, public int $id, public bool $favorite_state)
+    public function __construct(public User $user, public string $model, public int $id, public bool $favorite_state)
     {
 
     }
@@ -35,6 +35,7 @@ class FavoriteReactionEvent implements ShouldBroadcast
     {
         return [
             'id' => $this->id,
+            'model' => $this->model,
             'favorite_state' => $this->favorite_state,
         ];
     }

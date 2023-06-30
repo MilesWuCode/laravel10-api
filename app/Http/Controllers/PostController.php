@@ -180,14 +180,14 @@ class PostController extends Controller
         if ($action === 'add' && $reacterFacade->hasNotReactedTo($post, $favorite)) {
             $reacterFacade->reactTo($post, $favorite);
 
-            event(new FavoriteReactionEvent($user, $post->id, true));
+            event(new FavoriteReactionEvent($user, 'post', $post->id, true));
         }
 
         // 有加入就移除
         if ($action === 'del' && $reacterFacade->hasReactedTo($post, $favorite)) {
             $reacterFacade->unreactTo($post, $favorite);
 
-            event(new FavoriteReactionEvent($user, $post->id, false));
+            event(new FavoriteReactionEvent($user, 'post', $post->id, false));
         }
 
         // 返回
