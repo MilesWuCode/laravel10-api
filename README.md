@@ -42,4 +42,8 @@ sail php artisan o:c
 
 # telescope在sail時會抓不到mysql,需要執行這句
 sail php artisan package:discover --ansi
+
+# composer update出現Failed to download
+sail composer clear-cache
+sail composer update
 ```
