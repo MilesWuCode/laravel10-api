@@ -21,6 +21,7 @@ class PostRepository
             'loveReactant.reactionCounters',
             'loveReactant.reactionTotal',
         ])
+            ->orderBy('id', 'desc')
             ->paginate(request()->get('limit', 15)) // 每頁幾筆資料
           // ->simplePaginate(5) // 不提供頁數號碼只提供上一頁跟下一頁
           // ->cursorPaginate(5, ['*'], 'page') // 座標
