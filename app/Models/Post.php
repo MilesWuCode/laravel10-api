@@ -44,10 +44,12 @@ class Post extends Model implements HasMedia, ReactableInterface
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('cover')
-            // 沒有圖片回傳預設圖片網址
-            ->useFallbackUrl(config('frontend.url').'/images/fallback.jpg')
+            // 沒有圖片回傳預設圖片網址/路徑
+            ->useFallbackUrl('/images/fallback.jpg')
+            ->useFallbackUrl('/images/fallback.jpg', 'thumb')
             // 沒有圖片回傳預設圖片路徑
-            ->useFallbackPath('/images/fallback.jpg')
+            // ->useFallbackPath(public_path('/images/fallback.jpg'))
+            // ->useFallbackPath(public_path('/images/fallback.jpg'), 'thumb')
             // 類型
             ->acceptsMimeTypes(['image/jpeg', 'image/png'])
             // 單一檔案

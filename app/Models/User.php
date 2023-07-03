@@ -100,10 +100,12 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, Reacter
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('avatar')
-            // 沒有圖片回傳預設圖片網址
-            ->useFallbackUrl(config('frontend.url').'/images/fallback.jpg')
+            // 沒有圖片回傳預設圖片網址/路徑
+            ->useFallbackUrl('/images/fallback.jpg')
+            ->useFallbackUrl('/images/fallback.jpg', 'thumb')
             // 沒有圖片回傳預設圖片路徑
-            ->useFallbackPath('/images/fallback.jpg')
+            // ->useFallbackPath(public_path('/images/fallback.jpg'))
+            // ->useFallbackPath(public_path('/images/fallback.jpg'), 'thumb')
             // 類型
             ->acceptsMimeTypes(['image/jpeg'])
             // 單一檔案
