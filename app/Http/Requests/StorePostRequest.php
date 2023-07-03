@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Post;
+use App\Rules\FileExist;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StorePostRequest extends FormRequest
@@ -25,6 +26,7 @@ class StorePostRequest extends FormRequest
         return [
             'title' => 'required|string|max:200',
             'content' => 'nullable|max:2000',
+            'cover' => ['nullable', new FileExist],
         ];
     }
 }

@@ -21,11 +21,17 @@ sail up -d
 sail down
 ```
 
+## minio
+
+-   建立`laravel`的 buckets 正式用
+-   建立`laravel-test`的 buckets 測試用
+
 ## 工具
 
 -   http://localhost
 -   http://localhost:8025
 -   http://localhost/telescope
+-   http://localhost:9000
 
 ##
 
