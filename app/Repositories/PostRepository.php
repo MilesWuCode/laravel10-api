@@ -30,12 +30,26 @@ class PostRepository
 
     public function create(Request $request): Post
     {
-        return $request->user()->posts()->create($request->validated());
+        $post = $request->user()->posts()->create($request->validated());
+
+        if ($request->has('cover')) {
+            $cover = $request->input('cover');
+
+            $post->addMediaFromDisk($cover, 'minio-temporary')->toMediaCollection('cover');
+        }
+
+        return $post;
     }
 
     public function update(Request $request, Post $post): Post
     {
         $post->update($request->validated());
+
+        if ($request->has('cover')) {
+            $cover = $request->input('cover');
+
+            $post->addMediaFromDisk($cover, 'minio-temporary')->toMediaCollection('cover');
+        }
 
         return $post;
     }

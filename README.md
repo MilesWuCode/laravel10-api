@@ -28,10 +28,14 @@ sail down
 
 ## 工具
 
--   http://localhost
--   http://localhost:8025
--   http://localhost/telescope
--   http://localhost:9000
+-   api - http://localhost/api
+-   mailpit - http://localhost:8025
+-   telescope - http://localhost/telescope
+-   minio - http://localhost:8900
+-   mysql - mysql:3306
+-   redis - redis:6379
+-   smtp - mailpit:1025
+-   minio - minio:9000
 
 ##
 
