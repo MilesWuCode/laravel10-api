@@ -25,6 +25,7 @@ sail down
 
 -   建立`laravel`的 buckets 正式用
 -   建立`laravel-test`的 buckets 測試用
+-   buckets policy 設為 `public`
 
 ## 工具
 
