@@ -35,15 +35,36 @@ class PostController extends Controller
          */
         $userId = auth()->user() ? auth()->user()->id : 0;
 
-        return Cache::remember('post.index.'.$userId.'.'.$queryString, 300, function () {
-            // 快取物件，使用快取時會被再執行一次裡面的函式
-            // return new PostCollection(PostFacade::list());
+        /**
+         * 改用tags保留原語法
+         */
+        // return Cache::remember('post.index.'.$userId.'.'.$queryString, 300, function () {
+        //     // 快取物件，使用快取時會被再執行一次裡面的函式
+        //     // return new PostCollection(PostFacade::list());
 
-            // 需要先轉成response再做快取
+        //     // 需要先轉成response再做快取
+        //     $collection = new PostCollection(PostFacade::list());
+
+        //     return $collection->response();
+        // });
+
+        $tag = 'post.index.user.'.$userId;
+
+        $key = 'query.'.$queryString;
+
+        $cache = Cache::tags([$tag])->get($key);
+
+        if ($cache) {
+            return $cache;
+        } else {
             $collection = new PostCollection(PostFacade::list());
 
-            return $collection->response();
-        });
+            $data = $collection->response();
+
+            Cache::tags([$tag])->put($key, $data, 300);
+
+            return $data;
+        }
     }
 
     /**

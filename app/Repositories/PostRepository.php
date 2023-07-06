@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * 資料邏輯層
@@ -30,13 +31,22 @@ class PostRepository
 
     public function create(Request $request): Post
     {
-        $post = $request->user()->posts()->create($request->validated());
+        $user = $request->user();
+
+        $post = $user->posts()->create($request->validated());
 
         if ($request->has('cover')) {
             $cover = $request->input('cover');
 
             $post->addMediaFromDisk($cover, 'minio-temporary')->toMediaCollection('cover');
         }
+
+        // 清除快取
+        Cache::tags([
+            'post.index.user.0',
+            'post.index.user.'.$user->id,
+            'post.myposts.user.'.$user->id,
+        ])->flush();
 
         return $post;
     }
@@ -45,17 +55,39 @@ class PostRepository
     {
         $post->update($request->validated());
 
+        $user = $request->user();
+
         if ($request->has('cover')) {
             $cover = $request->input('cover');
 
             $post->addMediaFromDisk($cover, 'minio-temporary')->toMediaCollection('cover');
         }
 
+        // 清除快取
+        Cache::tags([
+            'post.index.user.0',
+            'post.index.user.'.$user->id,
+            'post.myposts.user.'.$user->id,
+        ])->flush();
+
         return $post;
     }
 
     public function delete(Post $post): bool
     {
-        return (bool) $post->deleteOrFail();
+        $isDelete = (bool) $post->deleteOrFail();
+
+        $user = auth()->user();
+
+        // 清除快取
+        if ($isDelete) {
+            Cache::tags([
+                'post.index.user.0',
+                'post.index.user.'.$user->id,
+                'post.myposts.user.'.$user->id,
+            ])->flush();
+        }
+
+        return $isDelete;
     }
 }
