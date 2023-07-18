@@ -11,6 +11,23 @@
 			"item": [
 				{
 					"name": "register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status\", function () {",
+									"  pm.response.to.be.json;",
+									"",
+									"  pm.expect(pm.response.code).to.eql(200);",
+									"",
+									"  pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -46,9 +63,9 @@
 							]
 						},
 						"url": {
-							"raw": "{{api_endpoint}}/api/auth/register",
+							"raw": "{{baseUrl}}/api/auth/register",
 							"host": [
-								"{{api_endpoint}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -66,9 +83,30 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"const { token } = JSON.parse(responseBody);",
+									"// 語法來源",
+									"// https://www.chaijs.com/",
+									"// https://www.chaijs.com/api/bdd",
+									"// 變數來源",
+									"// https://learning.postman.com/docs/writing-scripts/script-references/variables-list/",
 									"",
-									"postman.setEnvironmentVariable('token', token);"
+									"const response = pm.response.json();",
+									"",
+									"pm.test(\"Status\", function () {",
+									"  pm.response.to.be.json;",
+									"",
+									"  pm.expect(pm.response.code).to.eql(200);",
+									"",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"必須有token\", function () {",
+									"  pm.expect(response).to.have.property('token');",
+									"",
+									"  pm.expect(response.token).to.be.a('string');",
+									"",
+									"  pm.collectionVariables.set(\"apiToken\", response.token);",
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -99,9 +137,9 @@
 							]
 						},
 						"url": {
-							"raw": "{{api_endpoint}}/api/auth/login",
+							"raw": "{{baseUrl}}/api/auth/login",
 							"host": [
-								"{{api_endpoint}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -114,6 +152,19 @@
 				},
 				{
 					"name": "logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    postman.setEnvironmentVariable('token', '');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -124,9 +175,9 @@
 							}
 						],
 						"url": {
-							"raw": "{{api_endpoint}}/api/auth/logout",
+							"raw": "{{baseUrl}}/api/auth/logout",
 							"host": [
-								"{{api_endpoint}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -159,9 +210,9 @@
 							]
 						},
 						"url": {
-							"raw": "{{api_endpoint}}/api/auth/send-verify-email",
+							"raw": "{{baseUrl}}/api/auth/send-verify-email",
 							"host": [
-								"{{api_endpoint}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -199,9 +250,9 @@
 							]
 						},
 						"url": {
-							"raw": "{{api_endpoint}}/api/auth/verify-email",
+							"raw": "{{baseUrl}}/api/auth/verify-email",
 							"host": [
-								"{{api_endpoint}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -234,9 +285,9 @@
 							]
 						},
 						"url": {
-							"raw": "{{api_endpoint}}/api/auth/forgot-password",
+							"raw": "{{baseUrl}}/api/auth/forgot-password",
 							"host": [
-								"{{api_endpoint}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -284,9 +335,9 @@
 							]
 						},
 						"url": {
-							"raw": "{{api_endpoint}}/api/auth/reset-password",
+							"raw": "{{baseUrl}}/api/auth/reset-password",
 							"host": [
-								"{{api_endpoint}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -332,14 +383,14 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/Users/miles/Downloads/黑貓.jpg"
+									"src": "/Users/miles/Downloads/白貓.jpg"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{api_endpoint}}/api/file/temporary",
+							"raw": "{{baseUrl}}/api/file/temporary",
 							"host": [
-								"{{api_endpoint}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -367,9 +418,9 @@
 							}
 						],
 						"url": {
-							"raw": "{{api_endpoint}}/api/me",
+							"raw": "{{baseUrl}}/api/me",
 							"host": [
-								"{{api_endpoint}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -401,9 +452,9 @@
 							]
 						},
 						"url": {
-							"raw": "{{api_endpoint}}/api/me",
+							"raw": "{{baseUrl}}/api/me",
 							"host": [
-								"{{api_endpoint}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -448,9 +499,9 @@
 							]
 						},
 						"url": {
-							"raw": "{{api_endpoint}}/api/me/avatar",
+							"raw": "{{baseUrl}}/api/me/avatar",
 							"host": [
-								"{{api_endpoint}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -468,6 +519,49 @@
 			"item": [
 				{
 					"name": "list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Schema\", function () {",
+									"  const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"      data: {",
+									"        type: \"array\",",
+									"        items: {",
+									"            type: \"object\",",
+									"            properties: {",
+									"                id: {",
+									"                    type: \"integer\"",
+									"                },",
+									"                title: {",
+									"                    type: \"string\"",
+									"                }",
+									"            },",
+									"            required: ['id', 'title'],",
+									"            additionalProperties: true",
+									"        }",
+									"      },",
+									"    },",
+									"  };",
+									"",
+									"  pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"pm.test('Header', function() {",
+									"    const host = pm.response.headers.get('Host')",
+									"",
+									"    pm.expect(host).to.be.eql('localhost')",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -478,9 +572,9 @@
 							}
 						],
 						"url": {
-							"raw": "{{api_endpoint}}/api/post?page=1&limit=3",
+							"raw": "{{baseUrl}}/api/post?page=1&limit=3",
 							"host": [
-								"{{api_endpoint}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -502,8 +596,41 @@
 				},
 				{
 					"name": "show",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"pm.test(\"Status\", function () {",
+									"  pm.response.to.be.json;",
+									"",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Format\", function () {",
+									"  pm.expect(response.data.id).to.be.eql(parseInt(pm.collectionVariables.get('postId')));",
+									"",
+									"  pm.expect(response.data.title).to.be.a('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {}
+						"disabledSystemHeaders": {},
+						"disableBodyPruning": true
 					},
 					"request": {
 						"method": "GET",
@@ -514,15 +641,25 @@
 								"type": "text"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
-							"raw": "{{api_endpoint}}/api/post/1",
+							"raw": "{{baseUrl}}/api/post/:postId",
 							"host": [
-								"{{api_endpoint}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"post",
-								"1"
+								":postId"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "{{postId}}"
+								}
 							]
 						}
 					},
@@ -530,6 +667,80 @@
 				},
 				{
 					"name": "store",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"pm.test(\"Status\", function () {",
+									"  pm.response.to.be.json;",
+									"",
+									"  pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Format\", function () {",
+									"  pm.expect(response.data.title).to.be.a(\"string\");",
+									"",
+									"  pm.expect(response.data.title).to.be.eql(",
+									"    pm.collectionVariables.get(\"postTitle\")",
+									"  );",
+									"",
+									"  pm.expect(response.data.content).to.be.eql(",
+									"    pm.collectionVariables.get(\"postContent\")",
+									"  );",
+									"});",
+									"",
+									"pm.test(\"Schema\", function () {",
+									"  const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"      data: {",
+									"        type: \"object\",",
+									"        properties: {",
+									"            id: {",
+									"                type: \"integer\",",
+									"                // pattern: '^\\d{1,1}$',",
+									"            },",
+									"            title: {",
+									"                type: \"string\",",
+									"            },",
+									"            content: {",
+									"                type: \"string\"",
+									"            },",
+									"            created_at:{",
+									"                type: \"string\",",
+									"                format: \"date-time\",",
+									"            }",
+									"        },",
+									"        required: ['id', 'title', 'content'],",
+									"        additionalProperties: true",
+									"      },",
+									"    },",
+									"  };",
+									"",
+									"  pm.response.to.have.jsonSchema(schema);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// 變數來源",
+									"// https://learning.postman.com/docs/writing-scripts/script-references/variables-list/",
+									"",
+									"pm.collectionVariables.set('postTitle', pm.variables.replaceIn('{{$randomLoremSentence}}'))",
+									"pm.collectionVariables.set('postContent', pm.variables.replaceIn('{{$randomLoremParagraphs}}'))"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -544,25 +755,26 @@
 							"urlencoded": [
 								{
 									"key": "title",
-									"value": "test1",
+									"value": "{{postTitle}}",
 									"type": "text"
 								},
 								{
 									"key": "content",
-									"value": "test2",
+									"value": "{{postContent}}",
 									"type": "text"
 								},
 								{
 									"key": "cover",
 									"value": "{{file}}",
-									"type": "text"
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
 						"url": {
-							"raw": "{{api_endpoint}}/api/post",
+							"raw": "{{baseUrl}}/api/post",
 							"host": [
-								"{{api_endpoint}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
@@ -574,6 +786,19 @@
 				},
 				{
 					"name": "update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    postman.setEnvironmentVariable('file', '');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -599,19 +824,26 @@
 								{
 									"key": "cover",
 									"value": "{{file}}",
-									"type": "text"
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
 						"url": {
-							"raw": "{{api_endpoint}}/api/post/1",
+							"raw": "{{baseUrl}}/api/post/:postId",
 							"host": [
-								"{{api_endpoint}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"post",
-								"1"
+								":postId"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "{{postId}}"
+								}
 							]
 						}
 					},
@@ -633,14 +865,20 @@
 							"urlencoded": []
 						},
 						"url": {
-							"raw": "{{api_endpoint}}/api/post/26",
+							"raw": "{{baseUrl}}/api/post/:postId",
 							"host": [
-								"{{api_endpoint}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"post",
-								"26"
+								":postId"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "{{postId}}"
+								}
 							]
 						}
 					},
@@ -675,15 +913,21 @@
 							]
 						},
 						"url": {
-							"raw": "{{api_endpoint}}/api/post/1/reactToLike",
+							"raw": "{{baseUrl}}/api/post/:postId/reactToLike",
 							"host": [
-								"{{api_endpoint}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"post",
-								"1",
+								":postId",
 								"reactToLike"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "{{postId}}"
+								}
 							]
 						}
 					},
@@ -712,15 +956,56 @@
 							]
 						},
 						"url": {
-							"raw": "{{api_endpoint}}/api/post/1/reactToFavorite",
+							"raw": "{{baseUrl}}/api/post/:postId/reactToFavorite",
 							"host": [
-								"{{api_endpoint}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
 								"post",
-								"1",
+								":postId",
 								"reactToFavorite"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "{{postId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "my-posts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/post/my-posts?page=1&limit=3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"post",
+								"my-posts"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "3"
+								}
 							]
 						}
 					},
@@ -734,7 +1019,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "{{token}}",
+				"value": "{{apiToken}}",
 				"type": "string"
 			}
 		]
@@ -757,6 +1042,39 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost",
+			"type": "string"
+		},
+		{
+			"key": "apiToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "postId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "title",
+			"value": ""
+		},
+		{
+			"key": "content",
+			"value": ""
+		},
+		{
+			"key": "postTitle",
+			"value": ""
+		},
+		{
+			"key": "postContent",
+			"value": ""
 		}
 	]
 }
