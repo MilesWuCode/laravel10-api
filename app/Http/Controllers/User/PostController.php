@@ -29,7 +29,7 @@ class PostController extends Controller
          */
         $userId = auth()->user() ? auth()->user()->id : 0;
 
-        $tag = 'post.my-posts.user.'.$userId;
+        $tag = 'user.post.list.user.'.$userId;
 
         $key = 'query.'.$queryString;
 

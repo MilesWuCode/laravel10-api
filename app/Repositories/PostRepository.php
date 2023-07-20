@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Cache;
  */
 class PostRepository
 {
+    /**
+     * 清單
+     */
     public function list()
     {
         // Eager Loading取資料時會動用的關係再填入
@@ -30,6 +33,9 @@ class PostRepository
             ->appends(request()->query()); // 生成的links帶queryString
     }
 
+    /**
+     * 新增
+     */
     public function create(Request $request): Post
     {
         $user = $request->user();
@@ -44,14 +50,17 @@ class PostRepository
 
         // 清除快取
         Cache::tags([
-            'post.index.user.0',
-            'post.index.user.'.$user->id,
-            'post.myposts.user.'.$user->id,
+            'post.list.user.0',
+            'post.list.user.'.$user->id,
+            'user.post.list.user.'.$user->id,
         ])->flush();
 
         return $post;
     }
 
+    /**
+     * 更新
+     */
     public function update(Request $request, Post $post): Post
     {
         $post->update($request->validated());
@@ -66,14 +75,17 @@ class PostRepository
 
         // 清除快取
         Cache::tags([
-            'post.index.user.0',
-            'post.index.user.'.$user->id,
-            'post.myposts.user.'.$user->id,
+            'post.list.user.0',
+            'post.list.user.'.$user->id,
+            'user.post.list.user.'.$user->id,
         ])->flush();
 
         return $post;
     }
 
+    /**
+     * 刪除
+     */
     public function delete(Post $post): bool
     {
         $isDelete = (bool) $post->deleteOrFail();
@@ -83,15 +95,18 @@ class PostRepository
         // 清除快取
         if ($isDelete) {
             Cache::tags([
-                'post.index.user.0',
-                'post.index.user.'.$user->id,
-                'post.myposts.user.'.$user->id,
+                'post.list.user.0',
+                'post.list.user.'.$user->id,
+                'user.post.list.user.'.$user->id,
             ])->flush();
         }
 
         return $isDelete;
     }
 
+    /**
+     * user的清單
+     */
     public function myPosts()
     {
         // Eager Loading取資料時會動用的關係再填入

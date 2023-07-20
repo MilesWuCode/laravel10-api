@@ -46,7 +46,7 @@ class PostController extends Controller
         //     return $collection->response();
         // });
 
-        $tag = 'post.index.user.'.$userId;
+        $tag = 'post.list.user.'.$userId;
 
         $key = 'query.'.$queryString;
 
