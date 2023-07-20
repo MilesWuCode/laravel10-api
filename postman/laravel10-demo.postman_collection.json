@@ -16,13 +16,35 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"const response = pm.response.json();",
+									"",
 									"pm.test(\"Status\", function () {",
+									"  pm.expect(pm.response.code).to.eql(200);",
+									"  ",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Format\", function () {",
 									"  pm.response.to.be.json;",
 									"",
-									"  pm.expect(pm.response.code).to.eql(200);",
+									"  pm.expect(response.name).to.be.eql(pm.collectionVariables.get(\"userName\"));",
 									"",
-									"  pm.response.to.have.status(200);",
+									"  pm.expect(response.email).to.be.eql(pm.collectionVariables.get(\"userEmail\"));",
 									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// 變數來源",
+									"// https://learning.postman.com/docs/writing-scripts/script-references/variables-list/",
+									"",
+									"pm.collectionVariables.set('userName', pm.variables.replaceIn('{{$randomUserName}}'))",
+									"pm.collectionVariables.set('userEmail', pm.variables.replaceIn('{{$randomExampleEmail}}'))",
+									"pm.collectionVariables.set('userPassword', pm.variables.replaceIn('{{$randomPassword}}'))"
 								],
 								"type": "text/javascript"
 							}
@@ -42,22 +64,22 @@
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "user1",
+									"value": "{{userName}}",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "user1@email.com",
+									"value": "{{userEmail}}",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "user1password",
+									"value": "{{userPassword}}",
 									"type": "text"
 								},
 								{
 									"key": "comfirm_password",
-									"value": "user1password",
+									"value": "{{userPassword}}",
 									"type": "text"
 								}
 							]
@@ -92,18 +114,21 @@
 									"const response = pm.response.json();",
 									"",
 									"pm.test(\"Status\", function () {",
-									"  pm.response.to.be.json;",
-									"",
 									"  pm.expect(pm.response.code).to.eql(200);",
 									"",
 									"  pm.response.to.have.status(200);",
 									"});",
 									"",
-									"pm.test(\"必須有token\", function () {",
+									"pm.test(\"Format\", function () {",
+									"  pm.response.to.be.json;",
+									"",
+									"  // 檢查有沒有token",
 									"  pm.expect(response).to.have.property('token');",
 									"",
+									"  // 檢查是不是字串",
 									"  pm.expect(response.token).to.be.a('string');",
 									"",
+									"  // 把token存到變數",
 									"  pm.collectionVariables.set(\"apiToken\", response.token);",
 									"});",
 									""
@@ -126,12 +151,12 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "test@email.com",
+									"value": "{{userEmail}}",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "password",
+									"value": "{{userPassword}}",
 									"type": "text"
 								}
 							]
@@ -157,9 +182,26 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if (pm.response.code === 200) {",
-									"    postman.setEnvironmentVariable('token', '');",
-									"}"
+									"const response = pm.response.json();",
+									"",
+									"pm.test(\"Status\", function () {",
+									"  pm.expect(pm.response.code).to.eql(200);",
+									"",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Format\", function () {",
+									"  pm.response.to.be.json;",
+									"",
+									"  // 檢查有沒有token",
+									"  pm.expect(response).to.have.property('message');",
+									"",
+									"  // 檢查是不是字串",
+									"  pm.expect(response.message).to.be.eql('success');",
+									"",
+									"  // 把token存到變數",
+									"  pm.collectionVariables.set(\"apiToken\", '');",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -204,7 +246,7 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "user1@email.com\n",
+									"value": "{{userEmail}}",
 									"type": "text"
 								}
 							]
@@ -239,7 +281,7 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "user1@email.com\n",
+									"value": "{{userEmail}}",
 									"type": "text"
 								},
 								{
@@ -279,7 +321,7 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "user1@email.com\n",
+									"value": "{{userEmail}}",
 									"type": "text"
 								}
 							]
@@ -314,17 +356,17 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "user1@email.com",
+									"value": "{{userEmail}}",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "password",
+									"value": "{{userPassword}}",
 									"type": "text"
 								},
 								{
 									"key": "comfirm_password",
-									"value": "password",
+									"value": "{{userPassword}}",
 									"type": "text"
 								},
 								{
@@ -529,6 +571,10 @@
 									"  const schema = {",
 									"    type: \"object\",",
 									"    properties: {",
+									"      cached_at: {",
+									"        type: \"string\",",
+									"        format: \"date-time\",",
+									"      },",
 									"      data: {",
 									"        type: \"array\",",
 									"        items: {",
@@ -546,6 +592,7 @@
 									"        }",
 									"      },",
 									"    },",
+									"    required: ['cached_at', 'data'],",
 									"  };",
 									"",
 									"  pm.response.to.have.jsonSchema(schema);",
@@ -666,6 +713,103 @@
 					"response": []
 				},
 				{
+					"name": "favorite",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "action",
+									"value": "del",
+									"description": "add,del",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/post/:postId/favorite",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"post",
+								":postId",
+								"favorite"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "{{postId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "like",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "action",
+									"value": "del",
+									"description": "add,del",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "like",
+									"description": "like,dislike",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/post/:postId/like",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"post",
+								":postId",
+								"like"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "{{postId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user.post",
+			"item": [
+				{
 					"name": "store",
 					"event": [
 						{
@@ -772,13 +916,121 @@
 							]
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/post",
+							"raw": "{{baseUrl}}/api/user/post",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
+								"user",
 								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"pm.test(\"Status\", function () {",
+									"  pm.response.to.be.json;",
+									"",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Format\", function () {",
+									"  pm.expect(response.data.id).to.be.eql(parseInt(pm.collectionVariables.get('postId')));",
+									"",
+									"  pm.expect(response.data.title).to.be.a('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {},
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/user/post/:postId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"post",
+								":postId"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "{{postId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/user/post?page=1&limit=3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"post"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "3"
+								}
 							]
 						}
 					},
@@ -830,12 +1082,13 @@
 							]
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/post/:postId",
+							"raw": "{{baseUrl}}/api/user/post/:postId",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
+								"user",
 								"post",
 								":postId"
 							],
@@ -865,12 +1118,13 @@
 							"urlencoded": []
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/post/:postId",
+							"raw": "{{baseUrl}}/api/user/post/:postId",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
+								"user",
 								"post",
 								":postId"
 							],
@@ -878,133 +1132,6 @@
 								{
 									"key": "postId",
 									"value": "{{postId}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "reactToLike",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "X-Requested-With",
-								"value": "XMLHttpRequest",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "action",
-									"value": "del",
-									"description": "add,del",
-									"type": "text"
-								},
-								{
-									"key": "type",
-									"value": "like",
-									"description": "like,dislike",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/post/:postId/reactToLike",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"post",
-								":postId",
-								"reactToLike"
-							],
-							"variable": [
-								{
-									"key": "postId",
-									"value": "{{postId}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "reactToFavirute",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "X-Requested-With",
-								"value": "XMLHttpRequest",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "action",
-									"value": "del",
-									"description": "add,del",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/post/:postId/reactToFavorite",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"post",
-								":postId",
-								"reactToFavorite"
-							],
-							"variable": [
-								{
-									"key": "postId",
-									"value": "{{postId}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "my-posts",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-Requested-With",
-								"value": "XMLHttpRequest",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/post/my-posts?page=1&limit=3",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"post",
-								"my-posts"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "limit",
-									"value": "3"
 								}
 							]
 						}
@@ -1061,19 +1188,23 @@
 			"type": "string"
 		},
 		{
-			"key": "title",
-			"value": ""
-		},
-		{
-			"key": "content",
-			"value": ""
-		},
-		{
 			"key": "postTitle",
 			"value": ""
 		},
 		{
 			"key": "postContent",
+			"value": ""
+		},
+		{
+			"key": "userName",
+			"value": ""
+		},
+		{
+			"key": "userEmail",
+			"value": ""
+		},
+		{
+			"key": "userPassword",
 			"value": ""
 		}
 	]
