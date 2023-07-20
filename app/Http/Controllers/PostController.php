@@ -9,8 +9,6 @@ use App\Events\LikeReactionEvent;
 use App\Facades\PostFacade;
 use App\Http\Requests\FavoriteReactRequest;
 use App\Http\Requests\LikeReactRequest;
-use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
@@ -68,16 +66,6 @@ class PostController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StorePostRequest $request): PostResource
-    {
-        $post = PostFacade::create($request);
-
-        return new PostResource($post->load('user'));
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(Post $post): PostResource
@@ -95,33 +83,9 @@ class PostController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * like
      */
-    public function update(UpdatePostRequest $request, Post $post): PostResource
-    {
-        PostFacade::update($request, $post);
-
-        return new PostResource($post->load('user'));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Post $post): JsonResponse
-    {
-        $this->authorize('delete', $post);
-
-        if (! PostFacade::delete($post)) {
-            return response()->json(['message' => 'error'], 400);
-        }
-
-        return response()->json(['message' => 'done'], 200);
-    }
-
-    /**
-     * like/dislike
-     */
-    public function reactToLike(LikeReactRequest $request, Post $post): JsonResponse
+    public function like(LikeReactRequest $request, Post $post): JsonResponse
     {
         /**
          * 目標:同時只有一個或沒有
@@ -176,9 +140,9 @@ class PostController extends Controller
     }
 
     /**
-     * add favorite or del favorite
+     * favorite
      */
-    public function reactToFavorite(FavoriteReactRequest $request, Post $post): JsonResponse
+    public function favorite(FavoriteReactRequest $request, Post $post): JsonResponse
     {
         /**
          * 目標:同時只有一個或沒有

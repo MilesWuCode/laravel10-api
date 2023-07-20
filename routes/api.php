@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\User\PostController as UserPostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -60,15 +61,29 @@ Route::middleware('auth:sanctum')
     ->name('file.temporary');
 
 /**
- * Post apiResource方法
+ * Post
+ * 不需登入
+ * 列表, 單一
  */
-Route::apiResource('post', PostController::class)
-    ->middleware(['auth:sanctum']);
+Route::apiResource('post', PostController::class)->only(['index', 'show']);
 
-Route::controller(PostController::class)
+/**
+ * Post
+ * 需要登入
+ * like, favorite
+ */
+Route::controller(UserPostController::class)
     ->middleware(['auth:sanctum'])
     ->prefix('post')
     ->group(function () {
-        Route::post('/{post}/reactToLike', 'reactToLike')->name('post.reactToLike');
-        Route::post('/{post}/reactToFavorite', 'reactToFavorite')->name('post.reactToFavorite');
+        Route::post('/{post}/like', 'like')->name('post.like');
+        Route::post('/{post}/favorite', 'favorite')->name('post.favorite');
     });
+
+/**
+ * UserPost apiResource
+ * 增刪改查
+ */
+Route::apiResource('user/post', UserPostController::class)
+    ->middleware(['auth:sanctum'])
+    ->names('user.post');

@@ -53,4 +53,12 @@ class PostService implements PostContract
     {
         return $this->postRepository->delete($post);
     }
+
+    /**
+     * 自己的
+     */
+    public function myPosts()
+    {
+        return $this->postRepository->myPosts();
+    }
 }
