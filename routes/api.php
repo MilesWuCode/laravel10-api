@@ -72,7 +72,7 @@ Route::apiResource('post', PostController::class)->only(['index', 'show']);
  * 需要登入
  * like, favorite
  */
-Route::controller(UserPostController::class)
+Route::controller(PostController::class)
     ->middleware(['auth:sanctum'])
     ->prefix('post')
     ->group(function () {
