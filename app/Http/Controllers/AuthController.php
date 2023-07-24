@@ -162,10 +162,10 @@ class AuthController extends Controller
     public function resetPassword(Request $request): JsonResponse
     {
         Validator::make($request->all(), [
-            'code' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:8|max:32',
             'comfirm_password' => 'required|same:password',
+            'code' => 'required',
         ])->validate();
 
         $user = User::where('email', $request->email)->first();
