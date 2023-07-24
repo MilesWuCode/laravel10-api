@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Notifications\CustomResetPasswordNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -143,10 +145,15 @@ class AuthController extends Controller
 
         is_null($user) && abort(400);
 
-        $user->sendPasswordResetNotify();
+        $code = (string) rand(111111, 999999);
 
-        return response()->json(['message' => 'success'], 200);
+        $user->notify(new CustomResetPasswordNotification($user->email, $code));
 
+        return response()->json([
+            'message' => 'success',
+            'email' => $user->email,
+            'code' => $code,
+        ], 200);
     }
 
     /**
@@ -165,18 +172,17 @@ class AuthController extends Controller
 
         is_null($user) && abort(400);
 
-        $verify = $user->verifies()
-            ->where('code', $request->code)
-            ->where('expires', '>=', now())
-            ->first();
+        $code = Cache::get('reset_password_notification.email.'.$request->email);
 
-        is_null($verify) && abort(400);
+        if (is_null($code) || $request->code !== $code) {
+            abort(400);
+        }
 
         $user->password = Hash::make($request->password);
 
         $user->save();
 
-        $verify->delete();
+        Cache::pull('reset_password_notification.email.'.$request->email);
 
         return response()->json(['message' => 'success'], 200);
     }

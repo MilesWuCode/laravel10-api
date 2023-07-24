@@ -5,6 +5,7 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Lang;
 
 class CustomResetPasswordNotification extends Notification
@@ -21,7 +22,10 @@ class CustomResetPasswordNotification extends Notification
     public function __construct(string $email, string $code)
     {
         $this->email = $email;
+
         $this->code = $code;
+
+        Cache::put('reset_password_notification.email.'.$email, $code, $seconds = 3600);
     }
 
     /**

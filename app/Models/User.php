@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Notifications\CustomResetPasswordNotification;
 use App\Notifications\CustomVerifyEmailNotification;
 use Cog\Contracts\Love\Reacterable\Models\Reacterable as ReacterableInterface;
 use Cog\Laravel\Love\Reacterable\Models\Traits\Reacterable;
@@ -69,16 +68,6 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, Reacter
     public function sendEmailVerificationNotification(): void
     {
         $this->notify(new CustomVerifyEmailNotification);
-    }
-
-    /**
-     * 寄密碼重置信
-     */
-    public function sendPasswordResetNotify(): void
-    {
-        $verify = $this->verifies()->create();
-
-        $this->notify(new CustomResetPasswordNotification($this->email, $verify->code));
     }
 
     /**
