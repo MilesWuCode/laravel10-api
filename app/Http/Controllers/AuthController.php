@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Notifications\CustomResetPasswordNotification;
+use App\Notifications\CustomVerifyEmailNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\JsonResponse;
@@ -57,9 +58,15 @@ class AuthController extends Controller
             abort(400, 'Email already verified.');
         }
 
-        $user->sendEmailVerificationNotification();
+        $code = (string) rand(111111, 999999);
 
-        return response()->json(['message' => 'success'], 200);
+        $user->notify(new CustomVerifyEmailNotification($user->email, $code));
+
+        return response()->json([
+            'message' => 'success',
+            'email' => $user->email,
+            'code' => $code,
+        ], 200);
     }
 
     /**
@@ -80,18 +87,17 @@ class AuthController extends Controller
             abort(403, 'Your email address is verified.');
         }
 
-        $verify = $user->verifies()
-            ->where('code', $request->code)
-            ->where('expires', '>=', now())
-            ->first();
+        $code = Cache::get('verify_email_notification.email.'.$request->email);
 
-        is_null($verify) && abort(400);
+        if (is_null($code) || $request->code !== $code) {
+            abort(400);
+        }
 
         // 標記驗證
         $user->markEmailAsVerified();
 
         // 刪除用過的驗證碼
-        $verify->delete();
+        Cache::pull('verify_email_notification.email.'.$request->email);
 
         // 呼叫事件
         event(new Verified($user));
@@ -182,6 +188,7 @@ class AuthController extends Controller
 
         $user->save();
 
+        // 刪除用過的驗證碼
         Cache::pull('reset_password_notification.email.'.$request->email);
 
         return response()->json(['message' => 'success'], 200);

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Notifications\CustomVerifyEmailNotification;
 use Cog\Contracts\Love\Reacterable\Models\Reacterable as ReacterableInterface;
 use Cog\Laravel\Love\Reacterable\Models\Traits\Reacterable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -55,29 +54,16 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, Reacter
     ];
 
     /**
-     * 驗證碼
-     */
-    public function verifies(): HasMany
-    {
-        return $this->hasMany(Verify::class);
-    }
-
-    /**
-     * 寄信箱驗證信
-     */
-    public function sendEmailVerificationNotification(): void
-    {
-        $this->notify(new CustomVerifyEmailNotification);
-    }
-
-    /**
-     * 已驗證
+     * 找驗證用戶
      */
     public function scopeVerified(Builder $query): Builder
     {
         return $query->whereNotNull('email_verified_at');
     }
 
+    /**
+     * 多筆貼文
+     */
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
@@ -112,6 +98,9 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, Reacter
             ->performOnCollections('avatar');
     }
 
+    /**
+     * 廣播
+     */
     public function broadcastOn(string $event): array
     {
         return [$this];

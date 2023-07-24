@@ -99,6 +99,324 @@
 					"response": []
 				},
 				{
+					"name": "send-verify-email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 語法來源",
+									"// https://www.chaijs.com/",
+									"// https://www.chaijs.com/api/bdd",
+									"// 變數來源",
+									"// https://learning.postman.com/docs/writing-scripts/script-references/variables-list/",
+									"",
+									"const response = pm.response.json();",
+									"",
+									"pm.test(\"Status\", function () {",
+									"  pm.expect(pm.response.code).to.eql(200);",
+									"",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Format\", function () {",
+									"  pm.response.to.be.json;",
+									"",
+									"  pm.expect(response.message).to.be.eql('success');",
+									"",
+									"  // 等於Email",
+									"  pm.expect(response.email).to.be.eql(",
+									"    pm.collectionVariables.get(\"userEmail\")",
+									"  );",
+									"",
+									"  pm.expect(response.code).to.be.string;",
+									"  pm.expect(response.code.length).to.be.eql(6);",
+									"",
+									"  // 儲存驗證碼",
+									"  pm.collectionVariables.set(\"verifyCode\", response.code);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "{{userEmail}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/send-verify-email",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"send-verify-email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify-email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 語法來源",
+									"// https://www.chaijs.com/",
+									"// https://www.chaijs.com/api/bdd",
+									"// 變數來源",
+									"// https://learning.postman.com/docs/writing-scripts/script-references/variables-list/",
+									"",
+									"const response = pm.response.json();",
+									"",
+									"pm.test(\"Status\", function () {",
+									"  pm.expect(pm.response.code).to.eql(200);",
+									"",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Format\", function () {",
+									"  pm.response.to.be.json;",
+									"",
+									"  pm.expect(response.message).to.be.eql('success');",
+									"",
+									"  // 等於Email",
+									"  pm.expect(response.email).to.be.eql(",
+									"    pm.collectionVariables.get(\"userEmail\")",
+									"  );",
+									"",
+									"  // 清除驗證碼",
+									"  pm.collectionVariables.set(\"verifyCode\", \"\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "{{userEmail}}",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "{{verifyCode}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/verify-email",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"verify-email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgot-password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 語法來源",
+									"// https://www.chaijs.com/",
+									"// https://www.chaijs.com/api/bdd",
+									"// 變數來源",
+									"// https://learning.postman.com/docs/writing-scripts/script-references/variables-list/",
+									"",
+									"const response = pm.response.json();",
+									"",
+									"pm.test(\"Status\", function () {",
+									"  pm.expect(pm.response.code).to.eql(200);",
+									"",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Format\", function () {",
+									"  pm.response.to.be.json;",
+									"",
+									"  pm.expect(response.message).to.be.eql('success');",
+									"",
+									"  // 等於Email",
+									"  pm.expect(response.email).to.be.eql(",
+									"    pm.collectionVariables.get(\"userEmail\")",
+									"  );",
+									"",
+									"  pm.expect(response.code).to.be.string;",
+									"  pm.expect(response.code.length).to.be.eql(6);",
+									"",
+									"  // 儲存驗證碼",
+									"  pm.collectionVariables.set(\"verifyCode\", response.code);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "{{userEmail}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/forgot-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset-password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 語法來源",
+									"// https://www.chaijs.com/",
+									"// https://www.chaijs.com/api/bdd",
+									"// 變數來源",
+									"// https://learning.postman.com/docs/writing-scripts/script-references/variables-list/",
+									"",
+									"const response = pm.response.json();",
+									"",
+									"pm.test(\"Status\", function () {",
+									"  pm.expect(pm.response.code).to.eql(200);",
+									"",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Format\", function () {",
+									"  pm.response.to.be.json;",
+									"",
+									"  pm.expect(response.message).to.be.eql('success');",
+									"",
+									"  // 等於Email",
+									"  pm.expect(response.email).to.be.eql(",
+									"    pm.collectionVariables.get(\"userEmail\")",
+									"  );",
+									"",
+									"  // 清除驗證碼",
+									"  pm.collectionVariables.set(\"verifyCode\", \"\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "{{userEmail}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{userPassword}}",
+									"type": "text"
+								},
+								{
+									"key": "comfirm_password",
+									"value": "{{userPassword}}",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "{{verifyCode}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/reset-password",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "login",
 					"event": [
 						{
@@ -128,7 +446,7 @@
 									"  // 檢查是不是字串",
 									"  pm.expect(response.token).to.be.a('string');",
 									"",
-									"  // 把token存到變數",
+									"  // 存到變數",
 									"  pm.collectionVariables.set(\"apiToken\", response.token);",
 									"});",
 									""
@@ -229,166 +547,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "send-verify-email",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "X-Requested-With",
-								"value": "XMLHttpRequest",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "email",
-									"value": "{{userEmail}}",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/auth/send-verify-email",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"send-verify-email"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "verify-email",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "X-Requested-With",
-								"value": "XMLHttpRequest",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "email",
-									"value": "{{userEmail}}",
-									"type": "text"
-								},
-								{
-									"key": "code",
-									"value": "",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/auth/verify-email",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"verify-email"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "forgot-password",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "X-Requested-With",
-								"value": "XMLHttpRequest",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "email",
-									"value": "{{userEmail}}",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/auth/forgot-password",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"forgot-password"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "reset-password",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "X-Requested-With",
-								"value": "XMLHttpRequest",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "email",
-									"value": "{{userEmail}}",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "{{userPassword}}",
-									"type": "text"
-								},
-								{
-									"key": "comfirm_password",
-									"value": "{{userPassword}}",
-									"type": "text"
-								},
-								{
-									"key": "code",
-									"value": "515466",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/auth/reset-password",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"auth",
-								"reset-password"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -402,9 +560,24 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"const { file } = JSON.parse(responseBody);",
+									"const response = pm.response.json();",
 									"",
-									"postman.setEnvironmentVariable('file', file);"
+									"pm.test(\"Status\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Format\", function () {",
+									"  pm.response.to.be.json;",
+									"",
+									"  // 檢查有沒有token",
+									"  pm.expect(response).to.have.property('file');",
+									"",
+									"  // 檢查是不是字串",
+									"  pm.expect(response.file).to.be.string;",
+									"",
+									"  // 存到變數",
+									"  pm.collectionVariables.set(\"file\", response.file);",
+									"});"
 								],
 								"type": "text/javascript"
 							}
@@ -549,256 +722,6 @@
 								"api",
 								"me",
 								"avatar"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "post",
-			"item": [
-				{
-					"name": "list",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"",
-									"pm.test(\"Schema\", function () {",
-									"  const schema = {",
-									"    type: \"object\",",
-									"    properties: {",
-									"      cached_at: {",
-									"        type: \"string\",",
-									"        format: \"date-time\",",
-									"      },",
-									"      data: {",
-									"        type: \"array\",",
-									"        items: {",
-									"            type: \"object\",",
-									"            properties: {",
-									"                id: {",
-									"                    type: \"integer\"",
-									"                },",
-									"                title: {",
-									"                    type: \"string\"",
-									"                }",
-									"            },",
-									"            required: ['id', 'title'],",
-									"            additionalProperties: true",
-									"        }",
-									"      },",
-									"    },",
-									"    required: ['cached_at', 'data'],",
-									"  };",
-									"",
-									"  pm.response.to.have.jsonSchema(schema);",
-									"});",
-									"",
-									"pm.test('Header', function() {",
-									"    const host = pm.response.headers.get('Host')",
-									"",
-									"    pm.expect(host).to.be.eql('localhost')",
-									"})",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-Requested-With",
-								"value": "XMLHttpRequest",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/post?page=1&limit=3",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"post"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "limit",
-									"value": "3"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "show",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"const response = pm.response.json();",
-									"",
-									"pm.test(\"Status\", function () {",
-									"  pm.response.to.be.json;",
-									"",
-									"  pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Format\", function () {",
-									"  pm.expect(response.data.id).to.be.eql(parseInt(pm.collectionVariables.get('postId')));",
-									"",
-									"  pm.expect(response.data.title).to.be.a('string');",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {},
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-Requested-With",
-								"value": "XMLHttpRequest",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/post/:postId",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"post",
-								":postId"
-							],
-							"variable": [
-								{
-									"key": "postId",
-									"value": "{{postId}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "favorite",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "X-Requested-With",
-								"value": "XMLHttpRequest",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "action",
-									"value": "del",
-									"description": "add,del",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/post/:postId/favorite",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"post",
-								":postId",
-								"favorite"
-							],
-							"variable": [
-								{
-									"key": "postId",
-									"value": "{{postId}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "like",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "X-Requested-With",
-								"value": "XMLHttpRequest",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "action",
-									"value": "del",
-									"description": "add,del",
-									"type": "text"
-								},
-								{
-									"key": "type",
-									"value": "like",
-									"description": "like,dislike",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/post/:postId/like",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"post",
-								":postId",
-								"like"
-							],
-							"variable": [
-								{
-									"key": "postId",
-									"value": "{{postId}}"
-								}
 							]
 						}
 					},
@@ -1139,6 +1062,256 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "post",
+			"item": [
+				{
+					"name": "list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Schema\", function () {",
+									"  const schema = {",
+									"    type: \"object\",",
+									"    properties: {",
+									"      cached_at: {",
+									"        type: \"string\",",
+									"        format: \"date-time\",",
+									"      },",
+									"      data: {",
+									"        type: \"array\",",
+									"        items: {",
+									"            type: \"object\",",
+									"            properties: {",
+									"                id: {",
+									"                    type: \"integer\"",
+									"                },",
+									"                title: {",
+									"                    type: \"string\"",
+									"                }",
+									"            },",
+									"            required: ['id', 'title'],",
+									"            additionalProperties: true",
+									"        }",
+									"      },",
+									"    },",
+									"    required: ['cached_at', 'data'],",
+									"  };",
+									"",
+									"  pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"pm.test('Header', function() {",
+									"    const host = pm.response.headers.get('Host')",
+									"",
+									"    pm.expect(host).to.be.eql('localhost')",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/post?page=1&limit=3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"post"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "show",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"pm.test(\"Status\", function () {",
+									"  pm.response.to.be.json;",
+									"",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Format\", function () {",
+									"  pm.expect(response.data.id).to.be.eql(parseInt(pm.collectionVariables.get('postId')));",
+									"",
+									"  pm.expect(response.data.title).to.be.a('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {},
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/post/:postId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"post",
+								":postId"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "{{postId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "favorite",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "action",
+									"value": "del",
+									"description": "add,del",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/post/:postId/favorite",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"post",
+								":postId",
+								"favorite"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "{{postId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "like",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "action",
+									"value": "del",
+									"description": "add,del",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "like",
+									"description": "like,dislike",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/post/:postId/like",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"post",
+								":postId",
+								"like"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": "{{postId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"auth": {
@@ -1205,6 +1378,14 @@
 		},
 		{
 			"key": "userPassword",
+			"value": ""
+		},
+		{
+			"key": "file",
+			"value": ""
+		},
+		{
+			"key": "verifyCode",
 			"value": ""
 		}
 	]
