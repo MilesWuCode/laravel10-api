@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Notifications\CustomResetPasswordNotification;
 use App\Notifications\CustomVerifyEmailNotification;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -34,11 +33,15 @@ class AuthController extends Controller
 
         $user = User::create($input);
 
-        if (! $user->hasVerifiedEmail()) {
-            event(new Registered($user));
-        }
+        $code = (string) rand(111111, 999999);
 
-        return response()->json($user->toArray(), 200);
+        $user->notify(new CustomVerifyEmailNotification($user->email, $code));
+
+        return response()->json([
+            'message' => 'success',
+            'email' => $user->email,
+            'code' => $code,
+        ], 200);
     }
 
     /**

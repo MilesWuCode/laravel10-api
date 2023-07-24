@@ -16,21 +16,37 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"// 語法來源",
+									"// https://www.chaijs.com/",
+									"// https://www.chaijs.com/api/bdd",
+									"// 變數來源",
+									"// https://learning.postman.com/docs/writing-scripts/script-references/variables-list/",
+									"",
 									"const response = pm.response.json();",
 									"",
 									"pm.test(\"Status\", function () {",
 									"  pm.expect(pm.response.code).to.eql(200);",
-									"  ",
+									"",
 									"  pm.response.to.have.status(200);",
 									"});",
 									"",
 									"pm.test(\"Format\", function () {",
 									"  pm.response.to.be.json;",
 									"",
-									"  pm.expect(response.name).to.be.eql(pm.collectionVariables.get(\"userName\"));",
+									"  pm.expect(response.message).to.be.eql('success');",
 									"",
-									"  pm.expect(response.email).to.be.eql(pm.collectionVariables.get(\"userEmail\"));",
-									"});"
+									"  // 等於Email",
+									"  pm.expect(response.email).to.be.eql(",
+									"    pm.collectionVariables.get(\"userEmail\")",
+									"  );",
+									"",
+									"  pm.expect(response.code).to.be.string;",
+									"  pm.expect(response.code.length).to.be.eql(6);",
+									"",
+									"  // 儲存驗證碼",
+									"  pm.collectionVariables.set(\"verifyCode\", response.code);",
+									"});",
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -200,11 +216,6 @@
 									"",
 									"  pm.expect(response.message).to.be.eql('success');",
 									"",
-									"  // 等於Email",
-									"  pm.expect(response.email).to.be.eql(",
-									"    pm.collectionVariables.get(\"userEmail\")",
-									"  );",
-									"",
 									"  // 清除驗證碼",
 									"  pm.collectionVariables.set(\"verifyCode\", \"\");",
 									"});",
@@ -354,15 +365,19 @@
 									"",
 									"  pm.expect(response.message).to.be.eql('success');",
 									"",
-									"  // 等於Email",
-									"  pm.expect(response.email).to.be.eql(",
-									"    pm.collectionVariables.get(\"userEmail\")",
-									"  );",
-									"",
 									"  // 清除驗證碼",
 									"  pm.collectionVariables.set(\"verifyCode\", \"\");",
 									"});",
 									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set('userPassword', pm.variables.replaceIn('{{$randomPassword}}'))"
 								],
 								"type": "text/javascript"
 							}
