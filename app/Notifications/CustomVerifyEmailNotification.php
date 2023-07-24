@@ -48,7 +48,7 @@ class CustomVerifyEmailNotification extends Notification
             'code' => $this->code,
         ]);
 
-        $url = config('frontend.url').'/reset-password?'.$query;
+        $url = config('frontend.url').'/verify-email?'.$query;
 
         return (new MailMessage)
             ->subject(Lang::get('Verify Email Address'))
