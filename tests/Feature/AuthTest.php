@@ -2,6 +2,8 @@
 
 use App\Models\User;
 
+// 3A:Arrange-Act-Assert
+
 it('註冊', function () {
     // Prepare
     $user = User::factory()->make();
