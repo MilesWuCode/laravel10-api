@@ -86,4 +86,5 @@ Route::controller(PostController::class)
  */
 Route::apiResource('user/post', UserPostController::class)
     ->middleware(['auth:sanctum'])
+    ->except(['show'])
     ->names('user.post');

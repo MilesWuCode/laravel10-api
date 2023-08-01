@@ -59,23 +59,6 @@ class PostController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Post $post): PostResource
-    {
-        // Eager Loading取資料時會動用的關係再填入
-        $post->load([
-            'user',
-            'loveReactant.reactions.reacter.reacterable',
-            'loveReactant.reactions.type',
-            'loveReactant.reactionCounters',
-            'loveReactant.reactionTotal',
-        ]);
-
-        return new PostResource($post);
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(UpdatePostRequest $request, Post $post): PostResource
