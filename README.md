@@ -32,6 +32,7 @@ sail down
 -   api - http://localhost/api
 -   mailpit - http://localhost:8025
 -   telescope - http://localhost/telescope
+-   horizon - http://localhost/horizon
 -   minio - http://localhost:8900
 -   mysql - mysql:3306
 -   redis - redis:6379
