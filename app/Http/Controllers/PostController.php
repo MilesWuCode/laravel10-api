@@ -13,6 +13,7 @@ use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
@@ -23,6 +24,14 @@ class PostController extends Controller
      */
     public function index()
     {
+        /**
+         * 沒使用middleware(['auth:sanctum'])
+         * 但又要取得使用者或登入使用者
+         */
+        if (auth('sanctum')->check()) {
+            auth()->loginUsingId(auth('sanctum')->user()->id);
+        }
+
         // 所有的query
         $queryString = request()->getQueryString();
 
@@ -68,8 +77,16 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Post $post): PostResource
+    public function show(Request $request, Post $post): PostResource
     {
+        /**
+         * 沒使用middleware(['auth:sanctum'])
+         * 但又要取得使用者或登入使用者
+         */
+        if (auth('sanctum')->check()) {
+            auth()->loginUsingId(auth('sanctum')->user()->id);
+        }
+
         // Eager Loading取資料時會動用的關係再填入
         $post->load([
             'user',
@@ -92,6 +109,7 @@ class PostController extends Controller
          * 可以做成Repository模式
          */
         $user = Auth::user();
+        dd($user);
 
         $action = $request->action;
         $type = $request->type;

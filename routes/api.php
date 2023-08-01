@@ -65,7 +65,8 @@ Route::middleware('auth:sanctum')
  * 不需登入
  * 列表, 單一
  */
-Route::apiResource('post', PostController::class)->only(['index', 'show']);
+Route::apiResource('post', PostController::class)
+    ->only(['index', 'show']);
 
 /**
  * Post
