@@ -43,6 +43,8 @@ sail php artisan vendor:publish --tag=lighthouse-schema
 -   telescope - http://localhost/telescope
 -   horizon - http://localhost/horizon
 -   minio - http://localhost:8900
+-   graphiql - http://localhost/graphiql
+-   graphql - http://localhost/graphql
 -   mysql - mysql:3306
 -   redis - redis:6379
 -   smtp - mailpit:1025
