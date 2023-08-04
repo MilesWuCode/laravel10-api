@@ -4,9 +4,11 @@ use App\Models\User;
 
 // 3A:Arrange-Act-Assert
 
-it('註冊', function () {
+it('註冊+登入', function () {
     // Prepare
-    $user = User::factory()->make();
+    $user = User::factory()
+        ->unverified()
+        ->make();
 
     $form = [
         'name' => $user->name,
@@ -20,12 +22,8 @@ it('註冊', function () {
 
     // Assert
     $response->assertStatus(200);
-});
 
-it('登入', function () {
     // Prepare
-    $user = User::factory()->create();
-
     $form = ['email' => $user->email, 'password' => 'password'];
 
     // Act
@@ -35,11 +33,14 @@ it('登入', function () {
     $response->assertStatus(200);
 });
 
-it('寄Email驗證信/驗證Email代碼', function () {
+it('寄Email驗證信+驗證Email代碼', function () {
     // Prepare
     $user = User::factory()
         ->unverified()
         ->create();
+
+    // 登入
+    $this->actingAs($user);
 
     $form = ['email' => $user->email];
 
@@ -49,18 +50,17 @@ it('寄Email驗證信/驗證Email代碼', function () {
     // Assert
     $response->assertStatus(200);
 
-    $verify = $user->verifies()
-        ->where('expires', '>=', now())
-        ->first();
+    // 回傳的json資料
+    $responseData = json_decode($response->getContent());
 
-    $form = ['email' => $user->email, 'code' => $verify->code];
+    $form = ['email' => $user->email, 'code' => $responseData->code];
 
     $response = $this->post('/api/auth/verify-email', $form);
 
     $response->assertStatus(200);
 });
 
-it('忘記密碼/變更密碼', function () {
+it('忘記密碼+變更密碼', function () {
     // Prepare
     $user = User::factory()->create();
 
@@ -72,15 +72,13 @@ it('忘記密碼/變更密碼', function () {
     // Assert
     $response->assertStatus(200);
 
-    $verify = $user->verifies()
-        ->where('expires', '>=', now())
-        ->first();
+    $responseData = json_decode($response->getContent());
 
     $form = [
         'email' => $user->email,
         'password' => 'password',
         'comfirm_password' => 'password',
-        'code' => $verify->code,
+        'code' => $responseData->code,
     ];
 
     $response = $this->post('/api/auth/reset-password', $form);
