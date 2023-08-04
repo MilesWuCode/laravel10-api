@@ -40,7 +40,11 @@ it('寄Email驗證信+驗證Email代碼', function () {
         ->create();
 
     // 登入
+    // Sanctum::actingAs($user);
     $this->actingAs($user);
+
+    // 另一種登入方式
+    // \Laravel\Sanctum\Sanctum::actingAs($user);
 
     $form = ['email' => $user->email];
 
@@ -51,9 +55,9 @@ it('寄Email驗證信+驗證Email代碼', function () {
     $response->assertStatus(200);
 
     // 回傳的json資料
-    $responseData = json_decode($response->getContent());
+    $content = json_decode($response->getContent());
 
-    $form = ['email' => $user->email, 'code' => $responseData->code];
+    $form = ['email' => $user->email, 'code' => $content->code];
 
     $response = $this->post('/api/auth/verify-email', $form);
 
@@ -72,13 +76,13 @@ it('忘記密碼+變更密碼', function () {
     // Assert
     $response->assertStatus(200);
 
-    $responseData = json_decode($response->getContent());
+    $content = json_decode($response->getContent());
 
     $form = [
         'email' => $user->email,
         'password' => 'password',
         'comfirm_password' => 'password',
-        'code' => $responseData->code,
+        'code' => $content->code,
     ];
 
     $response = $this->post('/api/auth/reset-password', $form);
