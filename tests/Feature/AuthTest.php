@@ -89,3 +89,24 @@ it('忘記密碼+變更密碼', function () {
 
     $response->assertStatus(200);
 });
+
+it('登入+登出', function () {
+    // Prepare
+    $user = User::factory()->create();
+
+    // Act
+    $response = $this->post('/api/auth/login', [
+        'email' => $user->email,
+        'password' => 'password',
+    ]);
+
+    $response->assertStatus(200);
+
+    $content = json_decode($response->getContent());
+
+    $response = $this->post('/api/auth/logout', [], [
+        'Authorization' => 'Bearer '.$content->token,
+    ]);
+
+    $response->assertStatus(200);
+});
