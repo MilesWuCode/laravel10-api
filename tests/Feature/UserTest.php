@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
+use function Pest\Faker\fake;
 
 it('User CRUD', function () {
     // Prepare
@@ -15,7 +16,7 @@ it('User CRUD', function () {
     // Assert
     $response->assertStatus(200);
 
-    $response = $this->put('/api/me', ['name' => 'New Name']);
+    $response = $this->put('/api/me', ['name' => fake()->name]);
 
     // Assert
     $response->assertStatus(200);
