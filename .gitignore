@@ -18,6 +18,13 @@ yarn-error.log
 /.idea
 !/.vscode
 .DS_Store
+
+# barryvdh/laravel-ide-helper
 _ide_helper_models.php
 _ide_helper.php
 .phpstorm.meta.php
+
+# lighthouse
+_lighthouse_ide_helper.php
+programmatic-types.graphql
+schema-directives.graphql

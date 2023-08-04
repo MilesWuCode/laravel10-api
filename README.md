@@ -12,13 +12,22 @@
 ## 執行
 
 ```sh
-php artisan octane:start
-php artisan serve
-php artisan queue:work
+sail php artisan octane:start
+sail php artisan serve
+
+# 排程(使用其中一個)
+sail php artisan queue:work
+sail php artisan horizon
 
 sail build --no-cache
+
 sail up -d
 sail down
+
+# ide-help
+sail php artisan ide-helper:generate
+sail php artisan ide-helper:models --nowrite
+sail php artisan vendor:publish --tag=lighthouse-schema
 ```
 
 ## minio
