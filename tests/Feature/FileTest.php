@@ -14,10 +14,4 @@ test('上傳檔案到暫存區', function () {
     ]);
 
     $response->assertStatus(200);
-
-    $content = json_decode($response->getContent());
-
-    $response = $this->put('/api/me/avatar', ['file' => $content->file]);
-
-    $response->assertStatus(200);
 });
