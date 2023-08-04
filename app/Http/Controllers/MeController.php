@@ -32,9 +32,9 @@ class MeController extends Controller
         // dump($request->safe()->except(['other']));
         // dump($request->safe()->all());
 
-        $request->user()->update($request->validated());
+        $request->user()->load('media')->update($request->validated());
 
-        return new UserResource($request->user()->load('media'));
+        return new UserResource($request->user());
     }
 
     /**
