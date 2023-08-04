@@ -27,6 +27,9 @@ sail down
 # ide-help
 sail php artisan ide-helper:generate
 sail php artisan ide-helper:models --nowrite
+# PhpStorm
+sail php artisan ide-helper:meta
+# lighthouse
 sail php artisan vendor:publish --tag=lighthouse-schema
 ```
 
