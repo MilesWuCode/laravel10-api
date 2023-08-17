@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\User\PostController as UserPostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,8 @@ Route::controller(AuthController::class)
         Route::middleware('throttle.email')->post('forgot-password', 'forgotPassword')->name('auth.forgot-password');
         Route::post('reset-password', 'resetPassword')->name('auth.reset-password');
     });
+
+Route::post('/socialite/signin', SocialiteController::class)->name('socialite.signin');
 
 /**
  * 個人資料
