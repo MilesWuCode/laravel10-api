@@ -21,14 +21,13 @@ class SocialiteController extends Controller
 
         $socialiteUser = Socialite::driver($provider)->stateless()->userFromToken($token);
 
+        // updateOrCreate 用戶登入後名字每次都會更新成第三方的名字
         $user = User::updateOrCreate([
             'provider' => $provider,
             'provider_id' => $socialiteUser->id,
         ], [
             'name' => $socialiteUser->name,
             'email' => $socialiteUser->email,
-            'provider' => $provider,
-            'provider_id' => $socialiteUser->id,
         ]);
 
         if ($user->email_verified_at === null) {
