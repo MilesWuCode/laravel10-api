@@ -27,6 +27,8 @@ class SocialiteController extends Controller
         ], [
             'name' => $socialiteUser->name,
             'email' => $socialiteUser->email,
+            'provider' => $provider,
+            'provider_id' => $socialiteUser->id,
         ]);
 
         if ($user->email_verified_at === null) {
