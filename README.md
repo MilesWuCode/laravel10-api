@@ -29,7 +29,7 @@ sail php artisan k:g
 # minio新增bucket/Access Policy更改public
 AWS_*=...
 
-# 資料庫
+# 資料庫遷移
 sail php artisan migrate
 
 # 填加like,dislike
