@@ -562,70 +562,36 @@
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "file",
-			"item": [
+				},
 				{
-					"name": "temporary",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"const response = pm.response.json();",
-									"",
-									"pm.test(\"Status\", function () {",
-									"  pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Format\", function () {",
-									"  pm.response.to.be.json;",
-									"",
-									"  // 檢查有沒有token",
-									"  pm.expect(response).to.have.property('file');",
-									"",
-									"  // 檢查是不是字串",
-									"  pm.expect(response.file).to.be.string;",
-									"",
-									"  // 存到變數",
-									"  pm.collectionVariables.set(\"file\", response.file);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
+					"name": "socialite-signin",
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "X-Requested-With",
-								"value": "XMLHttpRequest",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
+							"mode": "urlencoded",
+							"urlencoded": [
 								{
-									"key": "file",
-									"type": "file",
-									"src": "/Users/miles/Downloads/白貓.jpg"
+									"key": "provider",
+									"value": "google",
+									"type": "text"
+								},
+								{
+									"key": "token",
+									"value": "ya29.a0AfB_byCnDDINcHRm_CfeWcGnWeu982-KUqgGrHo88X_4JvFN3VQcoptJO2m6_6aKP7_kDKqdJu7_wLFhPUYOq6uJ2kIvPkSEAahMpP1aIQeRND_kTWNzrOB9CCykXQeNOlRF2Y67B1oVZUQiXbkMR_U9dvj-mF83st_ulAaCgYKAVsSARASFQHsvYls7rXeUocnTAEChMaDC1CUjA0173",
+									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/file/temporary",
+							"raw": "{{baseUrl}}/api/socialite/signin",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"api",
-								"file",
-								"temporary"
+								"socialite",
+								"signin"
 							]
 						}
 					},
@@ -813,6 +779,41 @@
 			"name": "user.post",
 			"item": [
 				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/user/post?page=1&limit=3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"post"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "store",
 					"event": [
 						{
@@ -927,113 +928,6 @@
 								"api",
 								"user",
 								"post"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "show",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"const response = pm.response.json();",
-									"",
-									"pm.test(\"Status\", function () {",
-									"  pm.response.to.be.json;",
-									"",
-									"  pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Format\", function () {",
-									"  pm.expect(response.data.id).to.be.eql(parseInt(pm.collectionVariables.get('postId')));",
-									"",
-									"  pm.expect(response.data.title).to.be.a('string');",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {},
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-Requested-With",
-								"value": "XMLHttpRequest",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{baseUrl}}/api/user/post/:postId",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"user",
-								"post",
-								":postId"
-							],
-							"variable": [
-								{
-									"key": "postId",
-									"value": "{{postId}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "list",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "X-Requested-With",
-								"value": "XMLHttpRequest",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/api/user/post?page=1&limit=3",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"api",
-								"user",
-								"post"
-							],
-							"query": [
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "limit",
-									"value": "3"
-								}
 							]
 						}
 					},
@@ -1315,7 +1209,7 @@
 							"urlencoded": [
 								{
 									"key": "action",
-									"value": "del",
+									"value": "add",
 									"description": "add,del",
 									"type": "text"
 								}
@@ -1358,7 +1252,7 @@
 							"urlencoded": [
 								{
 									"key": "action",
-									"value": "del",
+									"value": "add",
 									"description": "add,del",
 									"type": "text"
 								},
@@ -1386,6 +1280,74 @@
 									"key": "postId",
 									"value": "{{postId}}"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "file",
+			"item": [
+				{
+					"name": "temporary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"pm.test(\"Status\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Format\", function () {",
+									"  pm.response.to.be.json;",
+									"",
+									"  // 檢查有沒有token",
+									"  pm.expect(response).to.have.property('file');",
+									"",
+									"  // 檢查是不是字串",
+									"  pm.expect(response.file).to.be.string;",
+									"",
+									"  // 存到變數",
+									"  pm.collectionVariables.set(\"file\", response.file);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-Requested-With",
+								"value": "XMLHttpRequest",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/miles/Downloads/白貓.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/file/temporary",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"file",
+								"temporary"
 							]
 						}
 					},
@@ -1437,28 +1399,28 @@
 		},
 		{
 			"key": "postId",
-			"value": "",
+			"value": "1",
 			"type": "string"
 		},
 		{
 			"key": "postTitle",
-			"value": ""
+			"value": "post title"
 		},
 		{
 			"key": "postContent",
-			"value": ""
+			"value": "post content"
 		},
 		{
 			"key": "userName",
-			"value": ""
+			"value": "test"
 		},
 		{
 			"key": "userEmail",
-			"value": ""
+			"value": "test@email.com"
 		},
 		{
 			"key": "userPassword",
-			"value": ""
+			"value": "password"
 		},
 		{
 			"key": "file",
