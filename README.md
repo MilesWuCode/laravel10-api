@@ -15,19 +15,24 @@
 # 安裝composer套件
 composer install
 
-# 容器啓動
-sail up -d
-
 # 環境變數
 cp .env.example .env
-sail php artisan k:g
 
-# 填入第三方登入
+# env填入第三方登入
 *_CLIENT_ID=...
 *_CLIENT_SECRET=...
 
+# shell加入sail
+alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
+
+# 容器啓動
+sail up -d
+
 # minio新增bucket/Access Policy更改public
 AWS_*=...
+
+# appkey
+sail php artisan k:g
 
 # 資料庫遷移
 sail php artisan migrate
