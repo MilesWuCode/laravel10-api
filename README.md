@@ -1,5 +1,9 @@
 # laravel10-demo
 
+-   https://github.com/MilesWuCode/nuxt3-demo
+-   https://github.com/MilesWuCode/laravel10-filament3
+-   https://github.com/MilesWuCode/laravel10-demo
+
 ## 服務
 
 -   資料庫 mysql
