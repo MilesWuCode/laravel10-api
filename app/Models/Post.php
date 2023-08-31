@@ -62,8 +62,8 @@ class Post extends Model implements HasMedia, ReactableInterface
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')
-            ->width(200)
-            ->height(400)
+            ->width(320)
+            ->height(160)
             ->performOnCollections('cover');
     }
 
