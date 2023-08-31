@@ -1,8 +1,8 @@
 # laravel10-demo
 
--   https://github.com/MilesWuCode/nuxt3-demo
--   https://github.com/MilesWuCode/laravel10-filament3
--   https://github.com/MilesWuCode/laravel10-demo
+-   WEB https://github.com/MilesWuCode/nuxt3-demo
+-   CMS https://github.com/MilesWuCode/laravel10-filament3
+-   API https://github.com/MilesWuCode/laravel10-demo
 
 ## 服務
 
