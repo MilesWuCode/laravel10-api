@@ -32,6 +32,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia, Reacter
         'name',
         'email',
         'password',
+        'email_verified_at',
         'provider',
         'provider_id',
     ];
