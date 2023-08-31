@@ -15,10 +15,10 @@ use Spatie\Tags\HasTags;
 
 class Post extends Model implements HasMedia, ReactableInterface
 {
-    use HasFactory;
-    use InteractsWithMedia;
     use BroadcastsEvents;
+    use HasFactory;
     use HasTags;
+    use InteractsWithMedia;
     use Reactable;
 
     /**
