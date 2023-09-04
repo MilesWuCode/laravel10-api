@@ -88,6 +88,13 @@ sail php artisan package:discover --ansi
 # 更新時出現Failed to download
 sail composer clear-cache
 sail composer update
+
+# 快速建好常用檔案
+# ProductModel
+sail php artisan make:model
+# ProductResource, ProductCollection
+sail php artisan make:resource
+# ProductRepository, ProductService
 ```
 
 ## 工具
