@@ -28,12 +28,12 @@ class Banner extends Model implements HasMedia, Sortable
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('cover')
-            // 沒有圖片回傳預設圖片網址/路徑
+            // getFirstMediaUrl,沒有圖片回傳預設圖片網址/路徑
             ->useFallbackUrl('/images/fallback.jpg')
             ->useFallbackUrl('/images/fallback.jpg', 'thumb')
-            // 沒有圖片回傳預設圖片路徑
-            // ->useFallbackPath(public_path('/images/fallback.jpg'))
-            // ->useFallbackPath(public_path('/images/fallback.jpg'), 'thumb')
+            // getFirstMediaPath,沒有圖片回傳預設圖片路徑
+            ->useFallbackPath(public_path('/images/fallback.jpg'))
+            ->useFallbackPath(public_path('/images/fallback.jpg'), 'thumb')
             // 類型
             ->acceptsMimeTypes(['image/jpeg', 'image/png'])
             // 單一檔案

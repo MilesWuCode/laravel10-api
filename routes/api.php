@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\MeController;
 use App\Http\Controllers\PostController;
@@ -25,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 /**
+ * Auth
  * 身份驗證
  */
 Route::controller(AuthController::class)
@@ -44,6 +46,7 @@ Route::controller(AuthController::class)
 Route::post('/socialite/signin', SocialiteController::class)->name('socialite.signin');
 
 /**
+ * Me
  * 個人資料
  */
 Route::controller(MeController::class)
@@ -56,6 +59,7 @@ Route::controller(MeController::class)
     });
 
 /**
+ * File
  * 檔案上傳到暫存區
  * 並回傳暫時網址
  */
@@ -92,3 +96,8 @@ Route::apiResource('user/post', UserPostController::class)
     ->middleware(['auth:sanctum'])
     ->except(['show'])
     ->names('user.post');
+
+/**
+ * Banner廣告
+ */
+Route::get('/banner', [BannerController::class, 'index']);
