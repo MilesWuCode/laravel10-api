@@ -15,6 +15,8 @@ class AppServiceProvider extends ServiceProvider
         /**
          * 與PostFacade的getFacadeAccessor相同名稱
          * 使用回傳的Service物件
+         * bind:每次都是獨立實例
+         * singleton:每次都是相同實例
          */
         $this->app->bind('PostService', function () {
             return new PostService();

@@ -15,8 +15,9 @@ class HorizonServiceProvider extends HorizonApplicationServiceProvider
     {
         parent::boot();
 
+        // 某個隊列等待時間較長時,發送Horizon通知
         // Horizon::routeSmsNotificationsTo('15556667777');
-        // Horizon::routeMailNotificationsTo('example@example.com');
+        Horizon::routeMailNotificationsTo('example@example.com');
         // Horizon::routeSlackNotificationsTo('slack-webhook-url', '#channel');
     }
 
@@ -27,6 +28,7 @@ class HorizonServiceProvider extends HorizonApplicationServiceProvider
      */
     protected function gate(): void
     {
+        // Horizon權限設定
         Gate::define('viewHorizon', function ($user) {
             // return in_array($user->email, [
             //     //
