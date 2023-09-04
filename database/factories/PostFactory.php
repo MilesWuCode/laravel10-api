@@ -19,7 +19,7 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->text(rand(5, 200)),
+            'title' => fake()->text(rand(5, 100)),
             'content' => fake()->paragraph(200),
             'user_id' => User::inRandomOrder()->first()->id,
         ];
@@ -33,7 +33,7 @@ class PostFactory extends Factory
         return $this->afterMaking(function (Post $post) {
             // ...
         })->afterCreating(function (Post $post) {
-            $url = fake()->imageUrl(width: 820, height: 320);
+            $url = fake()->imageUrl(width: 600, height: 300);
 
             $post->addMediaFromUrl($url)
                 ->toMediaCollection('cover');

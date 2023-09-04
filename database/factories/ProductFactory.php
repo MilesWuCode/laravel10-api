@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Banner;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Banner>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
  */
-class BannerFactory extends Factory
+class ProductFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,7 +19,8 @@ class BannerFactory extends Factory
     {
         return [
             'name' => fake()->text(rand(5, 100)),
-            'link' => fake()->url(),
+            'price' => fake()->randomFloat(2, 0.1, 10000),
+            'content' => fake()->randomHtml(),
         ];
     }
 
@@ -28,12 +29,12 @@ class BannerFactory extends Factory
      */
     public function configure(): static
     {
-        return $this->afterMaking(function (Banner $banner) {
+        return $this->afterMaking(function (Product $product) {
             // ...
-        })->afterCreating(function (Banner $banner) {
-            $url = fake()->imageUrl(width: 600, height: 300);
+        })->afterCreating(function (Product $product) {
+            $url = fake()->imageUrl(width: 300, height: 300);
 
-            $banner->addMediaFromUrl($url)
+            $product->addMediaFromUrl($url)
                 ->toMediaCollection('cover');
         });
     }
