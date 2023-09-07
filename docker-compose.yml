@@ -110,6 +110,7 @@ services:
             - sail
 networks:
     sail:
+        name: laravel10-api_sail
         driver: bridge
 volumes:
     sail-mysql:
