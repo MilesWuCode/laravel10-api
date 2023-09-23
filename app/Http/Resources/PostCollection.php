@@ -14,14 +14,21 @@ class PostCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
-        // return parent::toArray($request);
+        return parent::toArray($request);
 
         /**
          * PostResource的格式相同
          */
+        // return [
+        //     'cached_at' => now(),
+        //     'data' => $this->collection,
+        // ];
+    }
+
+    public function with(Request $request)
+    {
         return [
             'cached_at' => now(),
-            'data' => $this->collection,
         ];
     }
 }

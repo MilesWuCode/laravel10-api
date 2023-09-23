@@ -16,4 +16,11 @@ class BannerCollection extends ResourceCollection
     {
         return parent::toArray($request);
     }
+
+    public function with(Request $request)
+    {
+        return [
+            'cached_at' => now(),
+        ];
+    }
 }
