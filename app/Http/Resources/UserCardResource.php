@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PostCardResource extends JsonResource
+class UserCardResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,15 +14,10 @@ class PostCardResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // return parent::toArray($request);
-
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'cover' => $this->getFirstMediaUrl('cover'),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'user' => new UserCardResource($this->whenLoaded('user')),
+            'name' => $this->name,
+            'email' => $this->email,
         ];
     }
 }
