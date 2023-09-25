@@ -7,6 +7,9 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class PostCollection extends ResourceCollection
 {
+    // 指定使用Resource
+    public $collects = PostCardResource::class;
+
     /**
      * Transform the resource collection into an array.
      *
@@ -20,7 +23,8 @@ class PostCollection extends ResourceCollection
          * PostResource的格式相同
          */
         // return [
-        //     'cached_at' => now(),
+        //     // 可改由with()加入
+        //     // 'cached_at' => now(),
         //     'data' => $this->collection,
         // ];
     }

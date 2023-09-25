@@ -58,42 +58,42 @@ sail down
 
 ```sh
 # 一般執行
-sail php artisan serve
+php artisan serve
 
 # octane執行
-sail php artisan octane:start
+php artisan octane:start
 
 # 排程:使用laravel腳本
-sail php artisan queue:work
+php artisan queue:work
 
 # 排程:使用horizon套件
-sail php artisan horizon
+php artisan horizon
 
 # 重新build全部容器
-sail build --no-cache
+build --no-cache
 
 # ide-help
-sail php artisan ide-helper:generate
-sail php artisan ide-helper:models --nowrite
+php artisan ide-helper:generate
+php artisan ide-helper:models --nowrite
 
 # PhpStorm
-sail php artisan ide-helper:meta
+php artisan ide-helper:meta
 
 # lighthouse
-sail php artisan vendor:publish --tag=lighthouse-schema
+php artisan vendor:publish --tag=lighthouse-schema
 
 # telescope在sail時會抓不到mysql,需要執行這句
-sail php artisan package:discover --ansi
+php artisan package:discover --ansi
 
 # 更新時出現Failed to download
-sail composer clear-cache
-sail composer update
+composer clear-cache
+composer update
 
 # 快速建好常用檔案
 # ProductModel
-sail php artisan make:model
+php artisan make:model
 # ProductResource, ProductCollection
-sail php artisan make:resource
+php artisan make:resource
 # ProductRepository, ProductService
 ```
 

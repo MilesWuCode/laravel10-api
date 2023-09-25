@@ -72,32 +72,35 @@ Route::middleware('auth:sanctum')
  * 不需登入
  * 列表, 單一
  */
-Route::apiResource('post', PostController::class)
-    ->only(['index', 'show']);
+Route::controller(PostController::class)
+    ->prefix('post')
+    ->group(function () {
+        Route::get('/', 'index')->name('post.index');
+    });
 
 /**
  * Post
  * 需要登入
  * like, favorite
  */
-Route::controller(PostController::class)
-    ->middleware(['auth:sanctum'])
-    ->prefix('post')
-    ->group(function () {
-        Route::post('/{post}/like', 'like')->name('post.like');
-        Route::post('/{post}/favorite', 'favorite')->name('post.favorite');
-    });
+// Route::controller(PostController::class)
+//     ->middleware(['auth:sanctum'])
+//     ->prefix('post')
+//     ->group(function () {
+//         Route::post('/{post}/like', 'like')->name('post.like');
+//         Route::post('/{post}/favorite', 'favorite')->name('post.favorite');
+//     });
 
 /**
  * UserPost apiResource
  * 增刪改查
  */
-Route::apiResource('user/post', UserPostController::class)
-    ->middleware(['auth:sanctum'])
-    ->except(['show'])
-    ->names('user.post');
+// Route::apiResource('user/post', UserPostController::class)
+//     ->middleware(['auth:sanctum'])
+//     ->except(['show'])
+//     ->names('user.post');
 
 /**
  * Banner廣告
  */
-Route::get('/banner', [BannerController::class, 'index']);
+Route::get('/banner', [BannerController::class, 'index'])->name('banner.index');

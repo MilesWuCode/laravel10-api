@@ -85,7 +85,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail, Reacter
             ->useFallbackPath(public_path('/images/fallback.jpg'))
             ->useFallbackPath(public_path('/images/fallback.jpg'), 'thumb')
             // 類型
-            ->acceptsMimeTypes(['image/jpeg'])
+            ->acceptsMimeTypes(['image/jpeg', 'image/png'])
             // 單一檔案
             ->singleFile();
     }

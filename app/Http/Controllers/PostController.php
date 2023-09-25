@@ -9,6 +9,7 @@ use App\Events\LikeReactionEvent;
 use App\Facades\PostFacade;
 use App\Http\Requests\FavoriteReactRequest;
 use App\Http\Requests\LikeReactRequest;
+use App\Http\Resources\PostCardResource;
 use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
@@ -24,28 +25,13 @@ class PostController extends Controller
      */
     public function index()
     {
-        /**
-         * 沒使用middleware(['auth:sanctum'])
-         * 但又要取得使用者或登入使用者
-         */
-        if (auth('sanctum')->check()) {
-            auth()->loginUsingId(auth('sanctum')->user()->id);
-        }
-
         // 所有的query
         $queryString = request()->getQueryString();
 
         /**
-         * 依案子需求
-         * 因為有loveReactant
-         * 所以每個用戶做快取
-         */
-        $userId = auth()->user() ? auth()->user()->id : 0;
-
-        /**
          * 改用tags保留原語法
          */
-        // return Cache::remember('post.index.'.$userId.'.'.$queryString, 300, function () {
+        // return Cache::remember('post.index.'.$queryString, 300, function () {
         //     // 快取物件，使用快取時會被再執行一次裡面的函式
         //     // return new PostCollection(PostFacade::list());
 
@@ -55,7 +41,7 @@ class PostController extends Controller
         //     return $collection->response();
         // });
 
-        $tag = 'post.list.user.'.$userId;
+        $tag = 'post.index';
 
         $key = 'query.'.$queryString;
 
@@ -64,7 +50,11 @@ class PostController extends Controller
         if ($cache) {
             return $cache;
         } else {
-            $collection = new PostCollection(PostFacade::list());
+            // PostCollection可定義toplevel欄位
+            // $collection = new PostCollection(PostFacade::list());
+
+            // PostCardResource可以省Collection檔案
+            $collection = PostCardResource::collection(PostFacade::list());
 
             $data = $collection->response();
 

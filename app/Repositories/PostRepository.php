@@ -21,10 +21,12 @@ class PostRepository
         // Eager Loading取資料時會動用的關係再填入
         return Post::with([
             'user',
-            'loveReactant.reactions.reacter.reacterable',
-            'loveReactant.reactions.type',
-            'loveReactant.reactionCounters',
-            'loveReactant.reactionTotal',
+            'media',
+            // 清單不應該有個人化資料,n+1問題存在
+            // 'loveReactant.reactions.reacter.reacterable',
+            // 'loveReactant.reactions.type',
+            // 'loveReactant.reactionCounters',
+            // 'loveReactant.reactionTotal',
         ])
             ->orderBy('id', 'desc')
             ->paginate(request()->get('limit', 15)) // 每頁幾筆資料
@@ -105,17 +107,18 @@ class PostRepository
     }
 
     /**
-     * user的清單
+     * 用戶的清單
      */
-    public function myPosts()
+    public function userlist()
     {
         // Eager Loading取資料時會動用的關係再填入
         return Auth::user()->posts()->with([
             'user',
-            'loveReactant.reactions.reacter.reacterable',
-            'loveReactant.reactions.type',
-            'loveReactant.reactionCounters',
-            'loveReactant.reactionTotal',
+            'media',
+            // 'loveReactant.reactions.reacter.reacterable',
+            // 'loveReactant.reactions.type',
+            // 'loveReactant.reactionCounters',
+            // 'loveReactant.reactionTotal',
         ])
             ->orderBy('id', 'desc')
             ->paginate(request()->get('limit', 15)) // 每頁幾筆資料
