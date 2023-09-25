@@ -20,8 +20,7 @@ class PostCardResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'cover' => $this->getFirstMediaUrl('cover'),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'cover_thumb' => $this->getFirstMediaUrl('cover', 'thumb'),
             'user' => new UserCardResource($this->whenLoaded('user')),
         ];
     }
