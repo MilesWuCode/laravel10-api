@@ -10,6 +10,7 @@ use App\Facades\PostFacade;
 use App\Http\Requests\FavoriteReactRequest;
 use App\Http\Requests\LikeReactRequest;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostCardResource;
 use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
@@ -98,6 +99,30 @@ class PostController extends Controller
         $post = PostFacade::create($request);
 
         return new PostResource($post->load('user'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdatePostRequest $request, Post $post): PostResource
+    {
+        PostFacade::update($request, $post);
+
+        return new PostResource($post->load('user'));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Post $post): JsonResponse
+    {
+        $this->authorize('delete', $post);
+
+        if (! PostFacade::delete($post)) {
+            return response()->json(['message' => 'error'], 400);
+        }
+
+        return response()->json(['message' => 'success'], 200);
     }
 
     /**

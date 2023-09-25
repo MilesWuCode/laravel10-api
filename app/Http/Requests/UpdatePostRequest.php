@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 
 class UpdatePostRequest extends FormRequest
 {
@@ -49,6 +51,12 @@ class UpdatePostRequest extends FormRequest
         return [
             'title' => 'sometimes|required|string|max:200',
             'content' => 'sometimes|nullable|max:2000',
+            'cover' => [
+                'sometimes',
+                File::image()
+                    ->max('10mb')
+                    ->dimensions(Rule::dimensions()->maxWidth(1000)->maxHeight(1000)->ratio(1)),
+            ],
         ];
     }
 }

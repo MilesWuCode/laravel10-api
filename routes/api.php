@@ -69,8 +69,6 @@ Route::middleware('auth:sanctum')
 
 /**
  * Post
- * 不需登入
- * 列表, 單一
  */
 Route::controller(PostController::class)
     ->prefix('post')
@@ -78,8 +76,8 @@ Route::controller(PostController::class)
         Route::get('/', 'index')->name('post.index');
         Route::get('/{post}', 'show')->name('post.show');
         Route::middleware(['auth:sanctum'])->post('/', 'store')->name('post.store');
-        // Route::get('/{post}', 'update')->name('post.update');
-        // Route::get('/{post}', 'destroy')->name('post.destroy');
+        Route::middleware(['auth:sanctum'])->patch('/{post}', 'update')->name('post.update');
+        Route::middleware(['auth:sanctum'])->delete('/{post}', 'destroy')->name('post.destroy');
     });
 
 /**

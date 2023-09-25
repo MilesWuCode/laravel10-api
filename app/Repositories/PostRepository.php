@@ -3,10 +3,9 @@
 namespace App\Repositories;
 
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 
 /**
  * 資料邏輯層
@@ -45,7 +44,9 @@ class PostRepository
 
         $post = $user->posts()->create($request->all());
 
-        $post->addMedia($request->file('cover'))->toMediaCollection('cover');
+        if ($request->hasFile('cover')) {
+            $post->addMedia($request->file('cover'))->toMediaCollection('cover');
+        }
 
         return $post;
     }
@@ -53,24 +54,13 @@ class PostRepository
     /**
      * 更新
      */
-    public function update(Request $request, Post $post): Post
+    public function update(UpdatePostRequest $request, Post $post): Post
     {
-        $post->update($request->validated());
+        $post->update($request->all());
 
-        $user = $request->user();
-
-        if ($request->has('cover')) {
-            $cover = $request->input('cover');
-
-            $post->addMediaFromDisk($cover, 'minio-temporary')->toMediaCollection('cover');
+        if ($request->hasFile('cover')) {
+            $post->addMedia($request->file('cover'))->toMediaCollection('cover');
         }
-
-        // 清除快取
-        Cache::tags([
-            'post.list.user.0',
-            'post.list.user.'.$user->id,
-            'user.post.list.user.'.$user->id,
-        ])->flush();
 
         return $post;
     }
@@ -80,20 +70,7 @@ class PostRepository
      */
     public function delete(Post $post): bool
     {
-        $isDelete = (bool) $post->deleteOrFail();
-
-        $user = auth()->user();
-
-        // 清除快取
-        if ($isDelete) {
-            Cache::tags([
-                'post.list.user.0',
-                'post.list.user.'.$user->id,
-                'user.post.list.user.'.$user->id,
-            ])->flush();
-        }
-
-        return $isDelete;
+        return (bool) $post->deleteOrFail();
     }
 
     /**

@@ -2,16 +2,17 @@
 
 namespace App\Contracts;
 
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
-use Illuminate\Http\Request;
 
 interface PostContract
 {
     public function list();
 
-    public function create(Request $request): Post;
+    public function create(StorePostRequest $request): Post;
 
-    public function update(Request $request, Post $post): Post;
+    public function update(UpdatePostRequest $request, Post $post): Post;
 
     public function delete(Post $post): bool;
 

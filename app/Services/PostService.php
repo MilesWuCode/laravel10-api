@@ -3,9 +3,10 @@
 namespace App\Services;
 
 use App\Contracts\PostContract;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use App\Repositories\PostRepository;
-use Illuminate\Http\Request;
 
 /**
  * 商業邏輯層
@@ -33,7 +34,7 @@ class PostService implements PostContract
     /**
      * 新增
      */
-    public function create(Request $request): Post
+    public function create(StorePostRequest $request): Post
     {
         return $this->postRepository->create($request);
     }
@@ -41,7 +42,7 @@ class PostService implements PostContract
     /**
      * 更新
      */
-    public function update(Request $request, Post $post): Post
+    public function update(UpdatePostRequest $request, Post $post): Post
     {
         return $this->postRepository->update($request, $post);
     }
