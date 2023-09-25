@@ -55,10 +55,10 @@ class Post extends Model implements HasMedia, ReactableInterface
             // 類型
             ->acceptsMimeTypes(['image/jpeg', 'image/png'])
             // 單一檔案
-            ->singleFile()
-            // 生成的時候加入
-            ->withResponsiveImages();
-        // 縮圖
+            ->singleFile();
+        // 套件提供RWD
+        // ->withResponsiveImages();
+        // 縮圖,需要Queue才會產生
         // ->registerMediaConversions(function (Media $media) {
         //     $this
         //         ->addMediaConversion('thumb')
@@ -69,13 +69,14 @@ class Post extends Model implements HasMedia, ReactableInterface
     }
 
     /**
-     * 縮圖
+     * 縮圖,需要Queue才會產生
      */
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')
             ->width(320)
             ->height(160)
+            // ->nonQueued() // 不設queue會吃資源
             ->performOnCollections('cover');
     }
 
