@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\FileExist;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 
-class MeFileRequest extends FormRequest
+class MeAvatarRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +28,14 @@ class MeFileRequest extends FormRequest
         return [
             // s3,minio可能無法檢查檔案是否存在
             // Unable to check existence
-            'file' => ['required', new FileExist],
+            // 'file' => ['required', new FileExist],
+
+            'avatar' => [
+                'required',
+                File::image()
+                    ->max('1mb')
+                    ->dimensions(Rule::dimensions()->maxWidth(1000)->maxHeight(1000)->ratio(1)),
+            ],
         ];
     }
 }

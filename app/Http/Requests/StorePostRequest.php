@@ -30,8 +30,8 @@ class StorePostRequest extends FormRequest
             'cover' => [
                 'required',
                 File::image()
-                    ->max('10mb')
-                    ->dimensions(Rule::dimensions()->maxWidth(1000)->maxHeight(1000)->ratio(1)),
+                    ->max('1mb')
+                    ->dimensions(Rule::dimensions()->maxWidth(1000)->maxHeight(1000)->ratio(2 / 1)),
             ],
         ];
     }

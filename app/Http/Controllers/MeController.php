@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\MeFileRequest;
+use App\Http\Requests\MeAvatarRequest;
 use App\Http\Requests\UpdateMeRequest;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class MeController extends Controller
@@ -71,25 +71,14 @@ class MeController extends Controller
     /**
      * Avatar
      */
-    public function avatar(MeFileRequest $request): UserResource
+    public function avatar(MeAvatarRequest $request): UserResource
     {
         // 檢查policy,也可以在MeFileRequest裡檢查
         // $this->authorize('update', $request->user());
 
-        // 檔名
-        $fileName = $request->input('file');
-
-        // s3,minio可能無法檢查檔案是否存在
-        // 取得檔案位置使用medialibrary設定到model
-        $request->user()->addMediaFromDisk($fileName, 'minio-temporary')
-            ->toMediaCollection('avatar');
-
-        // 只能使用url加入
-        // $fileUrl = Storage::disk('minio-temporary')->url($fileName);
-
-        // 取得檔案位置使用medialibrary設定到model
-        // $request->user()->addMediaFromUrl($fileUrl)
-        //     ->toMediaCollection('avatar');
+        if ($request->hasFile('avatar')) {
+            Auth::user()->addMedia($request->file('avatar'))->toMediaCollection('avatar');
+        }
 
         return new UserResource($request->user()->load('media'));
     }
