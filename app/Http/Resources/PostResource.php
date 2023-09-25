@@ -21,6 +21,7 @@ class PostResource extends JsonResource
             'title' => $this->title,
             'content' => $this->content,
             'cover' => $this->getFirstMediaUrl('cover'),
+            'cover_thumb' => $this->getFirstMediaUrl('cover', 'thumb'),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'reaction' => new ReactionResource($this->whenLoaded('loveReactant', $this)),

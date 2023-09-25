@@ -9,6 +9,7 @@ use App\Events\LikeReactionEvent;
 use App\Facades\PostFacade;
 use App\Http\Requests\FavoriteReactRequest;
 use App\Http\Requests\LikeReactRequest;
+use App\Http\Requests\StorePostRequest;
 use App\Http\Resources\PostCardResource;
 use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
@@ -28,9 +29,7 @@ class PostController extends Controller
         // 所有的query
         $queryString = request()->getQueryString();
 
-        /**
-         * 改用tags保留原語法
-         */
+        // 改用tags保留原語法
         // return Cache::remember('post.index.'.$queryString, 300, function () {
         //     // 快取物件，使用快取時會被再執行一次裡面的函式
         //     // return new PostCollection(PostFacade::list());
@@ -45,6 +44,7 @@ class PostController extends Controller
 
         $key = 'query.'.$queryString;
 
+        // 使用tags可以用名字來清除資料
         $cache = Cache::tags([$tag])->get($key);
 
         if ($cache) {
@@ -80,6 +80,7 @@ class PostController extends Controller
         // Eager Loading取資料時會動用的關係再填入
         $post->load([
             'user',
+            'media',
             'loveReactant.reactions.reacter.reacterable',
             'loveReactant.reactions.type',
             'loveReactant.reactionCounters',
@@ -87,6 +88,16 @@ class PostController extends Controller
         ]);
 
         return new PostResource($post);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StorePostRequest $request): PostResource
+    {
+        $post = PostFacade::create($request);
+
+        return new PostResource($post->load('user'));
     }
 
     /**
@@ -99,7 +110,6 @@ class PostController extends Controller
          * 可以做成Repository模式
          */
         $user = Auth::user();
-        dd($user);
 
         $action = $request->action;
         $type = $request->type;

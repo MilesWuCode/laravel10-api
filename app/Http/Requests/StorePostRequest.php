@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Models\Post;
-use App\Rules\FileExist;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 
 class StorePostRequest extends FormRequest
 {
@@ -26,7 +27,12 @@ class StorePostRequest extends FormRequest
         return [
             'title' => 'required|string|max:200',
             'content' => 'nullable|max:2000',
-            'cover' => ['nullable', new FileExist],
+            'cover' => [
+                'required',
+                File::image()
+                    ->max('10mb')
+                    ->dimensions(Rule::dimensions()->maxWidth(1000)->maxHeight(1000)->ratio(1)),
+            ],
         ];
     }
 }

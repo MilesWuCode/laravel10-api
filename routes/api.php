@@ -76,6 +76,10 @@ Route::controller(PostController::class)
     ->prefix('post')
     ->group(function () {
         Route::get('/', 'index')->name('post.index');
+        Route::get('/{post}', 'show')->name('post.show');
+        Route::middleware(['auth:sanctum'])->post('/', 'store')->name('post.store');
+        // Route::get('/{post}', 'update')->name('post.update');
+        // Route::get('/{post}', 'destroy')->name('post.destroy');
     });
 
 /**
@@ -95,10 +99,10 @@ Route::controller(PostController::class)
  * UserPost apiResource
  * 增刪改查
  */
-// Route::apiResource('user/post', UserPostController::class)
-//     ->middleware(['auth:sanctum'])
-//     ->except(['show'])
-//     ->names('user.post');
+Route::apiResource('user/post', UserPostController::class)
+    ->middleware(['auth:sanctum'])
+    ->except(['show'])
+    ->names('user.post');
 
 /**
  * Banner廣告

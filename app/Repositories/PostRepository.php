@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,24 +39,13 @@ class PostRepository
     /**
      * 新增
      */
-    public function create(Request $request): Post
+    public function create(StorePostRequest $request): Post
     {
         $user = $request->user();
 
-        $post = $user->posts()->create($request->validated());
+        $post = $user->posts()->create($request->all());
 
-        if ($request->has('cover')) {
-            $cover = $request->input('cover');
-
-            $post->addMediaFromDisk($cover, 'minio-temporary')->toMediaCollection('cover');
-        }
-
-        // 清除快取
-        Cache::tags([
-            'post.list.user.0',
-            'post.list.user.'.$user->id,
-            'user.post.list.user.'.$user->id,
-        ])->flush();
+        $post->addMedia($request->file('cover'))->toMediaCollection('cover');
 
         return $post;
     }
