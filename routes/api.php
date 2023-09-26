@@ -102,6 +102,9 @@ Route::controller(MyPostController::class)
  */
 Route::get('/banner', [BannerController::class, 'index'])->name('banner.index');
 
+/**
+ * 收藏
+ */
 Route::controller(FavoriteController::class)
     ->middleware('auth:sanctum')
     ->group(function () {
@@ -109,6 +112,9 @@ Route::controller(FavoriteController::class)
         Route::post('/favorite/del', 'del')->name('favorite.del');
     });
 
+/**
+ * 喜歡
+ */
 Route::controller(LikeController::class)
     ->middleware('auth:sanctum')
     ->group(function () {
