@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MeController;
 use App\Http\Controllers\MyPostController;
 use App\Http\Controllers\PostController;
@@ -106,4 +107,12 @@ Route::controller(FavoriteController::class)
     ->group(function () {
         Route::post('/favorite/add', 'add')->name('favorite.add');
         Route::post('/favorite/del', 'del')->name('favorite.del');
+    });
+
+Route::controller(LikeController::class)
+    ->middleware('auth:sanctum')
+    ->group(function () {
+        Route::post('/like/like', 'like')->name('like.like');
+        Route::post('/like/dislike', 'dislike')->name('like.dislike');
+        Route::post('/like/unset', 'unset')->name('like.unset');
     });

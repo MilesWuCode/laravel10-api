@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\FavoriteReactionEnum;
 use App\Enums\LikeReactionEnum;
-use App\Events\FavoriteReactionEvent;
 use App\Events\LikeReactionEvent;
 use App\Facades\PostFacade;
-use App\Http\Requests\FavoriteReactRequest;
 use App\Http\Requests\LikeReactRequest;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
@@ -172,54 +169,6 @@ class PostController extends Controller
 
         // 返回
         return response()->json(['action' => $action, 'type' => $type], 200);
-
-        /**
-         * 數字不同步
-         * 即時同步:QUEUE_CONNECTION=sync
-         * 背景同步:QUEUE_CONNECTION=redis
-         * 最佳作法由前端的websocket接收通知
-         * 故不執行return new PostResource($post);
-         */
-    }
-
-    /**
-     * favorite
-     */
-    public function favorite(FavoriteReactRequest $request, Post $post): JsonResponse
-    {
-        /**
-         * 目標:同時只有一個或沒有
-         * 可以做成Repository模式
-         */
-        $user = Auth::user();
-
-        $action = $request->action;
-
-        $reacterFacade = $user->viaLoveReacter();
-
-        // n+1
-        $post->load([
-            'loveReactant.reactions',
-        ]);
-
-        $favorite = FavoriteReactionEnum::Favorite->value;
-
-        // 沒有加入就加入
-        if ($action === 'add' && $reacterFacade->hasNotReactedTo($post, $favorite)) {
-            $reacterFacade->reactTo($post, $favorite);
-
-            event(new FavoriteReactionEvent($user, 'post', $post->id, true));
-        }
-
-        // 有加入就移除
-        if ($action === 'del' && $reacterFacade->hasReactedTo($post, $favorite)) {
-            $reacterFacade->unreactTo($post, $favorite);
-
-            event(new FavoriteReactionEvent($user, 'post', $post->id, false));
-        }
-
-        // 返回
-        return response()->json(['action' => $action], 200);
 
         /**
          * 數字不同步
