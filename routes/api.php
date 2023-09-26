@@ -103,7 +103,7 @@ Route::controller(MyPostController::class)
 Route::get('/banner', [BannerController::class, 'index'])->name('banner.index');
 
 /**
- * 收藏
+ * 追蹤,收藏
  */
 Route::controller(FavoriteController::class)
     ->middleware('auth:sanctum')
