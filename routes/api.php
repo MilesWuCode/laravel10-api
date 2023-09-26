@@ -2,11 +2,10 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
-use App\Http\Controllers\FileController;
 use App\Http\Controllers\MeController;
+use App\Http\Controllers\MyPostController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SocialiteController;
-use App\Http\Controllers\User\PostController as UserPostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -59,16 +58,18 @@ Route::controller(MeController::class)
     });
 
 /**
- * File
- * 檔案上傳到暫存區
- * 並回傳暫時網址
+ * MyPost
+ * 我的貼文
  */
-Route::middleware('auth:sanctum')
-    ->post('/file/temporary', [FileController::class, 'temporary'])
-    ->name('file.temporary');
+Route::controller(MyPostController::class)
+    ->middleware(['auth:sanctum'])
+    ->group(function () {
+        Route::get('/my/post', 'index')->name('me.post.index');
+    });
 
 /**
  * Post
+ * 貼文
  */
 Route::controller(PostController::class)
     ->prefix('post')
@@ -94,13 +95,22 @@ Route::controller(PostController::class)
 //     });
 
 /**
+ * File
+ * 檔案上傳到暫存區
+ * 並回傳暫時網址
+ */
+// Route::middleware('auth:sanctum')
+//     ->post('/file/temporary', [FileController::class, 'temporary'])
+//     ->name('file.temporary');
+
+/**
  * UserPost apiResource
  * 增刪改查
  */
-Route::apiResource('user/post', UserPostController::class)
-    ->middleware(['auth:sanctum'])
-    ->except(['show'])
-    ->names('user.post');
+// Route::apiResource('user/post', UserPostController::class)
+//     ->middleware(['auth:sanctum'])
+//     ->except(['show'])
+//     ->names('user.post');
 
 /**
  * Banner廣告

@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers;
 
-use App\Facades\PostFacade;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\PostCollection;
+use App\Services\MyPostService;
 use Illuminate\Support\Facades\Cache;
 
-class PostController extends Controller
+class MyPostController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,23 +16,21 @@ class PostController extends Controller
         // 所有的query
         $queryString = request()->getQueryString();
 
-        /**
-         * 依案子需求
-         * 因為有loveReactant
-         * 所以每個用戶做快取
-         */
-        $userId = auth()->user() ? auth()->user()->id : 0;
+        $userId = auth()->id();
 
-        $tag = 'user.post.list.user.'.$userId;
+        $tag = 'user.'.$userId.'.post.index';
 
         $key = 'query.'.$queryString;
 
+        // 使用tags可以用名字來清除資料
         $cache = Cache::tags([$tag])->get($key);
 
         if ($cache) {
             return $cache;
         } else {
-            $collection = new PostCollection(PostFacade::myPosts());
+            $service = new MyPostService;
+
+            $collection = new PostCollection($service->list());
 
             $data = $collection->response();
 

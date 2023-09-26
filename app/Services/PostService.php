@@ -13,14 +13,14 @@ use App\Repositories\PostRepository;
  */
 class PostService implements PostContract
 {
-    protected PostRepository $postRepository;
+    protected PostRepository $repository;
 
     /**
      * 依賴注入
      */
     public function __construct()
     {
-        $this->postRepository = new PostRepository();
+        $this->repository = new PostRepository();
     }
 
     /**
@@ -28,7 +28,7 @@ class PostService implements PostContract
      */
     public function list()
     {
-        return $this->postRepository->list();
+        return $this->repository->list();
     }
 
     /**
@@ -36,7 +36,7 @@ class PostService implements PostContract
      */
     public function create(StorePostRequest $request): Post
     {
-        return $this->postRepository->create($request);
+        return $this->repository->create($request);
     }
 
     /**
@@ -44,7 +44,7 @@ class PostService implements PostContract
      */
     public function update(UpdatePostRequest $request, Post $post): Post
     {
-        return $this->postRepository->update($request, $post);
+        return $this->repository->update($request, $post);
     }
 
     /**
@@ -52,14 +52,6 @@ class PostService implements PostContract
      */
     public function delete(Post $post): bool
     {
-        return $this->postRepository->delete($post);
-    }
-
-    /**
-     * 自己的
-     */
-    public function myPosts()
-    {
-        return $this->postRepository->myPosts();
+        return $this->repository->delete($post);
     }
 }
