@@ -11,7 +11,7 @@ class MyPostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(MyPostService $service)
     {
         // 所有的query
         $queryString = request()->getQueryString();
@@ -28,8 +28,6 @@ class MyPostController extends Controller
         if ($cache) {
             return $cache;
         } else {
-            $service = new MyPostService;
-
             $collection = new PostCollection($service->list());
 
             $data = $collection->response();

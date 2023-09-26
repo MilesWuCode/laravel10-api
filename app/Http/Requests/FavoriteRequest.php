@@ -4,13 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FileRequest extends FormRequest
+class FavoriteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
+        // 登入及權限
         return true;
     }
 
@@ -22,7 +23,8 @@ class FileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => 'required|file',
+            'model' => 'required|in:post,product',
+            'id' => 'required|integer',
         ];
     }
 }
