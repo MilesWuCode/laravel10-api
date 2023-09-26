@@ -26,10 +26,13 @@ class MeController extends Controller
         // 檢查policy,也可以在UpdateMeRequest裡檢查
         // $this->authorize('update', $request->user());
 
-        // * example
+        // 取得驗證過後的值
         // dump($request->validated());
+        // 指定取得驗證過後的值
         // dump($request->safe()->only(['name']));
+        // 指定排除驗證過後的值
         // dump($request->safe()->except(['other']));
+        // 取得所有驗證過後的值
         // dump($request->safe()->all());
 
         $request->user()->load('media')->update($request->validated());

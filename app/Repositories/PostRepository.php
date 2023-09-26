@@ -42,7 +42,7 @@ class PostRepository
     {
         $user = $request->user();
 
-        $post = $user->posts()->create($request->all());
+        $post = $user->posts()->create($request->validated());
 
         if ($request->hasFile('cover')) {
             $post->addMedia($request->file('cover'))->toMediaCollection('cover');
@@ -56,7 +56,7 @@ class PostRepository
      */
     public function update(UpdatePostRequest $request, Post $post): Post
     {
-        $post->update($request->all());
+        $post->update($request->validated());
 
         if ($request->hasFile('cover')) {
             $post->addMedia($request->file('cover'))->toMediaCollection('cover');
