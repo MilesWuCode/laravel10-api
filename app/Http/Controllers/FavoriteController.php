@@ -25,7 +25,7 @@ class FavoriteController extends Controller
 
         $modelName = $request->validated('model');
 
-        $modelClassName = match ($request->validated('model')) {
+        $modelClassName = match ($modelName) {
             'post' => 'App\Models\Post',
             'product' => 'App\Models\Product',
         };
@@ -60,7 +60,7 @@ class FavoriteController extends Controller
 
         $modelName = $request->validated('model');
 
-        $modelClassName = match ($request->validated('model')) {
+        $modelClassName = match ($modelName) {
             'post' => 'App\Models\Post',
             'product' => 'App\Models\Product',
         };

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\LikeReactionEnum;
+use App\Events\LikeReactionEvent;
 use App\Http\Requests\LikeRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
 
 /**
  * 數字不同步
@@ -15,7 +17,7 @@ use Illuminate\Support\Facades\Request;
  */
 class LikeController extends Controller
 {
-    public function like(LikeRequest $request)
+    public function like(LikeRequest $request): JsonResponse
     {
         $user = Auth::user();
 
@@ -23,7 +25,7 @@ class LikeController extends Controller
 
         $modelName = $request->validated('model');
 
-        $modelClassName = match ($request->validated('model')) {
+        $modelClassName = match ($modelName) {
             'post' => 'App\Models\Post',
             'product' => 'App\Models\Product',
         };
@@ -40,6 +42,18 @@ class LikeController extends Controller
 
         // // ['like', 'dislike']
         // $types = array_column(LikeReactionEnum::cases(), 'value');
+
+        $reactionTypeName = LikeReactionEnum::LIKE->value;
+
+        if ($reacterFacade->hasReactedTo($model, $reactionTypeName)) {
+            return response()->json(['message' => 'not change'], 200);
+        }
+
+        $reacterFacade->reactTo($model, $reactionTypeName);
+
+        event(new LikeReactionEvent($user));
+
+        return response()->json(['message' => 'success'], 200);
 
         // // 先移除其他的
         // foreach ($types as $item) {
@@ -61,17 +75,78 @@ class LikeController extends Controller
 
         //     event(new LikeReactionEvent($user));
         // }
+    }
+
+    public function dislike(LikeRequest $request): JsonResponse
+    {
+        $user = Auth::user();
+
+        $reacterFacade = $user->viaLoveReacter();
+
+        $modelName = $request->validated('model');
+
+        $modelClassName = match ($modelName) {
+            'post' => 'App\Models\Post',
+            'product' => 'App\Models\Product',
+        };
+
+        // 可以驗證那一個table有沒有該id
+        // Validator::make($request->all(), [
+        //     'id' => 'required|integer|exists:'.$modelClassName.',id',
+        // ])->validate();
+
+        $modelId = $request->validated('id');
+
+        // 直接查資料在不在
+        $model = app($modelClassName)::findOrFail($modelId);
+
+        $reactionTypeName = LikeReactionEnum::DISLIKE->value;
+
+        if ($reacterFacade->hasReactedTo($model, $reactionTypeName)) {
+            return response()->json(['message' => 'not change'], 200);
+        }
+
+        $reacterFacade->reactTo($model, $reactionTypeName);
+
+        event(new LikeReactionEvent($user));
 
         return response()->json(['message' => 'success'], 200);
     }
 
-    public function dislike(Request $request)
+    public function unset(LikeRequest $request): JsonResponse
     {
+        $user = Auth::user();
 
-    }
+        $reacterFacade = $user->viaLoveReacter();
 
-    public function unset(Request $request)
-    {
+        $modelName = $request->validated('model');
 
+        $modelClassName = match ($modelName) {
+            'post' => 'App\Models\Post',
+            'product' => 'App\Models\Product',
+        };
+
+        // 可以驗證那一個table有沒有該id
+        // Validator::make($request->all(), [
+        //     'id' => 'required|integer|exists:'.$modelClassName.',id',
+        // ])->validate();
+
+        $modelId = $request->validated('id');
+
+        // 直接查資料在不在
+        $model = app($modelClassName)::findOrFail($modelId);
+
+        // ['like', 'dislike']
+        $reactionTypesName = array_column(LikeReactionEnum::cases(), 'value');
+
+        foreach ($reactionTypesName as $reactionTypeName) {
+            if ($reacterFacade->hasReactedTo($model, $reactionTypeName)) {
+                $reacterFacade->unreactTo($model, $reactionTypeName);
+            }
+        }
+
+        event(new LikeReactionEvent($user));
+
+        return response()->json(['message' => 'success'], 200);
     }
 }
