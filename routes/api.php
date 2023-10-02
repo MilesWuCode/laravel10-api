@@ -119,6 +119,7 @@ Route::controller(LikeController::class)
     ->middleware('auth:sanctum')
     ->group(function () {
         Route::post('/like/like', 'like')->name('like.like');
+        Route::post('/like/unlike', 'unlike')->name('like.unlike');
         Route::post('/like/dislike', 'dislike')->name('like.dislike');
-        Route::post('/like/unset', 'unset')->name('like.unset');
+        Route::post('/like/undislike', 'undislike')->name('like.undislike');
     });

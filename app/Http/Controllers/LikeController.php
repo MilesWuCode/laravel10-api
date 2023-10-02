@@ -38,82 +38,28 @@ class LikeController extends Controller
         $modelId = $request->validated('id');
 
         // 直接查資料在不在
-        $model = app($modelClassName)::findOrFail($modelId);
+        $model = app($modelClassName)::with([
+            'loveReactant.reactions.reacter.reacterable',
+        ])->findOrFail($modelId);
 
-        // // ['like', 'dislike']
-        // $types = array_column(LikeReactionEnum::cases(), 'value');
+        $like = LikeReactionEnum::LIKE->value;
 
-        $reactionTypeName = LikeReactionEnum::LIKE->value;
-
-        if ($reacterFacade->hasReactedTo($model, $reactionTypeName)) {
-            return response()->json(['message' => 'not change'], 200);
+        if ($reacterFacade->hasNotReactedTo($model, $like)) {
+            $reacterFacade->reactTo($model, $like);
         }
 
-        $reacterFacade->reactTo($model, $reactionTypeName);
+        $dislike = LikeReactionEnum::DISLIKE->value;
 
-        event(new LikeReactionEvent($user));
-
-        return response()->json(['message' => 'success'], 200);
-
-        // // 先移除其他的
-        // foreach ($types as $item) {
-        //     if ($item !== $type && $reacterFacade->hasReactedTo($post, $item)) {
-        //         $reacterFacade->unreactTo($post, $item);
-        //     }
-        // }
-
-        // // 沒有加入就加入
-        // if ($action === 'add' && $reacterFacade->hasNotReactedTo($post, $type)) {
-        //     $reacterFacade->reactTo($post, $type);
-
-        //     event(new LikeReactionEvent($user));
-        // }
-
-        // // 有加入就移除
-        // if ($action === 'del' && $reacterFacade->hasReactedTo($post, $type)) {
-        //     $reacterFacade->unreactTo($post, $type);
-
-        //     event(new LikeReactionEvent($user));
-        // }
-    }
-
-    public function dislike(LikeRequest $request): JsonResponse
-    {
-        $user = Auth::user();
-
-        $reacterFacade = $user->viaLoveReacter();
-
-        $modelName = $request->validated('model');
-
-        $modelClassName = match ($modelName) {
-            'post' => 'App\Models\Post',
-            'product' => 'App\Models\Product',
-        };
-
-        // 可以驗證那一個table有沒有該id
-        // Validator::make($request->all(), [
-        //     'id' => 'required|integer|exists:'.$modelClassName.',id',
-        // ])->validate();
-
-        $modelId = $request->validated('id');
-
-        // 直接查資料在不在
-        $model = app($modelClassName)::findOrFail($modelId);
-
-        $reactionTypeName = LikeReactionEnum::DISLIKE->value;
-
-        if ($reacterFacade->hasReactedTo($model, $reactionTypeName)) {
-            return response()->json(['message' => 'not change'], 200);
+        if ($reacterFacade->hasReactedTo($model, $dislike)) {
+            $reacterFacade->unreactTo($model, $dislike);
         }
-
-        $reacterFacade->reactTo($model, $reactionTypeName);
 
         event(new LikeReactionEvent($user));
 
         return response()->json(['message' => 'success'], 200);
     }
 
-    public function unset(LikeRequest $request): JsonResponse
+    public function unlike(LikeRequest $request): JsonResponse
     {
         $user = Auth::user();
 
@@ -138,16 +84,88 @@ class LikeController extends Controller
             'loveReactant.reactions.reacter.reacterable',
         ])->findOrFail($modelId);
 
-        $reactantFacade = $model->viaLoveReactant();
+        $like = LikeReactionEnum::LIKE->value;
 
-        // ['like', 'dislike']
-        $reactionTypesName = array_column(LikeReactionEnum::cases(), 'value');
+        if ($reacterFacade->hasReactedTo($model, $like)) {
+            $reacterFacade->unreactTo($model, $like);
+        }
 
-        foreach ($reactionTypesName as $reactionTypeName) {
-            // 使用reactantFacade來判別
-            if ($reactantFacade->isReactedBy($user, $reactionTypeName)) {
-                $reacterFacade->unreactTo($model, $reactionTypeName);
-            }
+        event(new LikeReactionEvent($user));
+
+        return response()->json(['message' => 'success'], 200);
+    }
+
+    public function dislike(LikeRequest $request): JsonResponse
+    {
+        $user = Auth::user();
+
+        $reacterFacade = $user->viaLoveReacter();
+
+        $modelName = $request->validated('model');
+
+        $modelClassName = match ($modelName) {
+            'post' => 'App\Models\Post',
+            'product' => 'App\Models\Product',
+        };
+
+        // 可以驗證那一個table有沒有該id
+        // Validator::make($request->all(), [
+        //     'id' => 'required|integer|exists:'.$modelClassName.',id',
+        // ])->validate();
+
+        $modelId = $request->validated('id');
+
+        // 直接查資料在不在
+        $model = app($modelClassName)::with([
+            'loveReactant.reactions.reacter.reacterable',
+        ])->findOrFail($modelId);
+
+        $dislike = LikeReactionEnum::DISLIKE->value;
+
+        if ($reacterFacade->hasNotReactedTo($model, $dislike)) {
+            $reacterFacade->reactTo($model, $dislike);
+        }
+
+        $like = LikeReactionEnum::LIKE->value;
+
+        if ($reacterFacade->hasReactedTo($model, $like)) {
+            $reacterFacade->unreactTo($model, $like);
+        }
+
+        event(new LikeReactionEvent($user));
+
+        return response()->json(['message' => 'success'], 200);
+    }
+
+    public function undislike(LikeRequest $request): JsonResponse
+    {
+        $user = Auth::user();
+
+        $reacterFacade = $user->viaLoveReacter();
+
+        $modelName = $request->validated('model');
+
+        $modelClassName = match ($modelName) {
+            'post' => 'App\Models\Post',
+            'product' => 'App\Models\Product',
+        };
+
+        // 可以驗證那一個table有沒有該id
+        // Validator::make($request->all(), [
+        //     'id' => 'required|integer|exists:'.$modelClassName.',id',
+        // ])->validate();
+
+        $modelId = $request->validated('id');
+
+        // 直接查資料在不在
+        $model = app($modelClassName)::with([
+            'loveReactant.reactions.reacter.reacterable',
+        ])->findOrFail($modelId);
+
+        $dislike = LikeReactionEnum::DISLIKE->value;
+
+        if ($reacterFacade->hasReactedTo($model, $dislike)) {
+            $reacterFacade->unreactTo($model, $dislike);
         }
 
         event(new LikeReactionEvent($user));
