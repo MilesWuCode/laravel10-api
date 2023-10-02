@@ -134,13 +134,18 @@ class LikeController extends Controller
         $modelId = $request->validated('id');
 
         // 直接查資料在不在
-        $model = app($modelClassName)::findOrFail($modelId);
+        $model = app($modelClassName)::with([
+            'loveReactant.reactions.reacter.reacterable',
+        ])->findOrFail($modelId);
+
+        $reactantFacade = $model->viaLoveReactant();
 
         // ['like', 'dislike']
         $reactionTypesName = array_column(LikeReactionEnum::cases(), 'value');
 
         foreach ($reactionTypesName as $reactionTypeName) {
-            if ($reacterFacade->hasReactedTo($model, $reactionTypeName)) {
+            // 使用reactantFacade來判別
+            if ($reactantFacade->isReactedBy($user, $reactionTypeName)) {
                 $reacterFacade->unreactTo($model, $reactionTypeName);
             }
         }

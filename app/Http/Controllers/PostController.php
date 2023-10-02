@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\LikeReactionEnum;
-use App\Events\LikeReactionEvent;
 use App\Facades\PostFacade;
-use App\Http\Requests\LikeReactRequest;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostCardResource;
@@ -120,62 +117,5 @@ class PostController extends Controller
         }
 
         return response()->json(['message' => 'success'], 200);
-    }
-
-    /**
-     * like
-     */
-    public function like(LikeReactRequest $request, Post $post): JsonResponse
-    {
-        /**
-         * 目標:同時只有一個或沒有
-         * 可以做成Repository模式
-         */
-        $user = Auth::user();
-
-        $action = $request->action;
-        $type = $request->type;
-
-        $reacterFacade = $user->viaLoveReacter();
-
-        // n+1
-        $post->load([
-            'loveReactant.reactions',
-        ]);
-
-        // ['like', 'dislike']
-        $types = array_column(LikeReactionEnum::cases(), 'value');
-
-        // 先移除其他的
-        foreach ($types as $item) {
-            if ($item !== $type && $reacterFacade->hasReactedTo($post, $item)) {
-                $reacterFacade->unreactTo($post, $item);
-            }
-        }
-
-        // 沒有加入就加入
-        if ($action === 'add' && $reacterFacade->hasNotReactedTo($post, $type)) {
-            $reacterFacade->reactTo($post, $type);
-
-            event(new LikeReactionEvent($user));
-        }
-
-        // 有加入就移除
-        if ($action === 'del' && $reacterFacade->hasReactedTo($post, $type)) {
-            $reacterFacade->unreactTo($post, $type);
-
-            event(new LikeReactionEvent($user));
-        }
-
-        // 返回
-        return response()->json(['action' => $action, 'type' => $type], 200);
-
-        /**
-         * 數字不同步
-         * 即時同步:QUEUE_CONNECTION=sync
-         * 背景同步:QUEUE_CONNECTION=redis
-         * 最佳作法由前端的websocket接收通知
-         * 故不執行return new PostResource($post);
-         */
     }
 }
