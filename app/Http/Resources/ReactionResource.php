@@ -30,15 +30,21 @@ class ReactionResource extends JsonResource
 
     private function getLikeState(): string
     {
-        // list n+1: ->with(['loveReactant.reactions'])
+        if (auth()->check()) {
+            return '';
+        }
 
         $like = LikeReactionEnum::LIKE->value;
 
         $dislike = LikeReactionEnum::DISLIKE->value;
 
-        if (auth()->check() && $this->viaLoveReactant()->isReactedBy(auth()->user(), $like)) {
+        $user = auth()->user();
+
+        $reactantFacade = $this->viaLoveReactant();
+
+        if ($reactantFacade->isReactedBy($user, $like)) {
             return $like;
-        } elseif (auth()->check() && $this->viaLoveReactant()->isReactedBy(auth()->user(), $dislike)) {
+        } elseif ($reactantFacade->isReactedBy($user, $dislike)) {
             return $dislike;
         } else {
             return '';
@@ -47,11 +53,17 @@ class ReactionResource extends JsonResource
 
     private function getFavoriteState(): bool
     {
-        // list n+1: ->with(['loveReactant.reactions'])
+        if (auth()->check()) {
+            return false;
+        }
 
         $favorite = FavoriteReactionEnum::Favorite->value;
 
-        if (auth()->check() && $this->viaLoveReactant()->isReactedBy(auth()->user(), $favorite)) {
+        $user = auth()->user();
+
+        $reactantFacade = $this->viaLoveReactant();
+
+        if ($reactantFacade->isReactedBy($user, $favorite)) {
             return true;
         } else {
             return false;
