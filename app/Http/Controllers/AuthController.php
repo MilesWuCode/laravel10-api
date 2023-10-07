@@ -8,6 +8,8 @@ use App\Notifications\CustomVerifyEmailNotification;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -129,6 +131,30 @@ class AuthController extends Controller
         $token = $user->createToken('normal');
 
         return response()->json(['token' => $token->plainTextToken], 200);
+    }
+
+    /**
+     * 使用 sanctum/csrf-cookie 參考 Laravel Breeze 生成的api文件
+     * composer require laravel/breeze --dev
+     * php artisan breeze:install api
+     * Kernel.php 的 EnsureFrontendRequestsAreStateful 打開
+     */
+    public function csrfLogin(Request $request): Response
+    {
+        Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|min:8|max:32',
+        ])->validate();
+
+        if (! Auth::attempt($request->only('email', 'password'))) {
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
+        }
+
+        $request->session()->regenerate();
+
+        return response()->noContent();
     }
 
     /**
