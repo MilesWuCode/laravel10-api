@@ -46,6 +46,9 @@ Route::controller(AuthController::class)
         Route::post('/auth/reset-password', 'resetPassword')->name('auth.reset-password');
     });
 
+/**
+ * 第三方登入
+ */
 Route::post('/socialite/signin', SocialiteController::class)->name('socialite.signin');
 
 /**
