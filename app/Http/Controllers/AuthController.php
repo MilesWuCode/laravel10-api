@@ -120,15 +120,13 @@ class AuthController extends Controller
             'password' => 'required|min:8|max:32',
         ])->validate();
 
-        $user = User::where('email', $request->email)->first();
-
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        if (! Auth::attempt($request->only('email', 'password'))) {
             throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+                'email' => __('auth.failed'),
             ]);
         }
 
-        $token = $user->createToken('normal');
+        $token = Auth::user()->createToken('normal');
 
         return response()->json(['token' => $token->plainTextToken], 200);
     }

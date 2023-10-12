@@ -12,8 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropUnique('users_email_unique');
-            $table->string('email')->nullable()->change();
             $table->string('password')->nullable()->change();
             $table->string('provider', 100)->after('password')->nullable()->comment('第三方登入提供平台');
             $table->string('provider_id')->after('provider')->nullable()->comment('第三方登入用戶id');
@@ -26,7 +24,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('email')->nullable(false)->unique()->change();
             $table->string('password')->nullable(false)->change();
             $table->dropColumn('provider');
             $table->dropColumn('provider_id');
