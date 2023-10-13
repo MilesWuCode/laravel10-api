@@ -15,7 +15,7 @@ class BannerRepository
     public function list()
     {
         return Banner::with(['media'])
-            ->orderBy('id', 'desc')
+            ->orderBy('order_column', 'desc')
             ->paginate(request()->get('limit', 15)) // 每頁幾筆資料
           // ->simplePaginate(5) // 不提供頁數號碼只提供上一頁跟下一頁
           // ->cursorPaginate(5, ['*'], 'page') // 座標
