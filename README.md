@@ -95,6 +95,9 @@ php artisan make:model
 # ProductResource, ProductCollection
 php artisan make:resource
 # ProductRepository, ProductService
+
+# Ubuntu使用sail
+sudo chmod -R o+w storage
 ```
 
 ## 工具
