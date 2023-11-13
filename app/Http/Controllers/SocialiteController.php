@@ -19,6 +19,7 @@ class SocialiteController extends Controller
 
         $token = $request->input('token');
 
+        // userFromToken(access_token)
         $socialiteUser = Socialite::driver($provider)->stateless()->userFromToken($token);
 
         // updateOrCreate 用戶登入後名字每次都會更新成第三方的名字
