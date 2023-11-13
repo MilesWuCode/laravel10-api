@@ -21,7 +21,7 @@
         "league/flysystem-aws-s3-v3": "^3.15",
         "league/flysystem-path-prefixing": "^3.15",
         "livewire/livewire": "^3.0",
-        "mll-lab/laravel-graphiql": "^3.1",
+        "mll-lab/graphql-php-scalars": "^6.2",
         "nuwave/lighthouse": "^6.22",
         "pusher/pusher-php-server": "^7.2",
         "spatie/eloquent-sortable": "^4.0",

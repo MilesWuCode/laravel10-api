@@ -110,8 +110,8 @@ sudo chmod -R o+w storage
 -   telescope - http://localhost/telescope
 -   horizon - http://localhost/horizon
 -   minio - http://localhost:8900
--   graphiql - http://localhost/graphiql
 -   graphql - http://localhost/graphql
+-   apollographql - https://studio.apollographql.com/sandbox/explorer
 -   mysql - mysql:3306
 -   redis - redis:6379
 -   smtp - mailpit:1025
