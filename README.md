@@ -79,8 +79,11 @@ php artisan ide-helper:models --nowrite
 # PhpStorm
 php artisan ide-helper:meta
 
-# lighthouse
+# lighthouse預設schema
 php artisan vendor:publish --tag=lighthouse-schema
+
+# lighthouse ide-help
+php artisan lighthouse:ide-helper
 
 # telescope在sail時會抓不到mysql,需要執行這句
 php artisan package:discover --ansi
