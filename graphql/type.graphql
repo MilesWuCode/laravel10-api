@@ -1,0 +1,35 @@
+"Account of a person who utilizes this application."
+type User {
+    "Unique primary key."
+    id: ID!
+
+    "Non-unique name."
+    name: String!
+
+    "Unique email address."
+    email: String!
+
+    "When the email was verified."
+    email_verified_at: DateTime
+
+    "第三方平台名稱"
+    provider: String
+
+    "第三方平台提供的ID"
+    provider_id: String
+
+    "When the account was created."
+    created_at: DateTime!
+
+    "When the account was last updated."
+    updated_at: DateTime!
+}
+
+type Post {
+    id: ID!
+    user: User! @belongsTo(relation: "user")
+    title: String!
+    content: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+}
