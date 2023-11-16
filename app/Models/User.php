@@ -101,6 +101,12 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail, Reacter
             ->performOnCollections('avatar');
     }
 
+    // 圖片網址，在gql上適用單個
+    public function getAvatarUrlAttribute(): string
+    {
+        return $this->getFirstMediaUrl('avatar');
+    }
+
     /**
      * 廣播
      */

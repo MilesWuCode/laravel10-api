@@ -32,6 +32,21 @@ class Post extends Model implements HasMedia, ReactableInterface
         'user_id',
     ];
 
+    // 圖片網址，在gql上適用單個
+    public function getCoverUrlAttribute(): string
+    {
+        return $this->getFirstMediaUrl('cover');
+    }
+
+    // 圖片關聯，在gql上適用於多個
+    // cover: [Medialibrary!] @morphMany(relation: "cover") @cache // 被取代
+    // cover: [Medialibrary!] @morphMany(relation: "media") @where(key: "collection_name", value: "cover") @cache
+    // public function cover(): MorphMany
+    // {
+    //     return $this->morphMany(config('media-library.media_model'), 'model')
+    //         ->where('collection_name', 'cover');
+    // }
+
     /**
      * User
      */

@@ -1,3 +1,5 @@
 extend type Query {
-    post(id: ID @eq): Post @find
+    post(id: ID @eq): Post @find @cache
+
+    posts: Post @first
 }

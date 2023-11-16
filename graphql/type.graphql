@@ -23,6 +23,10 @@ type User {
 
     "When the account was last updated."
     updated_at: DateTime!
+
+    avatar_url: String! @cache
+
+    avatar: [Medialibrary!] @morphMany(relation: "media") @where(key: "collection_name", value: "avatar") @cache
 }
 
 type Post {
@@ -32,4 +36,22 @@ type Post {
     content: String!
     created_at: DateTime!
     updated_at: DateTime!
+
+    "單個"
+    cover_url: String! @cache
+
+    "多個"
+    cover: [Medialibrary!] @morphMany(relation: "media") @where(key: "collection_name", value: "cover") @cache
+}
+
+type Medialibrary
+    @model(class: "\\Spatie\\MediaLibrary\\MediaCollections\\Models\\Media") {
+    id: ID!
+    uuid: String!
+    collection_name: String!
+    name: String!
+    file_name: String!
+    disk: String!
+    size: Int!
+    url: String! @field(resolver: "\\App\\GraphQL\\Types\\MedialibraryType@getUrl")
 }
