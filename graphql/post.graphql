@@ -1,5 +1,5 @@
 extend type Query {
     post(id: ID @eq): Post @find @cache
 
-    posts: Post @first
+    posts: [Post!]! @paginate
 }
