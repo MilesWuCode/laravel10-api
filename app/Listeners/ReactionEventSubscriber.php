@@ -37,12 +37,16 @@ class ReactionEventSubscriber
 
         $type = $reaction->getType();
 
-        $model = $reaction->getReactant()->getReactable();
+        $reactable = $reaction->getReactant()->getReactable();
 
         $user = $reaction->getReacter()->getReacterable();
 
         if ($type->isEqualTo(ReactionType::fromName(FavoriteReactionEnum::Favorite->value))) {
-            event(new FavoriteReactionEvent($user, $model, false));
+
+            if ($reactable::class === Post::class) {
+                event(new FavoriteReactionEvent($user, 'post', $reactable->id, false));
+            }
+
         }
     }
 
