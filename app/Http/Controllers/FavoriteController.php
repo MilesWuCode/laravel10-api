@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Enums\FavoriteReactionEnum;
-use App\Events\FavoriteReactionEvent;
 use App\Http\Requests\FavoriteRequest;
+use App\Models\Post;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -26,8 +27,8 @@ class FavoriteController extends Controller
         $modelName = $request->validated('model');
 
         $modelClassName = match ($modelName) {
-            'post' => 'App\Models\Post',
-            'product' => 'App\Models\Product',
+            'post' => Post::class,
+            'product' => Product::class,
         };
 
         // 可以驗證那一個table有沒有該id
@@ -45,8 +46,6 @@ class FavoriteController extends Controller
         // 檢查沒有加入
         if ($reacterFacade->hasNotReactedTo($model, $favorite)) {
             $reacterFacade->reactTo($model, $favorite);
-
-            event(new FavoriteReactionEvent($user, $modelName, $model->id, true));
         }
 
         return response()->json(['message' => 'success'], 200);
@@ -61,8 +60,8 @@ class FavoriteController extends Controller
         $modelName = $request->validated('model');
 
         $modelClassName = match ($modelName) {
-            'post' => 'App\Models\Post',
-            'product' => 'App\Models\Product',
+            'post' => Post::class,
+            'product' => Product::class,
         };
 
         // 可以驗證那一個table有沒有該id
@@ -80,8 +79,6 @@ class FavoriteController extends Controller
         // 檢查有加入
         if ($reacterFacade->hasReactedTo($model, $favorite)) {
             $reacterFacade->unreactTo($model, $favorite);
-
-            event(new FavoriteReactionEvent($user, $modelName, $model->id, false));
         }
 
         return response()->json(['message' => 'success'], 200);

@@ -4,6 +4,6 @@ namespace App\Enums;
 
 enum LikeReactionEnum: string
 {
-    case LIKE = 'like';
-    case DISLIKE = 'dislike';
+    case LIKE = 'Like';
+    case DISLIKE = 'Dislike';
 }

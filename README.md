@@ -112,6 +112,8 @@ sudo chmod -R o+w storage
 -   minio - http://localhost:8900
 -   graphql - http://localhost/graphql
 -   apollographql - https://studio.apollographql.com/sandbox/explorer
+-   soketi - http://localhost:6001
+-   soketi metrics - http://localhost:9601
 -   mysql - mysql:3306
 -   redis - redis:6379
 -   smtp - mailpit:1025
