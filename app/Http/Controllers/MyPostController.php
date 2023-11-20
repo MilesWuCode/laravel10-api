@@ -16,7 +16,7 @@ class MyPostController extends Controller
         // 所有的query
         $queryString = request()->getQueryString();
 
-        $userId = auth()->id();
+        $userId = auth('sanctum')->id();
 
         $tag = 'user.'.$userId.'.post.index';
 

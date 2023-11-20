@@ -19,8 +19,10 @@ class PostCardResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'cover' => $this->getFirstMediaUrl('cover'),
-            'cover_thumb' => $this->getFirstMediaUrl('cover', 'thumb'),
+            'content' => $this->content,
+            'cover_url' => $this->cover_url, // 列表應該用thumb
+            // 'cover_url' => $this->getFirstMediaUrl('cover'),
+            // 'cover_thumb_url' => $this->getFirstMediaUrl('cover', 'thumb'),
             'user' => new UserCardResource($this->whenLoaded('user')),
         ];
     }

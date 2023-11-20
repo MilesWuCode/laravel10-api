@@ -30,7 +30,7 @@ class ReactionResource extends JsonResource
 
     private function getLikeState(): string
     {
-        if (auth()->check()) {
+        if (auth('sanctum')->check()) {
             return '';
         }
 
@@ -38,7 +38,7 @@ class ReactionResource extends JsonResource
 
         $dislike = LikeReactionEnum::DISLIKE->value;
 
-        $user = auth()->user();
+        $user = auth('sanctum')->user();
 
         $reactantFacade = $this->viaLoveReactant();
 
@@ -53,13 +53,13 @@ class ReactionResource extends JsonResource
 
     private function getFavoriteState(): bool
     {
-        if (auth()->check()) {
+        if (! auth('sanctum')->check()) {
             return false;
         }
 
         $favorite = FavoriteReactionEnum::Favorite->value;
 
-        $user = auth()->user();
+        $user = auth('sanctum')->user();
 
         $reactantFacade = $this->viaLoveReactant();
 

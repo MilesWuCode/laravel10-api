@@ -11,7 +11,6 @@ use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class PostController extends Controller
@@ -64,14 +63,6 @@ class PostController extends Controller
      */
     public function show(Request $request, Post $post): PostResource
     {
-        /**
-         * 沒使用middleware(['auth:sanctum'])
-         * 但又要取得使用者或登入使用者
-         */
-        if (auth('sanctum')->check()) {
-            auth()->loginUsingId(auth('sanctum')->user()->id);
-        }
-
         // Eager Loading取資料時會動用的關係再填入
         $post->load([
             'user',
