@@ -23,11 +23,9 @@ class ReactionEventSubscriber
         $user = $reaction->getReacter()->getReacterable();
 
         if ($type->isEqualTo(ReactionType::fromName(FavoriteReactionEnum::Favorite->value))) {
-
             if ($reactable::class === Post::class) {
                 event(new FavoriteReactionEvent($user, 'post', $reactable->id, true));
             }
-
         }
     }
 
@@ -42,11 +40,9 @@ class ReactionEventSubscriber
         $user = $reaction->getReacter()->getReacterable();
 
         if ($type->isEqualTo(ReactionType::fromName(FavoriteReactionEnum::Favorite->value))) {
-
             if ($reactable::class === Post::class) {
                 event(new FavoriteReactionEvent($user, 'post', $reactable->id, false));
             }
-
         }
     }
 
