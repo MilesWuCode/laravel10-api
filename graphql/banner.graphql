@@ -1,0 +1,3 @@
+extend type Query {
+    banners: [Banner!]! @orderBy(column: "order_column", direction: ASC) @paginate @cache(maxAge: 300)
+}

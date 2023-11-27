@@ -44,6 +44,20 @@ type Post {
     cover: [Medialibrary!] @morphMany(relation: "media") @where(key: "collection_name", value: "cover") @cache
 }
 
+type Banner {
+    id: ID!
+    name: String!
+    link: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+
+    "單個"
+    cover_url: String! @cache
+
+    "多個"
+    cover: [Medialibrary!] @morphMany(relation: "media") @where(key: "collection_name", value: "cover") @cache
+}
+
 type Medialibrary
     @model(class: "\\Spatie\\MediaLibrary\\MediaCollections\\Models\\Media") {
     id: ID!

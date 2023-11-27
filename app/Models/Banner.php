@@ -22,6 +22,12 @@ class Banner extends Model implements HasMedia, Sortable
         'order_column',
     ];
 
+    // 圖片網址，在gql上適用單個
+    public function getCoverUrlAttribute(): string
+    {
+        return $this->getFirstMediaUrl('cover');
+    }
+
     /**
      * 檔案
      */
