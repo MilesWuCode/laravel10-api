@@ -30,7 +30,7 @@ class ReactionResource extends JsonResource
 
     private function getLikeState(): string
     {
-        if (auth('sanctum')->check()) {
+        if (! auth('sanctum')->check()) {
             return '';
         }
 
