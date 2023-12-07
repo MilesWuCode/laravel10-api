@@ -16,7 +16,7 @@ npm-debug.log
 yarn-error.log
 /.fleet
 /.idea
-!/.vscode
+/.vscode
 .DS_Store
 
 # barryvdh/laravel-ide-helper
