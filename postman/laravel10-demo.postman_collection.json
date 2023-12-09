@@ -94,7 +94,7 @@
 									"type": "text"
 								},
 								{
-									"key": "comfirm_password",
+									"key": "confirm_password",
 									"value": "{{userPassword}}",
 									"type": "text"
 								}
@@ -406,7 +406,7 @@
 									"type": "text"
 								},
 								{
-									"key": "comfirm_password",
+									"key": "confirm_password",
 									"value": "{{userPassword}}",
 									"type": "text"
 								},
@@ -790,7 +790,7 @@
 									"type": "text"
 								},
 								{
-									"key": "comfirm_password",
+									"key": "confirm_password",
 									"value": "",
 									"type": "text"
 								}

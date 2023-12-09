@@ -51,7 +51,7 @@ class MeController extends Controller
         $validator = Validator::make($request->all(), [
             'old_password' => 'required|current_password',
             'new_password' => 'required|min:8|max:32|different:old_password',
-            'comfirm_password' => 'required|same:new_password',
+            'confirm_password' => 'required|same:new_password',
         ]);
 
         $validator->validate();

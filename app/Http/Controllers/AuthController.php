@@ -26,7 +26,7 @@ class AuthController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8|max:32',
-            'comfirm_password' => 'required|same:password',
+            'confirm_password' => 'required|same:password',
         ])->validate();
 
         $input = $request->all();
@@ -197,7 +197,7 @@ class AuthController extends Controller
         Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|min:8|max:32',
-            'comfirm_password' => 'required|same:password',
+            'confirm_password' => 'required|same:password',
             'code' => 'required',
         ])->validate();
 

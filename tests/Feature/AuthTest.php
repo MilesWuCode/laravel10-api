@@ -14,7 +14,7 @@ it('註冊+登入', function () {
         'name' => $user->name,
         'email' => $user->email,
         'password' => 'password',
-        'comfirm_password' => 'password',
+        'confirm_password' => 'password',
     ];
 
     // Act
@@ -81,7 +81,7 @@ it('忘記密碼+變更密碼', function () {
     $form = [
         'email' => $user->email,
         'password' => 'password',
-        'comfirm_password' => 'password',
+        'confirm_password' => 'password',
         'code' => $content->code,
     ];
 
