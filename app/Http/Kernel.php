@@ -39,6 +39,8 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
+            // SPA Authentication:打開,前後端同domain,不同sub-domain,登入使用/sanctum/csrf-cookie
+            // API Token Authentication:關閉,行動裝置或軟體,登入使用user()->createToken()
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
