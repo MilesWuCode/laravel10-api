@@ -1,10 +1,13 @@
 {
     "recommendations": [
-        "ahmadalli.vscode-nginx-conf",
+        "bmewburn.vscode-intelephense-client",
+        "devsense.composer-php-vscode",
         "devsense.phptools-vscode",
         "georgykurian.laravel-ide-helper",
+        "graphql.vscode-graphql-syntax",
+        "mehedidracula.php-namespace-resolver",
+        "neilbrayfield.php-docblocker",
         "open-southeners.laravel-pint",
-        "rexshi.phpdoc-comment-vscode-plugin",
         "shufo.vscode-blade-formatter"
     ]
 }
